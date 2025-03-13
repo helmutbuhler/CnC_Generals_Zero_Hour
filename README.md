@@ -62,7 +62,7 @@ In the LZHL source, add this line to the top of `lzhl_tcp.cpp` to suppress the d
 
 Download 4.5.3 here [STLport-4.5.3.tar.gz](http://www.stlport.org/archive/STLport-4.5.3.tar.gz).
 
-Within the tar file, extract the contents of just the `stlport` directory and place the files in `\Code\Libraries\STLport-4.5.3`.
+Within the tar file, extract the contents of just the `stlport` directory and place the files in `\Code\Libraries\Source\STLport-4.5.3`.
 
 In that directory, run the following to patch the files:
 ```
