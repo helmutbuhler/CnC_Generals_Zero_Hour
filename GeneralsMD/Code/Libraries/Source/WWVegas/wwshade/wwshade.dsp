@@ -113,14 +113,14 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Internal"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwsaveload" /I "..\ww3d2" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /I "..\wwsaveload" /I "..\ww3d2" /D WINVER=0x400 /D "WWDEBUG" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_INTERNAL" /Fr /YX /FD /c
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /I "..\wwsaveload" /I "..\ww3d2" /I "..\..\..\DirectX\Include" /D WINVER=0x400 /D "WWDEBUG" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_INTERNAL" /Fr /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
-# ADD BASE LIB32 /nologo /out:"..\..\..\Lib\WWShadeRelease.lib"
+# ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo /out:"..\..\..\Lib\WWShadeInternal.lib"
 
 !ELSEIF  "$(CFG)" == "wwshade - Win32 DebugW3D"

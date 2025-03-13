@@ -765,17 +765,18 @@ void munkeeFunc(void)
 }
 */
 
+
 void checkProtection(void)
 {
 #ifdef _INTERNAL
-	__try
+	/*__try
 	{
 		munkeeFunc();
 	}
 	__except(EXCEPTION_EXECUTE_HANDLER)
 	{
 		exit(0); // someone is messing with us.
-	}
+	}*/
 #endif
 }
 
@@ -940,8 +941,8 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				pc = 0;
 				sscanf(argv[i], "%x",  &pc);
 				char name[_MAX_PATH], file[_MAX_PATH];
-				unsigned int line;
-				unsigned int addr;
+				unsigned int line = 0;
+				unsigned int addr = 0;
 				GetFunctionDetails((void*)pc, name, file, &line, &addr);
 				DEBUG_LOG(("0x%x - %s, %s, line %d address 0x%x\n", pc, name, file, line, addr));
 			}

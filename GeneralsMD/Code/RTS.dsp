@@ -99,7 +99,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /I "Libraries\Include" /I "GameEngine\Include" /I "gameenginedevice\Include" /I "Libraries\Source\WWVegas" /I "Libraries\Source\WWVegas\WWLib" /I "Libraries\Source\WWVegas\WWMath" /I "Libraries\Source\WWVegas\WWDebug" /I "Libraries\Source\WWVegas\WWSaveLoad" /I "Libraries\Source\WWVegas\WW3D2" /I "Libraries\Include\Granny" /D "NDEBUG" /D "_INTERNAL" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /I "Libraries\Source\STLport-4.5.3" /I "Libraries\Source\BinkStub" /I "Libraries\DirectX\Include" /I "Libraries\Include" /I "GameEngine\Include" /I "gameenginedevice\Include" /I "Libraries\Source\WWVegas" /I "Libraries\Source\WWVegas\WWLib" /I "Libraries\Source\WWVegas\WWMath" /I "Libraries\Source\WWVegas\WWDebug" /I "Libraries\Source\WWVegas\WWSaveLoad" /I "Libraries\Source\WWVegas\WW3D2" /I "Libraries\Include\Granny" /D "NDEBUG" /D "_INTERNAL" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -110,7 +110,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 Benchmark.lib WW3D2Internal.lib WWDebugInternal.lib WWLibInternal.lib WWUtilInternal.lib WWMathInternal.lib GameEngineInternal.lib GameEngineDeviceInternal.lib binkw32.lib dxguid.lib dinput8.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib d3dx8.lib mss32.lib d3d8.lib winmm.lib vfw32.lib dsound.lib wsock32.lib imm32.lib wininet.lib /nologo /subsystem:windows /pdb:"..\Run\RTSI.pdb" /map:"..\Run\RTSI.map" /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"..\Run\RTSI.exe" /libpath:"GameEngine\Lib" /libpath:"GameEngineDevice\Lib" /libpath:"Libraries\Lib" /libpath:"GameEngine" /fixed:no
+# ADD LINK32 WW3D2Internal.lib WWDebugInternal.lib WWLibInternal.lib WWUtilInternal.lib WWMathInternal.lib GameEngineInternal.lib GameEngineDeviceInternal.lib dxguid.lib dinput8.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib d3dx8.lib d3d8.lib winmm.lib vfw32.lib dsound.lib wsock32.lib imm32.lib wininet.lib BinkStub.lib /nologo /subsystem:windows /pdb:"..\Run\RTSI.pdb" /map:"..\Run\RTSI.map" /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"..\Run\RTSI.exe" /libpath:"GameEngine\Lib" /libpath:"GameEngineDevice\Lib" /libpath:"Libraries\Lib" /libpath:"Libraries\DirectX\Lib" /libpath:"Libraries\Source\BinkStub\lib" /libpath:"GameEngine" /fixed:no
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "RTS - Win32 DebugW3D"

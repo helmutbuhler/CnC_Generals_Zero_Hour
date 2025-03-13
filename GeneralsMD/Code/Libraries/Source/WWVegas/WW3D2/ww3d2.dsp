@@ -69,7 +69,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /G6 /MDd /W3 /WX /Gi /GX /Zi /O2 /Ob2 /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\..\Stubs\Miles\\" /I "..\..\..\DirectX\Include" /I "..\..\..\..\GameEngineDevice\Include\MilesAudioDevice" /D "_DEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /YX /FD /c
+# ADD CPP /nologo /G6 /MDd /W3 /WX /Gi /GX /Zi /O2 /Ob2 /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\..\Stubs\Miles" /I "..\..\..\DirectX\Include" /I "..\..\..\..\GameEngineDevice\Include\MilesAudioDevice" /D "_DEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -162,9 +162,9 @@ LIB32=link.exe -lib
 # PROP Output_Dir "Internal"
 # PROP Intermediate_Dir "Internal"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W3 /GR /GX /Zi /O2 /Ob2 /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\miles6\include" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /YX /FD /c
+# ADD BASE CPP /nologo /MD /W3 /GR /GX /Zi /O2 /Ob2 /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\..\Stubs\Miles" /I "..\..\..\DirectX\Include" /I "..\..\..\..\GameEngineDevice\Include\MilesAudioDevice" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /YX /FD /c
 # SUBTRACT BASE CPP /Fr
-# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\miles6\include" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /D "_INTERNAL" /YX /FD /c
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\..\Stubs\Miles" /I "..\..\..\DirectX\Include" /I "..\..\..\..\GameEngineDevice\Include\MilesAudioDevice" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /D "_INTERNAL" /YX /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
@@ -172,7 +172,7 @@ BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
-# ADD BASE LIB32 /nologo /out:"..\..\..\Lib\ww3d2.lib"
+# ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo /out:"..\..\..\Lib\ww3d2Internal.lib"
 
 !ELSEIF  "$(CFG)" == "ww3d2 - Win32 DebugW3D"

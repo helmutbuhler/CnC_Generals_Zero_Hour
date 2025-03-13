@@ -114,7 +114,7 @@ LIB32=link.exe -lib
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W4 /WX /Gi /GX /O2 /Ob2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /YX /FD /c
 # SUBTRACT BASE CPP /Fr
-# ADD CPP /nologo /G6 /MD /W3 /WX /Gi /GX /Zi /O2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /D "_INTERNAL" /YX /FD /c
+# ADD CPP /nologo /G6 /MD /W3 /WX /Gi /GX /Zi /O2 /I "..\wwlib" /I "..\..\..\DirectX\Include" /I "..\wwdebug" /I "..\wwsaveload" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /D "_INTERNAL" /YX /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
@@ -122,7 +122,7 @@ BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
-# ADD BASE LIB32 /nologo /out:"..\..\..\Lib\WWMath.lib"
+# ADD BASE LIB32 /nologo /out:"..\Libs\WWMathInternal.lib"
 # ADD LIB32 /nologo /out:"..\..\..\Lib\WWMathInternal.lib"
 
 !ELSEIF  "$(CFG)" == "wwmath - Win32 DebugW3D"
