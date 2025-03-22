@@ -163,6 +163,7 @@ Int parseFPUPreserve(char *args[], int argc)
 }
 
 #if defined(_DEBUG) || defined(_INTERNAL)
+
 //=============================================================================
 //=============================================================================
 Int parseUseCSF(char *args[], int)
@@ -203,6 +204,7 @@ Int parseNoMilCap(char *args[], int)
 	}
 	return 1;
 }
+#endif // _DEBUG || _INTERNAL
 
 //=============================================================================
 //=============================================================================
@@ -328,6 +330,8 @@ Int parseNoDraw(char *args[], int argc)
 #endif
 	return 1;
 }
+
+#if defined(_DEBUG) || defined(_INTERNAL)
 
 //=============================================================================
 //=============================================================================
@@ -1161,6 +1165,8 @@ static CommandLineParam params[] =
 	{ "-localMOTD", parseLocalMOTD },
 	{ "-UseCSF", parseUseCSF },
 	{ "-NoInputDisable", parseNoInputDisable },
+#endif
+#ifdef DEBUG_CRC
 	{ "-DebugCRCFromFrame", parseDebugCRCFromFrame },
 	{ "-DebugCRCUntilFrame", parseDebugCRCUntilFrame },
 	{ "-KeepCRCSaves", parseKeepCRCSave },
@@ -1169,9 +1175,11 @@ static CommandLineParam params[] =
 	{ "-ClientDeepCRC", parseClientDeepCRC },
 	{ "-VerifyClientCRC", parseVerifyClientCRC },
 	{ "-LogObjectCRCs", parseLogObjectCRCs },
-	{ "-saveAllStats", parseSaveAllStats },
 	{ "-NetCRCInterval", parseNetCRCInterval },
 	{ "-ReplayCRCInterval", parseReplayCRCInterval },
+#endif
+#if (defined(_DEBUG) || defined(_INTERNAL))
+	{ "-saveAllStats", parseSaveAllStats },
 	{ "-noDraw", parseNoDraw },
 	{ "-nomilcap", parseNoMilCap },
 	{ "-nofade", parseNoFade },
