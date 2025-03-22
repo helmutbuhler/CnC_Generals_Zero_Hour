@@ -1,14 +1,14 @@
 #define WIN32_DYNAMIC_PROCS \
 	WPROC("_AIL_3D_sample_volume@4", long __stdcall, AIL_3D_sample_volume, (H3DSAMPLE sample)) \
-	WPROC("_AIL_set_3D_sample_volume@8", void __stdcall, AIL_set_3D_sample_volume, (H3DSAMPLE sample, long volume)) \
+	WPROC("_AIL_set_3D_sample_volume@8", void __stdcall, AIL_set_3D_sample_volume, (H3DSAMPLE sample, float volume)) \
 	WPROC("_AIL_end_3D_sample@4", void __stdcall, AIL_end_3D_sample, (H3DSAMPLE sample)) \
 	WPROC("_AIL_resume_3D_sample@4", void __stdcall, AIL_resume_3D_sample, (H3DSAMPLE sample)) \
 	WPROC("_AIL_stop_3D_sample@4", void __stdcall, AIL_stop_3D_sample, (H3DSAMPLE sample)) \
 	WPROC("_AIL_start_3D_sample@4", void __stdcall, AIL_start_3D_sample, (H3DSAMPLE sample)) \
-	WPROC("_AIL_3D_sample_loop_count@4", int __stdcall, AIL_3D_sample_loop_count, (H3DSAMPLE sample)) \
-	WPROC("_AIL_set_3D_sample_offset@8", void __stdcall, AIL_set_3D_sample_offset, (H3DSAMPLE sample, int offset)) \
+	WPROC("_AIL_3D_sample_loop_count@4", unsigned int __stdcall, AIL_3D_sample_loop_count, (H3DSAMPLE sample)) \
+	WPROC("_AIL_set_3D_sample_offset@8", void __stdcall, AIL_set_3D_sample_offset, (H3DSAMPLE sample, unsigned int offset)) \
 	WPROC("_AIL_3D_sample_length@4", int __stdcall, AIL_3D_sample_length, (H3DSAMPLE sample)) \
-	WPROC("_AIL_3D_sample_offset@4", int __stdcall, AIL_3D_sample_offset, (H3DSAMPLE sample)) \
+	WPROC("_AIL_3D_sample_offset@4", unsigned int __stdcall, AIL_3D_sample_offset, (H3DSAMPLE sample)) \
 	WPROC("_AIL_3D_sample_playback_rate@4", int __stdcall, AIL_3D_sample_playback_rate, (H3DSAMPLE sample)) \
 	WPROC("_AIL_set_3D_sample_playback_rate@8", void __stdcall, AIL_set_3D_sample_playback_rate, (H3DSAMPLE sample, int playback_rate)) \
 	WPROC("_AIL_set_3D_sample_file@8", int __stdcall, AIL_set_3D_sample_file, (H3DSAMPLE sample, const void* file_image)) \
@@ -19,7 +19,7 @@
 	WPROC("_AIL_set_preference@8", int __stdcall, AIL_set_preference, (unsigned int number, int value)) \
 	WPROC("_AIL_waveOutOpen@16", int __stdcall, AIL_waveOutOpen, (HDIGDRIVER* driver, LPHWAVEOUT* waveout, int id, LPWAVEFORMAT format)) \
 	WPROC("_AIL_waveOutClose@4", void __stdcall, AIL_waveOutClose, (HDIGDRIVER driver)) \
-	WPROC("_AIL_set_3D_sample_loop_count@8", void __stdcall, AIL_set_3D_sample_loop_count, (H3DSAMPLE sample, int count)) \
+	WPROC("_AIL_set_3D_sample_loop_count@8", void __stdcall, AIL_set_3D_sample_loop_count, (H3DSAMPLE sample, unsigned int count)) \
 	WPROC("_AIL_set_stream_playback_rate@8", void __stdcall, AIL_set_stream_playback_rate, (HSTREAM stream, int rate)) \
 	WPROC("_AIL_stream_playback_rate@4", int __stdcall, AIL_stream_playback_rate, (HSTREAM stream)) \
 	WPROC("_AIL_stream_ms_position@12", void __stdcall, AIL_stream_ms_position, (HSTREAM sample, S32* total_milliseconds, S32* current_milliseconds)) \
@@ -76,8 +76,8 @@
 	WPROC("_AIL_open_3D_provider@4", M3DRESULT __stdcall, AIL_open_3D_provider, (HPROVIDER lib)) \
 	WPROC("_AIL_last_error@0", char* __stdcall, AIL_last_error, (void)) \
 	WPROC("_AIL_open_3D_listener@4", H3DPOBJECT __stdcall, AIL_open_3D_listener, (HPROVIDER lib)) \
-	WPROC("_AIL_3D_user_data@8", int __stdcall, AIL_3D_user_data, (H3DSAMPLE sample, int index)) \
-	WPROC("_AIL_sample_user_data@8", int __stdcall, AIL_sample_user_data, (HSAMPLE sample, int index)) \
+	WPROC("_AIL_3D_user_data@8", int __stdcall, AIL_3D_user_data, (H3DSAMPLE sample, unsigned int index)) \
+	WPROC("_AIL_sample_user_data@8", int __stdcall, AIL_sample_user_data, (HSAMPLE sample, unsigned int index)) \
 	WPROC("_AIL_allocate_sample_handle@4", HSAMPLE __stdcall, AIL_allocate_sample_handle, (HDIGDRIVER dig)) \
 	WPROC("_AIL_set_sample_user_data@12", void __stdcall, AIL_set_sample_user_data, (HSAMPLE sample, unsigned int index, int value)) \
 	WPROC("_AIL_decompress_ADPCM@12", int __stdcall, AIL_decompress_ADPCM, (const AILSOUNDINFO *info, void **outdata, unsigned long *outsize)) \
