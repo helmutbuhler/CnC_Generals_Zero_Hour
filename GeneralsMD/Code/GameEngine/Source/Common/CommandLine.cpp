@@ -1167,15 +1167,30 @@ static CommandLineParam params[] =
 	{ "-NoInputDisable", parseNoInputDisable },
 #endif
 #ifdef DEBUG_CRC
+	// After which frame to log crc logging. Call with 0 to log all frames and with -1 to log none (default).
 	{ "-DebugCRCFromFrame", parseDebugCRCFromFrame },
+
+	// Last frame to log
 	{ "-DebugCRCUntilFrame", parseDebugCRCUntilFrame },
+
+	// Save data involving crc calculation to binary file (This isn't that useful).
 	{ "-KeepCRCSaves", parseKeepCRCSave },
 	{ "-CRCLogicModuleData", parseCRCLogicModuleData },
 	{ "-CRCClientModuleData", parseCRCClientModuleData },
-	{ "-ClientDeepCRC", parseClientDeepCRC },
+
+	// Verify that Game Logic CRC doesn't change during client update. Client update is only for visuals and not supposed to change the crc. (This is implemented using CRCVerification class in GameEngine::update)
 	{ "-VerifyClientCRC", parseVerifyClientCRC },
+
+	// Write out binary crc data pre and post client update to "clientPre.crc" and "clientPost.crc"
+	{ "-ClientDeepCRC", parseClientDeepCRC },
+
+	// Log CRC of Objects and Weapons (See Object::crc and Weapon::crc)
 	{ "-LogObjectCRCs", parseLogObjectCRCs },
+
+	// Number of frames between each CRC check between all players in multiplayer games (if not all crcs are equal, mismatch occurs).
 	{ "-NetCRCInterval", parseNetCRCInterval },
+
+	// Number of frames between each CRC that is written to replay files in singleplayer games.
 	{ "-ReplayCRCInterval", parseReplayCRCInterval },
 #endif
 #if (defined(_DEBUG) || defined(_INTERNAL))
