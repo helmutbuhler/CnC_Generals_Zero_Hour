@@ -1284,8 +1284,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	if(m_loadScreen)
 		updateLoadProgress(LOAD_PROGRESS_POST_PARTICLE_INI_LOAD);
 
-	// reset the frame counter
-	m_frame = 0;
+	DEBUG_ASSERTCRASH(m_frame == 0, ("framecounter expected to be 0 here\n"));
 
 	// before loading the map, load the map.ini file in the same directory.
 	loadMapINI( TheGlobalData->m_mapName );
