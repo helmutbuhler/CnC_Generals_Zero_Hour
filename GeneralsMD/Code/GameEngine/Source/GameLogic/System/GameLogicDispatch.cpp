@@ -281,6 +281,10 @@ void GameLogic::clearGameData( Bool showScoreScreen )
 	setGameMode(GAME_NONE);
 //	m_background->bringForward();
 //	if(shellGame)
+	
+	// In case we restart a replay, we need to clear the command list.
+	// Otherwise a crc message remains and messes up the crc calculation on the restarted replay.
+	TheCommandList->reset();
 
 	
 	if (TheGlobalData->m_initialFile.isEmpty() == FALSE)
