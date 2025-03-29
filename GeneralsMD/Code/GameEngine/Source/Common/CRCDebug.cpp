@@ -28,6 +28,7 @@
 #include "Common/CRCDebug.h"
 #include "Common/Debug.h"
 #include "Common/PerfTimer.h"
+#include "Common/LocalFileSystem.h"
 #include "GameClient/InGameUI.h"
 #include "GameNetwork/IPEnumeration.h"
 #include <cstdarg>
@@ -120,16 +121,18 @@ void CRCDebugStartNewGame()
 {
 	if (g_saveDebugCRCPerFrame)
 	{
+		// Create folder for frame data, if it doesn't exist yet.
 		CreateDirectory(g_saveDebugCRCPerFrameDir.str(), NULL);
-		for (int i = 0; ; i++)
+
+		// Delete existing files
+		FilenameList files;
+		AsciiString dir = g_saveDebugCRCPerFrameDir;
+		dir.concat("/");
+		TheLocalFileSystem->getFileListInDirectory(dir.str(), "", "DebugFrame_*.txt", files, FALSE);
+		FilenameList::iterator it;
+		for (it = files.begin(); it != files.end(); ++it)
 		{
-			AsciiString fname;
-			fname.format("%s/DebugFrame_%06d.txt", g_saveDebugCRCPerFrameDir.str(), i);
-			FILE *fp = fopen(fname.str(), "rt");
-			if (!fp)
-				break;
-			fclose(fp);
-			DeleteFile(fname.str());
+			DeleteFile(it->str());
 		}
 	}
 	nextDebugString = 0;
