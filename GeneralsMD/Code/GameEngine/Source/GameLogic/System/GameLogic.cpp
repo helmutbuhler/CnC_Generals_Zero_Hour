@@ -3665,14 +3665,14 @@ void GameLogic::update( void )
 			GameMessage *msg = TheMessageStream->appendMessage( GameMessage::MSG_LOGIC_CRC );
 			msg->appendIntegerArgument( m_CRC );
 			msg->appendBooleanArgument( (TheRecorder && TheRecorder->getMode() == RECORDERMODETYPE_PLAYBACK) ); // playback CRC
-			//DEBUG_LOG(("Appended CRC of %8.8X on frame %d\n", m_CRC, m_frame));
+			DEBUG_LOG(("Appended CRC on frame %d: %8.8X\n", m_frame, m_CRC));
 		}
 		else
 		{
 			GameMessage *msg = TheMessageStream->appendMessage( GameMessage::MSG_LOGIC_CRC );
 			msg->appendIntegerArgument( m_CRC );
 			msg->appendBooleanArgument( (TheRecorder && TheRecorder->getMode() == RECORDERMODETYPE_PLAYBACK) ); // playback CRC
-			//DEBUG_LOG(("Appended Playback CRC of %8.8X on frame %d\n", m_CRC, m_frame));
+			DEBUG_LOG(("Appended Playback CRC on frame %d: %8.8X\n", m_frame, m_CRC));
 		}
 	}
 
