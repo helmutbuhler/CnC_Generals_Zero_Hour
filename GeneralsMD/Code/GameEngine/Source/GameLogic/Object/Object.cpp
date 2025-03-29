@@ -3927,25 +3927,6 @@ void Object::crc( Xfer *xfer )
 #endif DEBUG_CRC
 	
 
-#ifdef DEBUG_CRC
-	if (doLogging)
-	{
-		const Matrix3D *mtx = getTransformMatrix();
-		CRCDEBUG_LOG(("CRC of Object %d (%s), owned by player %d, ", m_id, getTemplate()->getName().str(), getControllingPlayer()->getPlayerIndex()));
-		DUMPMATRIX3D(mtx);
-	}
-#endif DEBUG_CRC
-
-
-
-
-
-
-
-
-
-
-
 	xfer->xferUser(&m_id,															sizeof(m_id));
 #ifdef DEBUG_CRC
 	if (doLogging)
