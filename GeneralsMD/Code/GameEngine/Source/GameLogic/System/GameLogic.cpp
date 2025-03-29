@@ -1104,7 +1104,7 @@ void GameLogic::deleteLoadScreen( void )
 // ------------------------------------------------------------------------------------------------
 void GameLogic::startNewGame( Bool loadingSaveGame )
 {
-
+	DEBUG_LOG(("GameLogic::startNewGame!!!!!!!!\n"));
 	#ifdef DUMP_PERF_STATS
 	__int64 startTime64;
 	__int64 endTime64,freq64;
@@ -2542,7 +2542,7 @@ void GameLogic::processCommandList( CommandList *list )
 	m_shouldValidateCRCs = FALSE;
 
 	GameMessage* msg;
-
+	DEBUG_LOG(("GameLogic::processCommandList START\n"));
 	for( msg = list->getFirstMessage(); msg; msg = msg->next() )
 	{
 #ifdef _DEBUG
@@ -2550,6 +2550,7 @@ void GameLogic::processCommandList( CommandList *list )
 #endif
 		logicMessageDispatcher( msg, NULL );
 	}
+	DEBUG_LOG(("GameLogic::processCommandList END\n"));
 
 	if (m_shouldValidateCRCs && !TheNetwork->sawCRCMismatch())
 	{

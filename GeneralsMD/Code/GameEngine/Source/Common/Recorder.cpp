@@ -1022,6 +1022,26 @@ void RecorderClass::handleCRCMessage(UnsignedInt newCRC, Int playerIndex, Bool f
 			TheInGameUI->message("GUI:CRCMismatch");
 			DEBUG_CRASH(("Replay has gone out of sync!  All bets are off!\nInGame:%8.8X Replay:%8.8X\nFrame:%d",
 				playbackCRC, newCRC, TheGameLogic->getFrame()-m_crcInfo->GetQueueSize()-1));
+
+			// dump GameLogic random seed
+			DEBUG_LOG(("GameLogic frame = %d\n", TheGameLogic->getFrame()));
+			DEBUG_LOG(("GetGameLogicRandomSeedCRC() = %d\n", GetGameLogicRandomSeedCRC()));
+
+			// dump CRCs
+			{
+				DEBUG_LOG(("--- GameState Dump ---\n"));
+		#ifdef DEBUG_CRC
+				outputCRCDumpLines();
+		#endif
+				DEBUG_LOG(("------ End Dump ------\n"));
+			}
+			{
+				DEBUG_LOG(("--- DebugInfo Dump ---\n"));
+		#ifdef DEBUG_CRC
+				outputCRCDebugLines();
+		#endif
+				DEBUG_LOG(("------ End Dump ------\n"));
+			}
 		}
 		return;
 	}

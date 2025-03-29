@@ -251,6 +251,8 @@ protected:
 
 	// exists primarily for TransportContain to override
 	virtual void killRidersWhoAreNotFreeToExit() { }
+	
+	virtual void do_debug_crc();
 
 	void pruneDeadWanters();
 

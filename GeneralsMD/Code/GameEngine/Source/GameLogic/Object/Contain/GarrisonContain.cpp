@@ -39,6 +39,7 @@
 #include "Common/ThingFactory.h"
 #include "Common/ThingTemplate.h"
 #include "Common/Xfer.h"
+#include "Common/CRCDebug.h"
 
 #include "GameLogic/AIPathfind.h"
 #include "GameLogic/GameLogic.h"
@@ -1205,6 +1206,10 @@ const Player* GarrisonContain::getApparentControllingPlayer( const Player* obser
 //-------------------------------------------------------------------------------------------------
 void GarrisonContain::recalcApparentControllingPlayer( void )
 {
+	CRCDEBUG_LOG(("GarrisonContain::recalcApparentControllingPlayer oriteam: %d, hideGarrisoned: %d\n",
+			m_originalTeam ? m_originalTeam->getID() : 0,
+			m_hideGarrisonedStateFromNonallies ? 1 : 0));
+
 	//Record original team first time through.
 	if( m_originalTeam == NULL )
 	{
@@ -1920,6 +1925,16 @@ void GarrisonContain::xfer( Xfer *xfer )
 	xfer->xferCoord3D( &m_exitRallyPoint );
 
 }  // end xfer
+
+void GarrisonContain::do_debug_crc()
+{
+	CRCDEBUG_LOG(("GarrisonContain::do_debug_crc of %d (%s), owned by player %d, oriteam: %d, hideGarrisoned: %d\n",
+		getObject()->getID(), getObject()->getTemplate()->getName().str(),
+		getObject()->getControllingPlayer()->getPlayerIndex(),
+		m_originalTeam ? m_originalTeam->getID() : 0,
+		m_hideGarrisonedStateFromNonallies ? 1 : 0));
+}
+
 
 // ------------------------------------------------------------------------------------------------
 /** Load post process */

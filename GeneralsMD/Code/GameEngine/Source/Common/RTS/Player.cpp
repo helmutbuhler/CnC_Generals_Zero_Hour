@@ -1130,6 +1130,9 @@ void Player::becomingLocalPlayer(Bool yes)
 				ContainModuleInterface *contain = object->getContain();
 				if( contain )
 				{
+					CRCDEBUG_LOG(("becomingLocalPlayer: contain->recalcApparentControllingPlayer() Object %d (%s)\n",
+						object->getID(), object->getTemplate()->getName().str()));
+
 					contain->recalcApparentControllingPlayer();
 					TheRadar->removeObject( object );
 					TheRadar->addObject( object );

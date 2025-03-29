@@ -156,6 +156,8 @@ protected:
 	virtual Bool calcBestGarrisonPosition( Coord3D *sourcePos, const Coord3D *targetPos );
 	virtual Bool attemptBestFirePointPosition( Object *source, Weapon *weapon, Object *victim );
 	virtual Bool attemptBestFirePointPosition( Object *source, Weapon *weapon, const Coord3D *targetPos );
+
+	virtual void do_debug_crc();
 		
 	void updateEffects( void );										///< do any effects needed per frame
 	void loadGarrisonPoints( void );							///< load garrison point position data and save for later

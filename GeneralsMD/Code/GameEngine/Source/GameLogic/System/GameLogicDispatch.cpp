@@ -246,6 +246,7 @@ void GameLogic::closeWindows( void )
 // ------------------------------------------------------------------------------------------------
 void GameLogic::clearGameData( Bool showScoreScreen )
 {
+	DEBUG_LOG(("GameLogic::clearGameData\n"));
 	if( !isInGame() )
 	{
 		DEBUG_CRASH(("We tried to clear the game data when we weren't in a game"));
@@ -315,7 +316,9 @@ void GameLogic::prepareNewGame( Int gameMode, GameDifficulty diff, Int rankPoint
 	//Kris: Commented this out, but leaving it around incase it bites us later. I cleaned up the 
 	//      nomenclature. Look for setLoadingMap() and setLoadingSave()
 	//setGameLoading(TRUE);
-
+	
+	DEBUG_LOG(("GameLogic::prepareNewGame!!!!!\n"));
+	
 	TheScriptEngine->setGlobalDifficulty(diff);
 
 	if(!m_background)
@@ -1971,10 +1974,11 @@ void GameLogic::logicMessageDispatcher( GameMessage *msg, void *userData )
 			else if (TheRecorder && TheRecorder->getMode() == RECORDERMODETYPE_PLAYBACK)
 			{
 				UnsignedInt newCRC = msg->getArgument(0)->integer;
-				//DEBUG_LOG(("Saw CRC of %X from player %d.  Our CRC is %X.  Arg count is %d\n",
-					//newCRC, thisPlayer->getPlayerIndex(), getCRC(), msg->getArgumentCount()));
+				Bool fromPlayback = msg->getArgument(1)->boolean;
+				DEBUG_LOG(("Saw CRC of %X from player %d.  Our CRC is %X.  Arg count is %d. fromPlayback: %d.\n",
+					newCRC, thisPlayer->getPlayerIndex(), getCRC(), msg->getArgumentCount(), fromPlayback ? 1 : 0));
 
-				TheRecorder->handleCRCMessage(newCRC, thisPlayer->getPlayerIndex(), (msg->getArgument(1)->boolean));
+				TheRecorder->handleCRCMessage(newCRC, thisPlayer->getPlayerIndex(), fromPlayback);
 			}
 			break;
 

@@ -41,6 +41,7 @@
 #include "Common/RandomValue.h"
 #include "Common/ThingTemplate.h"
 #include "Common/Xfer.h"
+#include "Common/CRCDebug.h"
 
 #include "GameClient/Drawable.h"
 #include "GameClient/InGameUI.h"
@@ -1824,3 +1825,8 @@ void OpenContain::loadPostProcess( void )
 	m_xferContainIDList.clear();
 
 }  // end loadPostProcess
+
+void OpenContain::do_debug_crc()
+{
+	CRCDEBUG_LOG(("OpenContain::do_debug_crc\n"));
+}

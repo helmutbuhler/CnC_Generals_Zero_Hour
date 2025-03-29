@@ -829,10 +829,15 @@ void Object::restoreOriginalTeam()
 //=============================================================================
 void Object::setTeam( Team *team )
 {
+	DEBUG_LOG(("Object %d (%s) set Team: %d\n", getID(), getName().str(), team ? team->getID() : 0));
+
 	// In order to prevent spawning useful units for a player after he dies, we
 	// just assign objects to the neutral player if we try to misbehave.
 	if (team && !team->getControllingPlayer()->isPlayerActive())
+	{
 		team = ThePlayerList->getNeutralPlayer()->getDefaultTeam();
+		DEBUG_LOG(("Object %d (%s) set Team2: %d\n", getID(), getName().str(), team ? team->getID() : 0));
+	}
 
 	setTemporaryTeam(team);
 	m_originalTeamName = m_team ? m_team->getName() : AsciiString::TheEmptyString;
@@ -850,6 +855,8 @@ void Object::setTemporaryTeam( Team *team )
 //=============================================================================
 void Object::setOrRestoreTeam( Team* team, Bool restoring )
 {
+	DEBUG_LOG(("Object %d (%s) setOrRestoreTeam - old team %d, new team %d\n",
+		getID(), getName().str(), m_team ? m_team->getID() : 0, team ? team->getID() : 0));
 	// don't do anything if the team hasn't changed
 	if( m_team == team )
 		return;
@@ -3986,6 +3993,12 @@ void Object::crc( Xfer *xfer )
 
 		CRCDEBUG_LOG(("%s", logString.str()));
 	}
+	ContainModuleInterface *contain = getContain();
+	if (doLogging && contain)
+	{
+		contain->do_debug_crc();
+	}
+
 #endif DEBUG_CRC
 
 	for (Int i=0; i<WEAPONSLOT_COUNT; ++i)
@@ -6120,8 +6133,10 @@ void Object::defect( Team* newTeam, UnsignedInt detectionTime )
 {
 	if ( isContained() ) //@todo (KRIS?) make contained units unselectable, until then... lorenzen 
 	{
+		DEBUG_LOG(("Object %d (%s) defect isContained()\n", getID(), getName().str()));
 		return;
 	}
+	DEBUG_LOG(("Object %d (%s) defect new Team: %d\n", getID(), getName().str(), newTeam->getID()));
 
 	Player *player = getControllingPlayer();
 	if ( !player )

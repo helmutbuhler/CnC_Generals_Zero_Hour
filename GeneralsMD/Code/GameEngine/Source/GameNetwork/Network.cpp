@@ -471,6 +471,12 @@ void Network::GetCommandsFromCommandList() {
 	GameMessage *next = NULL;
 	while (msg != NULL) {
 		next = msg->next();
+		/*if (msg->getType() == GameMessage::MSG_LOGIC_CRC)
+		{
+			UnsignedInt crc = msg->getArgument(0)->integer;
+			(void)crc;
+			DEBUG_LOG(("Sending CRC of %8.8X on frame %d (%d)\n", crc, TheGameLogic->getFrame(), getExecutionFrame()));
+		}*/
 		if (isTransferCommand(msg)) { // Is this something we should be sending to the other players?
 			if (m_localStatus == NETLOCALSTATUS_INGAME) {
 				m_conMgr->sendLocalGameMessage(msg, getExecutionFrame());
