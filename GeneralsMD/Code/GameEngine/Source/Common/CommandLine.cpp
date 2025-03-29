@@ -48,6 +48,8 @@ extern Int DX8Wrapper_PreserveFPU;
 Int TheCRCFirstFrameToLog = -1;
 UnsignedInt TheCRCLastFrameToLog = 0xffffffff;
 Bool g_keepCRCSaves = FALSE;
+Bool g_saveDebugCRCPerFrame = FALSE;
+AsciiString g_saveDebugCRCPerFrameDir;
 Bool g_crcModuleDataFromLogic = FALSE;
 Bool g_crcModuleDataFromClient = FALSE;
 Bool g_verifyClientCRC = FALSE; // verify that GameLogic CRC doesn't change from client
@@ -240,6 +242,22 @@ Int parseKeepCRCSave(char *args[], int argc)
 	g_keepCRCSaves = TRUE;
 #endif
 	return 1;
+}
+
+//=============================================================================
+//=============================================================================
+Int parseSaveDebugCRCPerFrame(char* args[], int num)
+{
+#ifdef DEBUG_CRC
+	if (num > 1)
+	{
+		g_saveDebugCRCPerFrame = TRUE;
+		g_saveDebugCRCPerFrameDir = args[1];
+		if (TheCRCFirstFrameToLog == -1)
+			TheCRCFirstFrameToLog = 0;
+	}
+#endif
+	return 2;
 }
 
 //=============================================================================
@@ -1167,6 +1185,16 @@ static CommandLineParam params[] =
 	{ "-NoInputDisable", parseNoInputDisable },
 #endif
 #ifdef DEBUG_CRC
+	// The following arguments are useful for CRC debugging.
+	// Note that you need to have a debug or internal configuration build in order to use this.
+	// Release configuration also works if RELEASE_DEBUG_LOGGING is defined in Debug.h
+	// Also note that all players need to play in the same configuration, otherwise mismatch will
+	// occur almost immediately.
+	// If you want to play the game and have useful debuginformation in case mismatch orrcurs, I suggest this:
+	// -ignoreAsserts -DebugCRCFromFrame 0 -VerifyClientCRC -LogObjectCRCs -NetCRCInterval 1
+	// After mismatch occurs, you can examine the logfile and also reproduce the crc from the replay with this (and diff that with the log):
+	// -ignoreAsserts -DebugCRCFromFrame xxx -LogObjectCRCs -SaveDebugCRCPerFrame crc
+
 	// After which frame to log crc logging. Call with 0 to log all frames and with -1 to log none (default).
 	{ "-DebugCRCFromFrame", parseDebugCRCFromFrame },
 
@@ -1175,6 +1203,10 @@ static CommandLineParam params[] =
 
 	// Save data involving crc calculation to binary file (This isn't that useful).
 	{ "-KeepCRCSaves", parseKeepCRCSave },
+
+	// Store CRC Debug Logging into a separate file for each frame. Pass the foldername after this. This is useful for replay analysis.
+	{ "-SaveDebugCRCPerFrame", parseSaveDebugCRCPerFrame },
+
 	{ "-CRCLogicModuleData", parseCRCLogicModuleData },
 	{ "-CRCClientModuleData", parseCRCClientModuleData },
 
