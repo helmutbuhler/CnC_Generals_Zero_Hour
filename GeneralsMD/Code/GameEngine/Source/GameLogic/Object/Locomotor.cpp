@@ -117,15 +117,15 @@ static void Vec3Normalize(Vector3& v)
 	//v.Normalize();
 	//float len2 = objCrossGoal.Length2();
 	float len2 = v.Y*v.Y;
-	DUMPREAL(len2);
+	//DUMPREAL(len2);
 	len2 += v.Z*v.Z;
-	DUMPREAL(len2);
+	//DUMPREAL(len2);
 	len2 += v.X*v.X;
-	DUMPREAL(len2);
+	//DUMPREAL(len2);
 	if (len2 != 0.0f) 
 	{
 		float oolen = WWMath::Inv_Sqrt(len2);
-		DUMPREAL(oolen);
+		//DUMPREAL(oolen);
 		v.X *= oolen;
 		v.Y *= oolen;
 		v.Z *= oolen;
@@ -143,7 +143,7 @@ static Real tryToRotateVector3D(
 	Vector3& actualDir
 )
 {
-	DUMPREAL(maxAngle);
+	//DUMPREAL(maxAngle);
 	if (isNearlyZero(maxAngle))
 	{
 		actualDir = inCurDir;
@@ -164,20 +164,20 @@ static Real tryToRotateVector3D(
 	goalDir.Normalize();
 #endif
 
-	DUMPVECTOR3(&curDir);
-	DUMPVECTOR3(&goalDir);
+	//DUMPVECTOR3(&curDir);
+	//DUMPVECTOR3(&goalDir);
 
 	// dot of two unit vectors is cos of angle between them.
 #if SIMULATE_VC6_OPTIMIZATION
 	double cosine = (double)curDir.X*(double)goalDir.X;
-	DUMPREAL((Real)cosine);
+	//DUMPREAL((Real)cosine);
 	cosine += (double)curDir.Y*(double)goalDir.Y;
-	DUMPREAL((Real)cosine);
+	//DUMPREAL((Real)cosine);
 	cosine += (double)curDir.Z*(double)goalDir.Z;
-	DUMPREAL((Real)cosine);
+	//DUMPREAL((Real)cosine);
 	// bound it in case of numerical error
 	double a = clamp(-1.0, cosine, 1.0);
-	DUMPREAL((Real)a);
+	//DUMPREAL((Real)a);
 	Real angleBetween = (Real)ACos(a);
 #else
 	Real cosine = Vector3::Dot_Product(curDir, goalDir);
@@ -185,7 +185,7 @@ static Real tryToRotateVector3D(
 	Real angleBetween = (Real)ACos(clamp(-1.0f, cosine, 1.0f));
 #endif
 
-	DUMPREAL(angleBetween);
+	//DUMPREAL(angleBetween);
 
 	if (maxAngle < 0)
 	{
@@ -216,13 +216,13 @@ static Real tryToRotateVector3D(
 		objCrossGoal.X = (curDir.Y * goalDir.Z - curDir.Z * goalDir.Y);
 		objCrossGoal.Y = (curDir.Z * goalDir.X - curDir.X * goalDir.Z);
 		objCrossGoal.Z = (curDir.X * goalDir.Y - curDir.Y * goalDir.X);
-		DUMPVECTOR3(&objCrossGoal);
+		//DUMPVECTOR3(&objCrossGoal);
 		Vec3Normalize(objCrossGoal);
 #else
 		Vector3::Normalized_Cross_Product(curDir, goalDir, &objCrossGoal);
 #endif
 #endif
-		DUMPVECTOR3(&objCrossGoal);
+		//DUMPVECTOR3(&objCrossGoal);
 
 		angleBetween = maxAngle;
 #if SIMULATE_VC6_OPTIMIZATION
@@ -231,7 +231,7 @@ static Real tryToRotateVector3D(
 #else
 		Matrix3D rotMtx(objCrossGoal, angleBetween);
 #endif
-		DUMPMATRIX3D(&rotMtx);
+		//DUMPMATRIX3D(&rotMtx);
 		actualDir = rotMtx.Rotate_Vector(curDir);
 	}
 	
@@ -241,14 +241,14 @@ static Real tryToRotateVector3D(
 //-------------------------------------------------------------------------------------------------
 static Real tryToOrientInThisDirection3D(Object* obj, Real maxTurnRate, const Vector3& desiredDir)
 {
-	DUMPVECTOR3(&desiredDir);
+	//DUMPVECTOR3(&desiredDir);
 	Vector3 actualDir;
 	Real relAngle = tryToRotateVector3D(maxTurnRate, obj->getTransformMatrix()->Get_X_Vector(), desiredDir, actualDir);
-	DUMPVECTOR3(&actualDir);
+	//DUMPVECTOR3(&actualDir);
 	if (relAngle != 0.0f)
 	{
 		Vector3 objPos(obj->getPosition()->x, obj->getPosition()->y, obj->getPosition()->z);
-		DUMPVECTOR3(&objPos);
+		//DUMPVECTOR3(&objPos);
 
 		Matrix3D newXform;
 		newXform.buildTransformMatrix( objPos, actualDir );
@@ -1618,8 +1618,8 @@ Bool Locomotor::fixInvalidPosition(Object* obj, PhysicsBehavior *physics)
 			}
 		}
 	}
-	DUMPREAL((Real)dx);
-	DUMPREAL((Real)dy);
+	//DUMPREAL((Real)dx);
+	//DUMPREAL((Real)dy);
 
 	if (dx || dy) {
 
@@ -1627,17 +1627,17 @@ Bool Locomotor::fixInvalidPosition(Object* obj, PhysicsBehavior *physics)
 		correction.x = dx*physics->getMass()/5;
 		correction.y = dy*physics->getMass()/5;
 		correction.z = 0;
-		DUMPCOORD3D(&correction);
+		//DUMPCOORD3D(&correction);
 
 		Coord3D correctionNormalized = correction;
 		correctionNormalized.normalize();
-		DUMPCOORD3D(&correctionNormalized);
+		//DUMPCOORD3D(&correctionNormalized);
 
 		Coord3D velocity;
 		// Kill current velocity	in the direction of the correction.
 		velocity = *physics->getVelocity();
 		Real dot = (velocity.x*correctionNormalized.x) + (velocity.y*correctionNormalized.y);
-		DUMPREAL(dot);
+		//DUMPREAL(dot);
 		if (dot>.25f) {
 			// It was already leaving.
 			return false;
@@ -1649,8 +1649,8 @@ Bool Locomotor::fixInvalidPosition(Object* obj, PhysicsBehavior *physics)
 
 		if (dot<0) {
 			dot = sqrt(-dot);
-			DUMPREAL(dot);
-			DUMPREAL(physics->getMass());
+			//DUMPREAL(dot);
+			//DUMPREAL(physics->getMass());
 #if SIMULATE_VC6_OPTIMIZATION
 			correctionNormalized.x = (correctionNormalized.x*dot)*physics->getMass();
 			correctionNormalized.y = (correctionNormalized.y*dot)*physics->getMass();
@@ -1658,7 +1658,7 @@ Bool Locomotor::fixInvalidPosition(Object* obj, PhysicsBehavior *physics)
 			correctionNormalized.x *= dot*physics->getMass();
 			correctionNormalized.y *= dot*physics->getMass();
 #endif
-			DUMPCOORD3D(&correctionNormalized);
+			//DUMPCOORD3D(&correctionNormalized);
 			physics->applyMotiveForce(&correctionNormalized);
 		}
 
@@ -1706,13 +1706,13 @@ void Locomotor::moveTowardsPositionLegs(Object* obj, PhysicsBehavior *physics, c
 	}
 	
 	Real maxAcceleration = getMaxAcceleration( obj->getBodyModule()->getDamageState() );
-	DUMPREAL(maxAcceleration);
+	//DUMPREAL(maxAcceleration);
 
 	// sanity, we cannot use desired speed that is greater than our max speed we are capable of moving at
 	Real maxSpeed = getMaxSpeedForCondition( obj->getBodyModule()->getDamageState() );
 	if( desiredSpeed > maxSpeed )
 		desiredSpeed = maxSpeed;
-	DUMPREAL(maxSpeed);
+	//DUMPREAL(maxSpeed);
 
 	// Locomotion for infantry.
 	//
@@ -1723,9 +1723,9 @@ void Locomotor::moveTowardsPositionLegs(Object* obj, PhysicsBehavior *physics, c
 //	Real relAngle = ThePartitionManager->getRelativeAngle2D( obj, &goalPos );
 //	Real desiredAngle = angle + relAngle;
 	Real desiredAngle = atan2(goalPos.y - obj->getPosition()->y, goalPos.x - obj->getPosition()->x);
-	DUMPREAL(actualSpeed);
-	DUMPREAL(angle);
-	DUMPREAL(desiredAngle);
+	//DUMPREAL(actualSpeed);
+	//DUMPREAL(angle);
+	//DUMPREAL(desiredAngle);
 
 	if (m_template->m_wanderWidthFactor != 0.0f) {
 		Real angleLimit = PI/8 * m_template->m_wanderWidthFactor;
@@ -1743,10 +1743,10 @@ void Locomotor::moveTowardsPositionLegs(Object* obj, PhysicsBehavior *physics, c
 		}
 		desiredAngle = normalizeAngle(desiredAngle+m_angleOffset);
 	}
-	DUMPREAL(desiredAngle);
+	//DUMPREAL(desiredAngle);
 	
 	Real relAngle = stdAngleDiff(desiredAngle, angle);
-	DUMPREAL(relAngle);
+	//DUMPREAL(relAngle);
 	locoUpdate_moveTowardsAngle(obj, desiredAngle);
 
 	//
@@ -1758,13 +1758,13 @@ void Locomotor::moveTowardsPositionLegs(Object* obj, PhysicsBehavior *physics, c
 #else
 	Real angleCoeff = (Real)fabs( relAngle ) / (QUARTERPI);
 #endif
-	DUMPREAL(angleCoeff);
+	//DUMPREAL(angleCoeff);
 	if (angleCoeff > 1.0f)
 		angleCoeff = 1.0;
-	DUMPREAL(angleCoeff);
+	//DUMPREAL(angleCoeff);
 
 	Real goalSpeed = (1.0f - angleCoeff) * desiredSpeed;
-	DUMPREAL(goalSpeed);
+	//DUMPREAL(goalSpeed);
 
 	//Real slowDownDist = (actualSpeed - m_template->m_minSpeed) / getBraking();
 	Real slowDownDist = calcSlowDownDist(actualSpeed, m_template->m_minSpeed, getBraking());
@@ -1772,7 +1772,7 @@ void Locomotor::moveTowardsPositionLegs(Object* obj, PhysicsBehavior *physics, c
 	{
 		goalSpeed = m_template->m_minSpeed;
 	}
-	DUMPREAL(goalSpeed);
+	//DUMPREAL(goalSpeed);
 
 
 
@@ -1780,15 +1780,15 @@ void Locomotor::moveTowardsPositionLegs(Object* obj, PhysicsBehavior *physics, c
 	// Maintain goal speed
 	//
 	Real speedDelta = goalSpeed - actualSpeed;
-	DUMPREAL(speedDelta);
+	//DUMPREAL(speedDelta);
 	if (speedDelta != 0.0f)
 	{
 		Real mass = physics->getMass();
 		Real acceleration = (speedDelta > 0.0f) ? maxAcceleration : -getBraking();
 		Real accelForce = mass * acceleration;
-		DUMPREAL(mass);
-		DUMPREAL(acceleration);
-		DUMPREAL(accelForce);
+		//DUMPREAL(mass);
+		//DUMPREAL(acceleration);
+		//DUMPREAL(accelForce);
 
 		/*
 			don't accelerate/brake more than necessary. do a quick calc to 
@@ -1797,16 +1797,16 @@ void Locomotor::moveTowardsPositionLegs(Object* obj, PhysicsBehavior *physics, c
 		Real maxForceNeeded = mass * speedDelta;
 		if (fabs(accelForce) > fabs(maxForceNeeded))
 			accelForce = maxForceNeeded;
-		DUMPREAL(accelForce);
+		//DUMPREAL(accelForce);
 
 		const Coord3D *dir = obj->getUnitDirectionVector2D();
-		DUMPCOORD3D(dir);
+		//DUMPCOORD3D(dir);
 
 		Coord3D force;
 		force.x = accelForce * dir->x;
 		force.y = accelForce * dir->y;
 		force.z = 0.0f;
-		DUMPCOORD3D(&force);
+		//DUMPCOORD3D(&force);
 
 		
 
@@ -2084,7 +2084,7 @@ void Locomotor::moveTowardsPositionThrust(Object* obj, PhysicsBehavior *physics,
 	{
 		const Coord3D* veltmp = physics->getVelocity();
 		Vector3 vel(veltmp->x, veltmp->y, veltmp->z);
-		DUMPVECTOR3(&vel);
+		//DUMPVECTOR3(&vel);
 		Bool adjust = true;
 		if( obj->getStatusBits().test( OBJECT_STATUS_BRAKING ) ) 
 		{
@@ -2304,15 +2304,15 @@ PhysicsTurningType Locomotor::rotateObjAroundLocoPivot(Object* obj, const Coord3
 		Matrix3D tmp(1);
 		tmp.Translate(turnPos.x, turnPos.y, 0);
 		CRCDEBUG_LOG(("Locomotor::rotateObjAroundLocoPivot 0x%08X", AS_INT(amount)));
-		DUMPMATRIX3D(&tmp);
+		//DUMPMATRIX3D(&tmp);
 		tmp.In_Place_Pre_Rotate_Z(amount);
-		DUMPMATRIX3D(&tmp);
+		//DUMPMATRIX3D(&tmp);
 		tmp.Translate(-turnPos.x, -turnPos.y, 0);
-		DUMPMATRIX3D(&tmp);
-		DUMPMATRIX3D(&*obj->getTransformMatrix());
+		//DUMPMATRIX3D(&tmp);
+		//DUMPMATRIX3D(&*obj->getTransformMatrix());
 
 		mtx.mul(tmp, *obj->getTransformMatrix());
-		DUMPMATRIX3D(&mtx);
+		//DUMPMATRIX3D(&mtx);
 
 		obj->setTransformMatrix(&mtx);
 	}
