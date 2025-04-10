@@ -233,7 +233,7 @@ static void doLogOutput(const char *buffer)
 	}
 
 	// Uncomment this to show normal logging stuff in the crc logging.
-	//addCRCDebugLineNoCounter(buffer);
+	//addCRCDebugLineNoCounter("%s", buffer);
 }
 #endif
 

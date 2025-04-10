@@ -42,11 +42,12 @@
 #ifdef DEBUG_CRC
 
 static const Int MaxStrings = 64000;
+static const Int MaxStringLen = 1024;
 
-static char DebugStrings[MaxStrings][1024];
+static char DebugStrings[MaxStrings][MaxStringLen];
 static Int nextDebugString = 0;
 static Int numDebugStrings = 0;
-//static char DumpStrings[MaxStrings][1024];
+//static char DumpStrings[MaxStrings][MaxStringLen];
 //static Int nextDumpString = 0;
 //static Int numDumpStrings = 0;
 
@@ -141,7 +142,7 @@ void CRCDebugStartNewGame()
 	lastCRCDebugIndex = 0;
 }
 
-void outputCRCDebugLinesPerFrame()
+static void outputCRCDebugLinesPerFrame()
 {
 	if (!g_saveDebugCRCPerFrame || numDebugStrings == 0)
 		return;
@@ -152,18 +153,19 @@ void outputCRCDebugLinesPerFrame()
 	int end = nextDebugString;
 	if (numDebugStrings >= MaxStrings)
 		start = nextDebugString - MaxStrings;
+	nextDebugString = 0;
+	numDebugStrings = 0;
+	if (!fp)
+		return;
 
 	for (Int i=start; i<end; ++i)
 	{
 		const char *line = DebugStrings[ (i + MaxStrings) % MaxStrings ];
 		//DEBUG_LOG(("%s\n", line));
-		if (fp) fprintf(fp, "%s\n", line);
+		fprintf(fp, "%s\n", line);
 	}
 
-	nextDebugString = 0;
-	numDebugStrings = 0;
-
-	if (fp) fclose(fp);
+	fclose(fp);
 }
 
 void outputCRCDumpLines( void )
@@ -187,87 +189,63 @@ static AsciiString getFname(AsciiString path)
 	return path.reverseFind('\\') + 1;
 }
 
-void addCRCDebugLine(const char *fmt, ...)
+static void addCRCDebugLineInternal(bool count, const char *fmt, va_list args)
 {
-	if (TheGameLogic == NULL)// || inCRCGen /*|| !TheGameLogic->isInGameLogicUpdate()*/)
+	if (TheGameLogic == NULL || !(IS_FRAME_OK_TO_LOG))
 		return;
 
-	if (IS_FRAME_OK_TO_LOG)
+	if (lastCRCDebugFrame != TheGameLogic->getFrame())
 	{
-
-		if (lastCRCDebugFrame != TheGameLogic->getFrame())
-		{
-			outputCRCDebugLinesPerFrame();
-			lastCRCDebugFrame = TheGameLogic->getFrame();
-			lastCRCDebugIndex = 0;
-		}
-
-		sprintf(DebugStrings[nextDebugString], "%d:%05d ",  TheGameLogic->getFrame(), lastCRCDebugIndex++);
-		//DebugStrings[nextDebugString][0] = 0;
-		Int len = strlen(DebugStrings[nextDebugString]);
-
-		va_list va;
-		va_start( va, fmt );
-		_vsnprintf(DebugStrings[nextDebugString]+len, 1024-len, fmt, va );
-		DebugStrings[nextDebugString][1023] = 0;
-		va_end( va );
-
-		char *tmp = DebugStrings[nextDebugString];
-		while (tmp && *tmp)
-		{
-			if (*tmp == '\r' || *tmp == '\n')
-			{
-				*tmp = ' ';
-			}
-			++tmp;
-		}
-
-		//DEBUG_LOG(("%s\n", DebugStrings[nextDebugString]));
-
-		++nextDebugString;
-		++numDebugStrings;
-		if (nextDebugString == MaxStrings)
-			nextDebugString = 0;
-
+		outputCRCDebugLinesPerFrame();
+		lastCRCDebugFrame = TheGameLogic->getFrame();
+		lastCRCDebugIndex = 0;
 	}
+
+	if (count)
+		sprintf(DebugStrings[nextDebugString], "%d:%05d ", TheGameLogic->getFrame(), lastCRCDebugIndex++);
+	else
+		DebugStrings[nextDebugString][0] = 0;
+	Int len = strlen(DebugStrings[nextDebugString]);
+
+	_vsnprintf(DebugStrings[nextDebugString]+len, MaxStringLen-len, fmt, args);
+	DebugStrings[nextDebugString][MaxStringLen-1] = 0;
+
+	char *tmp = DebugStrings[nextDebugString];
+	while (tmp && *tmp)
+	{
+		if (*tmp == '\r' || *tmp == '\n')
+		{
+			*tmp = ' ';
+		}
+		++tmp;
+	}
+
+	//DEBUG_LOG(("%s\n", DebugStrings[nextDebugString]));
+
+	++nextDebugString;
+	++numDebugStrings;
+	if (nextDebugString == MaxStrings)
+		nextDebugString = 0;
 }
 
-void addCRCDebugLineNoCounter(const char *str)
+void addCRCDebugLine(const char *fmt, ...)
 {
+    va_list args;
+    va_start(args, fmt);
+    addCRCDebugLineInternal(true, fmt, args);
+    va_end(args);
+}
+
+void addCRCDebugLineNoCounter(const char *fmt, ...)
+{
+	// TheSuperHackers @feature helmutbuhler 04/09/2025
 	// This version doesn't increase the lastCRCDebugIndex counter
 	// and can be used for logging lines that don't necessarily match up on all peers.
-	// (Otherwise the numbers would not longer match up and the diff would be very difficult to read)
-	if (TheGameLogic == NULL)// || inCRCGen /*|| !TheGameLogic->isInGameLogicUpdate()*/)
-		return;
-
-	if (IS_FRAME_OK_TO_LOG)
-	{
-
-		if (lastCRCDebugFrame != TheGameLogic->getFrame())
-		{
-			outputCRCDebugLinesPerFrame();
-			lastCRCDebugFrame = TheGameLogic->getFrame();
-			lastCRCDebugIndex = 0;
-		}
-
-		strncpy(DebugStrings[nextDebugString], str, 1024);
-		DebugStrings[nextDebugString][1023] = 0;
-
-		char *tmp = DebugStrings[nextDebugString];
-		while (tmp && *tmp)
-		{
-			if (*tmp == '\r' || *tmp == '\n')
-			{
-				*tmp = ' ';
-			}
-			++tmp;
-		}
-
-		++nextDebugString;
-		++numDebugStrings;
-		if (nextDebugString == MaxStrings)
-			nextDebugString = 0;
-	}
+	// (Otherwise the numbers would no longer match up and the diff would be very difficult to read)
+    va_list args;
+    va_start(args, fmt);
+    addCRCDebugLineInternal(false, fmt, args);
+    va_end(args);
 }
 
 void addCRCGenLine(const char *fmt, ...)
@@ -275,12 +253,12 @@ void addCRCGenLine(const char *fmt, ...)
 	if (!(IS_FRAME_OK_TO_LOG))
 		return;
 
-	static char buf[1024];
+	static char buf[MaxStringLen];
 	va_list va;
 	va_start( va, fmt );
-	_vsnprintf(buf, 1024, fmt, va );
+	_vsnprintf(buf, MaxStringLen, fmt, va );
 	va_end( va );
-	buf[1023] = 0;
+	buf[MaxStringLen-1] = 0;
 	addCRCDebugLine("%s", buf);
 
 	//DEBUG_LOG(("%s", buf));
@@ -291,8 +269,8 @@ void addCRCDumpLine(const char *fmt, ...)
 	/*
 	va_list va;
 	va_start( va, fmt );
-	_vsnprintf(DumpStrings[nextDumpString], 1024, fmt, va );
-	DumpStrings[nextDumpString][1023] = 0;
+	_vsnprintf(DumpStrings[nextDumpString], MaxStringLen, fmt, va );
+	DumpStrings[nextDumpString][MaxStringLen-1] = 0;
 	va_end( va );
 
 	++nextDumpString;

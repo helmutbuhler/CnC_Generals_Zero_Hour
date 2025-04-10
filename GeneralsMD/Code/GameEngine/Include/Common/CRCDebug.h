@@ -72,7 +72,7 @@
 	void outputCRCDumpLines( void );
 
 	void addCRCDebugLine(const char *fmt, ...);
-	void addCRCDebugLineNoCounter(const char *str);
+	void addCRCDebugLineNoCounter(const char *fmt, ...);
 	void addCRCDumpLine(const char *fmt, ...);
 	void addCRCGenLine(const char *fmt, ...);
 	#define CRCDEBUG_LOG(x) addCRCDebugLine x
