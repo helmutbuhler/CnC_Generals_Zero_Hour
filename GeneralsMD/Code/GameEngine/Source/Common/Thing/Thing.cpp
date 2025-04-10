@@ -262,9 +262,9 @@ void Thing::setOrientation( Real angle )
 	
 void Thing::myReactToTransformChange(const Matrix3D* oldMtx, const Coord3D* oldPos, Real oldAngle)
 {
-	CRCDEBUG_LOG(("Matrix of Thing %s changed. Old angle 0x%08X. New angle 0x%08X\n",
-		getTemplate()->getName().str(), AS_INT(oldAngle), AS_INT(m_cachedAngle)));
-	DUMPMATRIX3D(&m_transform);
+	//CRCDEBUG_LOG(("Matrix of Thing %s changed. Old angle 0x%08X. New angle 0x%08X\n",
+	//	getTemplate()->getName().str(), AS_INT(oldAngle), AS_INT(m_cachedAngle)));
+	//DUMPMATRIX3D(&m_transform);
 	reactToTransformChange(oldMtx, oldPos, oldAngle);
 }
 extern Vector3 g_dir0;
@@ -289,14 +289,14 @@ void Thing::setTransformMatrix( const Matrix3D *mx )
 	m_cachedAngle = m_transform.Get_Z_Rotation();
 	m_cacheFlags = 0;
 
-	DUMPVECTOR3(&g_dir0);
+	/*DUMPVECTOR3(&g_dir0);
 	DUMPVECTOR3(&g_dir1);
 	DUMPVECTOR3(&g_dir2);
 	DUMPVECTOR3(&g_dir3);
 	DUMPVECTOR3(&g_dir4);
 	CRCDEBUG_LOG(("Set Matrix of Thing %s. Old angle 0x%08X. New angle 0x%08X\n",
 		getTemplate()->getName().str(), AS_INT(oldAngle), AS_INT(m_cachedAngle)));
-	DUMPMATRIX3D(mx);
+	DUMPMATRIX3D(mx);*/
 
 	myReactToTransformChange(&oldMtx, &oldPos, oldAngle);
 	DEBUG_ASSERTCRASH(!(_isnan(getPosition()->x) || _isnan(getPosition()->y) || _isnan(getPosition()->z)), ("Drawable/Object position NAN! '%s'\n", m_template->getName().str() ));
@@ -384,9 +384,9 @@ void Thing::convertBonePosToWorldPos(const Coord3D* bonePos, const Matrix3D* bon
 #else
 		worldTransform->mul(m_transform, *boneTransform);
 #endif
-		DUMPMATRIX3D(&m_transform);
 		DUMPMATRIX3D(boneTransform);
 	}
+	DUMPMATRIX3D(&m_transform);
 	if (worldPos)
 	{
 		Vector3 vector;
