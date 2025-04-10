@@ -246,10 +246,10 @@ Int parseKeepCRCSave(char *args[], int argc)
 
 //=============================================================================
 //=============================================================================
-Int parseSaveDebugCRCPerFrame(char* args[], int num)
+Int parseSaveDebugCRCPerFrame(char* args[], int argc)
 {
 #ifdef DEBUG_CRC
-	if (num > 1)
+	if (argc > 1)
 	{
 		g_saveDebugCRCPerFrame = TRUE;
 		g_saveDebugCRCPerFrameDir = args[1];
@@ -1185,12 +1185,13 @@ static CommandLineParam params[] =
 	{ "-NoInputDisable", parseNoInputDisable },
 #endif
 #ifdef DEBUG_CRC
+	// TheSuperHackers @info helmutbuhler 04/09/2025
 	// The following arguments are useful for CRC debugging.
 	// Note that you need to have a debug or internal configuration build in order to use this.
 	// Release configuration also works if RELEASE_DEBUG_LOGGING is defined in Debug.h
 	// Also note that all players need to play in the same configuration, otherwise mismatch will
 	// occur almost immediately.
-	// If you want to play the game and have useful debuginformation in case mismatch orrcurs, I suggest this:
+	// Try this if you want to play the game and have useful debug information in case mismatch occurs:
 	// -ignoreAsserts -DebugCRCFromFrame 0 -VerifyClientCRC -LogObjectCRCs -NetCRCInterval 1
 	// After mismatch occurs, you can examine the logfile and also reproduce the crc from the replay with this (and diff that with the log):
 	// -ignoreAsserts -DebugCRCFromFrame xxx -LogObjectCRCs -SaveDebugCRCPerFrame crc
@@ -1201,16 +1202,22 @@ static CommandLineParam params[] =
 	// Last frame to log
 	{ "-DebugCRCUntilFrame", parseDebugCRCUntilFrame },
 
-	// Save data involving crc calculation to binary file (This isn't that useful).
+	// Save data involving CRC calculation to a binary file. (This isn't that useful.)
 	{ "-KeepCRCSaves", parseKeepCRCSave },
 
-	// Store CRC Debug Logging into a separate file for each frame. Pass the foldername after this. This is useful for replay analysis.
+	// TheSuperHackers @feature helmutbuhler 04/09/2025
+	// Store CRC Debug Logging into a separate file for each frame.
+	// Pass the foldername after this where those files are to be stored.
+	// This is useful for replay analysis.
+	// Note that the passed folder is deleted if it already exists for every started game.
 	{ "-SaveDebugCRCPerFrame", parseSaveDebugCRCPerFrame },
 
 	{ "-CRCLogicModuleData", parseCRCLogicModuleData },
 	{ "-CRCClientModuleData", parseCRCClientModuleData },
 
-	// Verify that Game Logic CRC doesn't change during client update. Client update is only for visuals and not supposed to change the crc. (This is implemented using CRCVerification class in GameEngine::update)
+	// Verify that Game Logic CRC doesn't change during client update.
+	// Client update is only for visuals and not supposed to change the crc.
+	// (This is implemented using CRCVerification class in GameEngine::update)
 	{ "-VerifyClientCRC", parseVerifyClientCRC },
 
 	// Write out binary crc data pre and post client update to "clientPre.crc" and "clientPost.crc"
@@ -1219,7 +1226,8 @@ static CommandLineParam params[] =
 	// Log CRC of Objects and Weapons (See Object::crc and Weapon::crc)
 	{ "-LogObjectCRCs", parseLogObjectCRCs },
 
-	// Number of frames between each CRC check between all players in multiplayer games (if not all crcs are equal, mismatch occurs).
+	// Number of frames between each CRC check between all players in multiplayer games
+	// (if not all crcs are equal, mismatch occurs).
 	{ "-NetCRCInterval", parseNetCRCInterval },
 
 	// Number of frames between each CRC that is written to replay files in singleplayer games.
