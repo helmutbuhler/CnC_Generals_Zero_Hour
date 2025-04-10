@@ -1112,6 +1112,15 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	GetPrecisionTimer(&startTime64);
 	#endif
 
+	// reset the frame counter
+	m_frame = 0;
+
+#ifdef DEBUG_CRC
+	// TheSuperHackers @info helmutbuhler 04/09/2025
+	// Let CRC Logger know that a new game was started.
+	CRCDebugStartNewGame();
+#endif
+
 	setLoadingMap( TRUE );
 
 	if( loadingSaveGame == FALSE )
@@ -4029,6 +4038,7 @@ UnsignedInt GameLogic::getCRC( Int mode, AsciiString deepCRCFileName )
 	{
 		AsciiString crcName;
 #ifdef DEBUG_CRC
+		// TheSuperHackers @info helmutbuhler 04/09/2025
 		// This allows you to save the binary data that is involved in the crc calculation
 		// to a binary file per frame.
 		// This was apparently used early in development and isn't that useful, because diffing
