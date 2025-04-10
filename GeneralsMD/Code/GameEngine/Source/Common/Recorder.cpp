@@ -1637,7 +1637,7 @@ RecorderModeType RecorderClass::getMode() {
 void RecorderClass::initControls()
 {
 	NameKeyType parentReplayControlID = TheNameKeyGenerator->nameToKey( AsciiString("ReplayControl.wnd:ParentReplayControl") );
-	GameWindow *parentReplayControl = TheWindowManager->winGetWindowFromId( NULL, parentReplayControlID );
+	GameWindow *parentReplayControl = TheWindowManager ? TheWindowManager->winGetWindowFromId( NULL, parentReplayControlID ) : NULL;
 
 	Bool show = (getMode() != RECORDERMODETYPE_PLAYBACK);
 	if (parentReplayControl)

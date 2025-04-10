@@ -235,11 +235,13 @@ void GameLogic::closeWindows( void )
 	
 	// hide the options menu
 	NameKeyType buttonID = TheNameKeyGenerator->nameToKey( "OptionsMenu.wnd:ButtonBack" );
-	GameWindow *button = TheWindowManager->winGetWindowFromId( NULL, buttonID );
-	GameWindow *window = TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey("OptionsMenu.wnd:OptionsMenuParent") );
-	if(window)
-		TheWindowManager->winSendSystemMsg( window, GBM_SELECTED, 
-																			(WindowMsgData)button, buttonID );
+	if (TheWindowManager)
+	{
+		GameWindow *button = TheWindowManager->winGetWindowFromId( NULL, buttonID );
+		GameWindow *window = TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey("OptionsMenu.wnd:OptionsMenuParent") );
+		if(window)
+			TheWindowManager->winSendSystemMsg( window, GBM_SELECTED, (WindowMsgData)button, buttonID );
+	}
 }
 
 // ------------------------------------------------------------------------------------------------

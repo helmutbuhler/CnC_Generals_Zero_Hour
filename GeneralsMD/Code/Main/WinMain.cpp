@@ -1009,9 +1009,11 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		gLoadScreenBitmap = (HBITMAP)LoadImage(hInstance, "Install_Final.bmp", IMAGE_BITMAP, 0, 0, LR_SHARED|LR_LOADFROMFILE);
 #endif
 
+		//TheWritableGlobalData->m_headless = true;
+		Bool headless = true;
 
 		// register windows class and create application window
-		if( initializeAppWindows( hInstance, nCmdShow, ApplicationIsWindowed) == false )
+		if(!headless && initializeAppWindows(hInstance, nCmdShow, ApplicationIsWindowed) == false)
 			return 0;
 
 		if (gLoadScreenBitmap!=NULL) {

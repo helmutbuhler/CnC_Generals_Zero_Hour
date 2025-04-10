@@ -902,6 +902,9 @@ RenderObjClass * W3DAssetManager::Create_Render_Obj(
 */
 int W3DAssetManager::Recolor_Asset(RenderObjClass *robj, const int color)
 {
+	if (TheGlobalData->m_headless)
+		return 0;
+
 	switch (robj->Class_ID())	{	
 	case RenderObjClass::CLASSID_MESH:
 		return Recolor_Mesh(robj,color);
@@ -921,6 +924,8 @@ int W3DAssetManager::Recolor_Mesh(RenderObjClass *robj, const int color)
 	int i;
 	int didRecolor=0;
 	const char *meshName;
+	if (TheGlobalData->m_headless)
+		return 0;
 
 	MeshClass *mesh=(MeshClass*) robj;	
 	MeshModelClass * model = mesh->Get_Model();
@@ -964,6 +969,8 @@ int W3DAssetManager::Recolor_Mesh(RenderObjClass *robj, const int color)
 int W3DAssetManager::Recolor_HLOD(RenderObjClass *robj, const int color)
 {
 	int didRecolor=0;
+	if (TheGlobalData->m_headless)
+		return 0;
 
 	int num_sub = robj->Get_Num_Sub_Objects();
 	for(int i = 0; i < num_sub; i++) {
