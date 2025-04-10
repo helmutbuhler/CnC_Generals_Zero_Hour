@@ -2783,7 +2783,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
   {
     averageTimeToUpdate = ((averageTimeToUpdate * updateSamples) + timeToUpdate) / (updateSamples + 1.0f);
     updateSamples++;
-  	DEBUG_LOG(("computing...: %f, \n", averageTimeToUpdate));
+  	//DEBUG_LOG(("computing...: %f, \n", averageTimeToUpdate));
   }
   else if ( updateSamples == 400 )
   {
@@ -7460,7 +7460,7 @@ Path *Pathfinder::internal_findHierarchicalPath( Bool isHuman, const LocomotorSu
 {
 	//CRCDEBUG_LOG(("Pathfinder::findGroundPath()\n"));
 #if defined _DEBUG || defined _INTERNAL
-	Int startTimeMS = ::GetTickCount();
+	//Int startTimeMS = ::GetTickCount();
 #endif
 	
 	if (rawTo->x == 0.0f && rawTo->y == 0.0f) {
@@ -7957,7 +7957,7 @@ Path *Pathfinder::internal_findHierarchicalPath( Bool isHuman, const LocomotorSu
 
 	DEBUG_LOG(("%d ", TheGameLogic->getFrame()));
 	DEBUG_LOG(("FindHierarchicalPath failed from (%f,%f) to (%f,%f)\n", from->x, from->y, to->x, to->y));
-	DEBUG_LOG(("time %f\n", (::GetTickCount()-startTimeMS)/1000.0f));
+	//DEBUG_LOG(("time %f\n", (::GetTickCount()-startTimeMS)/1000.0f));
 #endif
 #ifdef DUMP_PERF_STATS
 	TheGameLogic->incrementOverallFailedPathfinds();
