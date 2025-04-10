@@ -1619,32 +1619,3 @@ void GameClient::crc( Xfer *xfer )
 {
 
 }  // end crc
-
-/*
-g_headless disable:
-GameEngine:
-	TheGameClient
-		TheKeyboard = NULL
-		TheMouse = NULL
-		TheDisplay is partially disabled:
-			m_3DInterfaceScene = NULL
-			m_2DScene = NULL
-			m_3DScene = NULL
-			m_assetManager remains!
-		TheWindowManager = NULL
-		TheIMEManager = NULL
-		TheTerrainVisual is partially disabled:
-			TheTerrainTracksRenderObjClassSystem = NULL
-			TheW3DShadowManager = NULL
-			TheWaterRenderObj = NULL
-			TheSmudgeManager = NULL
-			TheTerrainRenderObject is partially disabled:
-				m_treeBuffer = NULL
-				m_propBuffer = NULL
-				m_bibBuffer = NULL
-				m_bridgeBuffer = NULL
-				m_waypointBuffer = NULL
-				m_roadBuffer = NULL
-				m_shroud = NULL
-	TheRadar set to RadarHeadless
-*/
