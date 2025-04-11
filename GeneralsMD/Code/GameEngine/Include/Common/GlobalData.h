@@ -102,7 +102,7 @@ public:
 	Int	m_chipSetType;	///<See W3DShaderManager::ChipsetType for options
 
 	// TheSuperHackers @feature helmutbuhler 04/11/2025
-	// Run game without graphics, input or audio
+	// Run game without graphics, input or audio.
 	Bool m_headless;
 	
 	Bool m_windowed;
