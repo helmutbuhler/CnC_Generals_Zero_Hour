@@ -765,8 +765,7 @@ static Bool initializeAppWindows( HINSTANCE hInstance, Int nCmdShow, Bool runWin
 	ShowWindow( hWnd, nCmdShow );
 	UpdateWindow( hWnd );
 
-	// save our application instance and window handle for future use
-	ApplicationHInstance = hInstance;
+	// save our application window handle for future use
 	ApplicationHWnd = hWnd;
 	gInitializing = false;
 	if (!runWindowed) {
@@ -1020,6 +1019,9 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// register windows class and create application window
 		if(!headless && initializeAppWindows(hInstance, nCmdShow, ApplicationIsWindowed) == false)
 			return 0;
+		
+		// save our application instance for future use
+		ApplicationHInstance = hInstance;
 
 		if (gLoadScreenBitmap!=NULL) {
 			::DeleteObject(gLoadScreenBitmap);

@@ -268,7 +268,7 @@ void GameLogic::clearGameData( Bool showScoreScreen )
 	TheScriptActions->closeWindows(FALSE); // Close victory or defeat windows.
 
 	Bool shellGame = FALSE;
-	if ((!isInShellGame() || !isInGame()) && showScoreScreen)
+	if ((!isInShellGame() || !isInGame()) && showScoreScreen && !TheGlobalData->m_headless)
 	{
 		shellGame = TRUE;
 		TheTransitionHandler->setGroup("FadeWholeScreen");
@@ -302,7 +302,8 @@ void GameLogic::clearGameData( Bool showScoreScreen )
 	HideControlBar();
 	closeWindows();
 
-	TheMouse->setVisibility(TRUE);
+	if (TheMouse != NULL)
+		TheMouse->setVisibility(TRUE);
 
 	if(m_background)
 	{

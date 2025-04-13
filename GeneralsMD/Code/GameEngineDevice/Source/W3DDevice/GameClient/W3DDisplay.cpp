@@ -457,12 +457,15 @@ W3DDisplay::~W3DDisplay()
 
 	// shutdown
 	Debug_Statistics::Shutdown_Statistics();
-	W3DShaderManager::shutdown();
+	if (!TheGlobalData->m_headless)
+		W3DShaderManager::shutdown();
 	m_assetManager->Free_Assets();
 	delete m_assetManager;
-	WW3D::Shutdown();
+	if (!TheGlobalData->m_headless)
+		WW3D::Shutdown();
 	WWMath::Shutdown();
-	DX8WebBrowser::Shutdown();
+	if (!TheGlobalData->m_headless)
+		DX8WebBrowser::Shutdown();
 	delete TheW3DFileSystem;
 	TheW3DFileSystem = NULL;
 
