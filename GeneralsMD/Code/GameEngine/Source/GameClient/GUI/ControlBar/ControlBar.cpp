@@ -1651,7 +1651,9 @@ const Image *ControlBar::getStarImage(void )
 	else
 		m_lastFlashedAtPointValue = ThePlayerList->getLocalPlayer()->getSciencePurchasePoints();
 	
-	GameWindow *win= TheWindowManager ? TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey( "ControlBar.wnd:ButtonGeneral" ) ) : NULL;
+	if (TheWindowManager == NULL)
+		return NULL;
+	GameWindow *win= TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey( "ControlBar.wnd:ButtonGeneral" ) );
 	if(!win)
 		return NULL;
 	if(!m_genStarFlash)
