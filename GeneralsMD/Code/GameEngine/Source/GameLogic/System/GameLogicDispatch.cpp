@@ -272,8 +272,16 @@ void GameLogic::clearGameData( Bool showScoreScreen )
 	{
 		shellGame = TRUE;
 		TheTransitionHandler->setGroup("FadeWholeScreen");
-		TheShell->push("Menus/ScoreScreen.wnd");
-		TheShell->showShell(FALSE); // by passing in false, we don't want to run the Init on the shell screen we just pushed on
+		if (TheRecorder && TheRecorder->getMode() == RECORDERMODETYPE_SIMULATION_PLAYBACK)
+		{
+			// Get back directly to replay menu after simulation is complete
+			TheShell->showShell(TRUE);
+		}
+		else
+		{
+			TheShell->push("Menus/ScoreScreen.wnd");
+			TheShell->showShell(FALSE); // by passing in false, we don't want to run the Init on the shell screen we just pushed on
+		}
 		TheTransitionHandler->reverse("FadeWholeScreen");
 
 		void FixupScoreScreenMovieWindow( void );
@@ -1830,7 +1838,7 @@ void GameLogic::logicMessageDispatcher( GameMessage *msg, void *userData )
 		// --------------------------------------------------------------------------------------------
 		case GameMessage::MSG_SET_REPLAY_CAMERA:
 		{
-			if (TheRecorder->getMode() == RECORDERMODETYPE_PLAYBACK && TheGlobalData->m_useCameraInReplay && TheControlBar->getObserverLookAtPlayer() == thisPlayer)
+			if (TheRecorder->isPlaybackMode() && TheGlobalData->m_useCameraInReplay && TheControlBar->getObserverLookAtPlayer() == thisPlayer)
 			{
 				if (TheTacticalView->isCameraMovementFinished())
 				{
@@ -1967,7 +1975,7 @@ void GameLogic::logicMessageDispatcher( GameMessage *msg, void *userData )
 					//thisPlayer->getPlayerDisplayName().str(), m_frame));
 				m_cachedCRCs[msg->getPlayerIndex()] = newCRC; // to mask problem: = (oldCRC < newCRC)?newCRC:oldCRC;
 			}
-			else if (TheRecorder && TheRecorder->getMode() == RECORDERMODETYPE_PLAYBACK)
+			else if (TheRecorder && TheRecorder->isPlaybackMode())
 			{
 				UnsignedInt newCRC = msg->getArgument(0)->integer;
 				Bool fromPlayback = msg->getArgument(1)->boolean;
@@ -1998,7 +2006,7 @@ void GameLogic::logicMessageDispatcher( GameMessage *msg, void *userData )
 	}  // end switch
 
 	/**/ /// @todo: multiplayer semantics
-	if (currentlySelectedGroup && TheRecorder->getMode() == RECORDERMODETYPE_PLAYBACK && TheGlobalData->m_useCameraInReplay && TheControlBar->getObserverLookAtPlayer() == thisPlayer /*&& !TheRecorder->isMultiplayer()*/)
+	if (currentlySelectedGroup && TheRecorder->isPlaybackMode() && TheGlobalData->m_useCameraInReplay && TheControlBar != NULL && TheControlBar->getObserverLookAtPlayer() == thisPlayer /*&& !TheRecorder->isMultiplayer()*/)
 	{
 		const VecObjectID& selectedObjects = currentlySelectedGroup->getAllIDs();
 		TheInGameUI->deselectAllDrawables();
