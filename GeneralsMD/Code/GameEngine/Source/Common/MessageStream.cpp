@@ -1079,12 +1079,6 @@ void MessageStream::propagateMessages( void )
 {
 	MessageStream::TranslatorData *ss;
 	GameMessage *msg, *next;
-	int count = 0;
-	for( msg=m_firstMessage; msg; msg=next )
-	{
-		next = msg->next();
-		count++;
-	}
 	// process each Translator
 	for( ss=m_firstTranslator; ss; ss=ss->m_next )
 	{
@@ -1110,7 +1104,6 @@ void MessageStream::propagateMessages( void )
 		}
 	}
 
-	DEBUG_LOG(("propagateMessages %d\n", count));
 
 	// transfer all messages that reached the end of the stream to TheCommandList
 	TheCommandList->appendMessageList( m_firstMessage );
