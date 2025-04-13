@@ -297,6 +297,6 @@ extern GameClient *TheGameClient;
 //					m_waypointBuffer = NULL
 //					m_roadBuffer = NULL
 //					m_shroud = NULL
-//		TheRadar = RadarHeadless
+//		TheRadar = RadarDummy
 
 #endif // _GAME_INTERFACE_H_

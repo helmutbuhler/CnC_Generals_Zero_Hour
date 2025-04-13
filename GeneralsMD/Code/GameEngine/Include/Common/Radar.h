@@ -295,11 +295,11 @@ extern Radar *TheRadar;  ///< the radar singleton extern
 
 // TheSuperHackers @feature helmutbuhler 04/10/2025
 // Radar that does nothing
-class RadarHeadless : public Radar
+class RadarDummy : public Radar
 {
 public:
-	RadarHeadless(){}
-	virtual ~RadarHeadless() {}
+	RadarDummy(){}
+	virtual ~RadarDummy() {}
 
 	virtual void init() { }
 	virtual void reset() { Radar::reset(); }
