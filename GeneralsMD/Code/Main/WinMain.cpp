@@ -1057,7 +1057,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		TheVersion = NULL;
 
 	#ifdef MEMORYPOOL_DEBUG
-		TheMemoryPoolFactory->debugMemoryReport(REPORT_POOLINFO | REPORT_POOL_OVERFLOW | REPORT_SIMPLE_LEAKS, 0, 0);
+		//TheMemoryPoolFactory->debugMemoryReport(REPORT_POOLINFO | REPORT_POOL_OVERFLOW | REPORT_SIMPLE_LEAKS, 0, 0);
 	#endif
 	#if defined(_DEBUG) || defined(_INTERNAL)
 		TheMemoryPoolFactory->memoryPoolUsageReport("AAAMemStats");
