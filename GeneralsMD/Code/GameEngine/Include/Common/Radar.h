@@ -294,27 +294,13 @@ protected:
 extern Radar *TheRadar;  ///< the radar singleton extern
 
 // TheSuperHackers @feature helmutbuhler 04/10/2025
-// Radar that does nothing
+// Radar that does nothing. Used for Headless Mode.
 class RadarDummy : public Radar
 {
 public:
-	RadarDummy(){}
-	virtual ~RadarDummy() {}
-
-	virtual void init() { }
-	virtual void reset() { Radar::reset(); }
-	virtual void update() { Radar::update(); }
-
-	virtual void refreshTerrain(TerrainLogic *terrain) { Radar::refreshTerrain(terrain); }
-	virtual void queueTerrainRefresh() { Radar::queueTerrainRefresh(); }
-	virtual void newMap(TerrainLogic *terrain) { Radar::newMap(terrain); }
 	virtual void draw(Int pixelX, Int pixelY, Int width, Int height) { }
 	virtual void clearShroud() { }
 	virtual void setShroudLevel(Int x, Int y, CellShroudStatus setting) { }
-
-	virtual void crc(Xfer *xfer) { }
-	virtual void xfer(Xfer *xfer) { }
-	virtual void loadPostProcess() { Radar::loadPostProcess(); }
 };
 
 #endif  // __RADAR_H_
