@@ -3015,7 +3015,7 @@ HRESULT W3DShaderManager::LoadAndCreateD3DShader(const char* strFilePath, const 
 	if (getChipset() < DC_GENERIC_PIXEL_SHADER_1_1)
 		return E_FAIL;	//don't allow loading any shaders if hardware can't handle it.
 	
-	try
+	//try
 	{
 		File *file = NULL;
 		HRESULT hr;
@@ -3060,11 +3060,11 @@ HRESULT W3DShaderManager::LoadAndCreateD3DShader(const char* strFilePath, const 
 			return E_FAIL;
 		}
 	}
-	catch(...)
+	/*catch(...)
 	{
 		OutputDebugString( "Error opening file \n" );
 		return E_FAIL;
-	}
+	}*/
 
 	return S_OK;
 }

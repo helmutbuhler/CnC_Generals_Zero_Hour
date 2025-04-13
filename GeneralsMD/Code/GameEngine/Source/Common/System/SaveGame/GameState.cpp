@@ -1082,7 +1082,8 @@ static void addGameToAvailableList( AsciiString filename, void *userData )
 	DEBUG_ASSERTCRASH( listHead != NULL, ("addGameToAvailableList - Illegal parameters\n") );
 	DEBUG_ASSERTCRASH( filename.isEmpty() == FALSE, ("addGameToAvailableList - Illegal filename\n") );
  
-	try {
+	//try
+	{
 	// get header info from this listbox
 	SaveGameInfo saveGameInfo;
 	TheGameState->getSaveGameInfoFromFile( filename, &saveGameInfo );
@@ -1138,9 +1139,9 @@ static void addGameToAvailableList( AsciiString filename, void *userData )
 		}  // end if
 
 	}  // end else
-	} catch(...) {
+	}/* catch(...) {
 		// Do nothing - just return.
-	}
+	}*/
 
 
 }  // end addGameToAvailableList
@@ -1374,7 +1375,7 @@ void GameState::xferSaveData( Xfer *xfer, SnapshotType which )
 				xfer->xferAsciiString( &blockName );
 
 				// xfer this block
-				try
+				//try
 				{
 
 					// begin new data block
@@ -1387,14 +1388,14 @@ void GameState::xferSaveData( Xfer *xfer, SnapshotType which )
 					xfer->endBlock();
 
 				}  // end try
-				catch( ... )
+				/*catch( ... )
 				{
 
 					DEBUG_CRASH(( "Error saving block '%s' in file '%s'\n",
 												blockName.str(), xfer->getIdentifier() ));
 					throw;
 
-				}  // end catch
+				} */ // end catch
 
 			}  // end if
 
@@ -1451,7 +1452,7 @@ void GameState::xferSaveData( Xfer *xfer, SnapshotType which )
 
 				}  // end if
 
-				try
+				//try
 				{
 
 					// read block start
@@ -1464,14 +1465,14 @@ void GameState::xferSaveData( Xfer *xfer, SnapshotType which )
 					xfer->endBlock();
 
 				}  // end try
-				catch( ... )
+				/*catch( ... )
 				{
 
 					DEBUG_CRASH(( "Error loading block '%s' in file '%s'\n",
 												blockInfo->blockName.str(), xfer->getIdentifier() ));
 					throw;
 
-				}  // end catch
+				}*/  // end catch
 
 			}  // end else, valid data block token
 

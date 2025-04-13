@@ -156,7 +156,7 @@ void OpenMap::populateMapListbox( Bool systemMaps )
 			strcat(fileBuf, "\\");
 			strcat(fileBuf, findData.cFileName);
 			strcat(fileBuf, ".map");
-			try {
+			//try {
 				CFileStatus status;
 				if (CFile::GetStatus(fileBuf, status)) {
 					if (!(status.m_attribute & CFile::directory)) {
@@ -164,7 +164,7 @@ void OpenMap::populateMapListbox( Bool systemMaps )
 						found = true;
 					};
 				}
-			} catch(...) {}
+			//} catch(...) {}
 
 		} while (FindNextFile(hFindFile, &findData));
 

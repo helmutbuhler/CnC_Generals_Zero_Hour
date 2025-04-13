@@ -1128,12 +1128,12 @@ public:
 	LocalMFCFileOutputStream(CFile *pFile):m_file(pFile) {};
 	virtual Int write(const void *pData, Int numBytes) {
 		Int numBytesWritten = 0;
-		try {
+		//try {
 			m_file->Write(pData, numBytes);
 			numBytesWritten = numBytes;
-		} catch(...) {
+		/*} catch(...) {
 			DEBUG_CRASH(("threw exception in LocalMFCFileOutputStream"));
-		}
+		}*/
 		return(numBytesWritten);
 	};
 };
