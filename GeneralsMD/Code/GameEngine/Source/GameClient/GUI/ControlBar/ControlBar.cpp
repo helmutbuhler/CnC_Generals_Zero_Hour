@@ -1382,6 +1382,8 @@ void ControlBar::reset( void )
 //-------------------------------------------------------------------------------------------------
 void ControlBar::update( void )
 {
+	if (TheGlobalData->m_headless)
+		return;
 	getStarImage();
 	updateRadarAttackGlow();
 	if(m_controlBarSchemeManager)
@@ -1649,7 +1651,7 @@ const Image *ControlBar::getStarImage(void )
 	else
 		m_lastFlashedAtPointValue = ThePlayerList->getLocalPlayer()->getSciencePurchasePoints();
 	
-	GameWindow *win= TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey( "ControlBar.wnd:ButtonGeneral" ) );
+	GameWindow *win= TheWindowManager ? TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey( "ControlBar.wnd:ButtonGeneral" ) ) : NULL;
 	if(!win)
 		return NULL;
 	if(!m_genStarFlash)
@@ -2138,6 +2140,12 @@ void ControlBar::switchToContext( ControlBarContext context, Drawable *draw )
 	// save a pointer for the currently selected drawable
 	m_currentSelectedDrawable = draw;
 
+	if (TheWindowManager == NULL)
+	{
+		m_currContext = context;
+		return;
+	}
+
 	if (IsInGameChatActive() == FALSE && TheGameLogic && !TheGameLogic->isInShellGame()) {
 		TheWindowManager->winSetFocus( NULL );
 	}
@@ -2590,6 +2598,8 @@ void ControlBar::setPortraitByImage( const Image *image )
 //-------------------------------------------------------------------------------------------------
 void ControlBar::setPortraitByObject( Object *obj )
 {
+	if (TheWindowManager == NULL)
+		return;
 
 	if( obj )
 	{
@@ -2751,7 +2761,8 @@ void ControlBar::setControlBarSchemeByPlayer(Player *p)
 {
 	if(m_controlBarSchemeManager)
 		m_controlBarSchemeManager->setControlBarSchemeByPlayer(p);
-
+	if (TheWindowManager == NULL)
+		return;
 	static NameKeyType buttonPlaceBeaconID = NAMEKEY( "ControlBar.wnd:ButtonPlaceBeacon" );
 	static NameKeyType buttonIdleWorkerID = NAMEKEY("ControlBar.wnd:ButtonIdleWorker");
 	static NameKeyType buttonGeneralID = NAMEKEY("ControlBar.wnd:ButtonGeneral");
@@ -2958,7 +2969,7 @@ void ControlBar::showPurchaseScience( void )
 
 void ControlBar::hidePurchaseScience( void )
 {
-	if(m_contextParent[ CP_PURCHASE_SCIENCE ]->winIsHidden())
+	if(m_contextParent[ CP_PURCHASE_SCIENCE ] == NULL || m_contextParent[ CP_PURCHASE_SCIENCE ]->winIsHidden())
 		return;
 
 	if( m_contextParent[ CP_PURCHASE_SCIENCE ] )
@@ -2983,6 +2994,8 @@ void ControlBar::hidePurchaseScience( void )
 
 void ControlBar::togglePurchaseScience( void )
 {
+	if (m_contextParent[ CP_PURCHASE_SCIENCE ] == NULL)
+		return;
 	if(m_contextParent[ CP_PURCHASE_SCIENCE ]->winIsHidden())
 		showPurchaseScience();
 	else
@@ -3241,7 +3254,8 @@ void ControlBar::initSpecialPowershortcutBar( Player *player)
 	if(!player || !pt|| !player->isLocalPlayer()
 			|| pt->getSpecialPowerShortcutButtonCount() == 0  
 			|| pt->getSpecialPowerShortcutWinName().isEmpty()
-			|| !player->isPlayerActive())
+			|| !player->isPlayerActive()
+			|| TheWindowManager == NULL)
 		return;
 	m_currentlyUsedSpecialPowersButtons = pt->getSpecialPowerShortcutButtonCount();
 	AsciiString layoutName, tempName, windowName, parentName;
