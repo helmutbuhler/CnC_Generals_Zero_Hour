@@ -863,6 +863,7 @@ static CriticalSection critSec1, critSec2, critSec3, critSec4, critSec5;
 Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                       LPSTR lpCmdLine, Int nCmdShow )
 {
+	Int exitcode = 1;
 	checkProtection();
 
 #ifdef _PROFILE
@@ -944,7 +945,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				DEBUG_LOG(("0x%x - %s, %s, line %d address 0x%x\n", pc, name, file, line, addr));
 			}
 			DEBUG_LOG(("\n--- END OF DX STACK DUMP\n"));
-			return 0;
+			return exitcode;
 		}
 
 		#ifdef _DEBUG
@@ -987,7 +988,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		// register windows class and create application window
 		if(!headless && initializeAppWindows(hInstance, nCmdShow, ApplicationIsWindowed) == false)
-			return 0;
+			return exitcode;
 		
 		// save our application instance for future use
 		ApplicationHInstance = hInstance;
@@ -1020,7 +1021,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			TheVersion = NULL;
 			shutdownMemoryManager();
 			DEBUG_SHUTDOWN();
-			return 0;
+			return exitcode;
 		}
 #endif
 
@@ -1050,7 +1051,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			TheVersion = NULL;
 			shutdownMemoryManager();
 			DEBUG_SHUTDOWN();
-			return 0;
+			return exitcode;
 		}
 		DEBUG_LOG(("Create GeneralsMutex okay.\n"));
 #endif
@@ -1063,14 +1064,14 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			TheVersion = NULL;
 			shutdownMemoryManager();
 			DEBUG_SHUTDOWN();
-			return 0;
+			return exitcode;
 		}
 #endif
 
 		DEBUG_LOG(("CRC message is %d\n", GameMessage::MSG_LOGIC_CRC));
 
 		// run the game main loop
-		GameMain(argc, argv);
+		exitcode = GameMain(argc, argv);
 
 #ifdef DO_COPY_PROTECTION
 		// Clean up copy protection
@@ -1103,7 +1104,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	TheDmaCriticalSection = NULL;
 	TheMemoryPoolCriticalSection = NULL;
 
-	return 0;
+	return exitcode;
 
 }  // end WinMain
 
