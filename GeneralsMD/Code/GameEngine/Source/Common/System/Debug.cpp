@@ -50,7 +50,7 @@
 
 // TheSuperHackers @feature helmutbuhler 04/10/2025
 // Uncomment this to show normal logging stuff in the crc logging.
-// This can be helpful for context, but can also clutter diffs because normal logs arn't necessarily
+// This can be helpful for context, but can also clutter diffs because normal logs aren't necessarily
 // deterministic or the same on all peers in multiplayer games.
 //#define INCLUDE_DEBUG_LOG_IN_CRC_LOG
 

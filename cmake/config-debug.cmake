@@ -17,7 +17,7 @@ add_feature_info(DebugLogging                 RTS_DEBUG_LOGGING                 
 add_feature_info(DebugCrashing                RTS_DEBUG_CRASHING                     "Build with Debug Crashing")
 add_feature_info(DebugStacktrace              RTS_DEBUG_STACKTRACE                   "Build with Debug Stacktracing")
 add_feature_info(DebugProfile                 RTS_DEBUG_PROFILE                      "Build with Debug Profiling")
-add_feature_info(DebugIncludeDebugLogInCrcLog RTS_DEBUG_INCLUDE_DEBUG_LOG_IN_CRC_LOG "Include debug logs in crc logs")
+add_feature_info(DebugIncludeDebugLogInCrcLog RTS_DEBUG_INCLUDE_DEBUG_LOG_IN_CRC_LOG "Build with Debug Logging in CRC log")
 
 
 # Helper macro that handles DEFAULT ON OFF options
