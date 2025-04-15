@@ -822,11 +822,11 @@ Bool BlockCheckpointInfo::shouldBeInReport(Int flags, Int startCheckpoint, Int e
 	DEBUG_ASSERTCRASH(debugLiteralTagString != FREE_SINGLEBLOCK_TAG_STRING, ("bad tag string"));
 
 	BlockCheckpointInfo *freed = NULL;
-	try {
+	//try {
 		freed = (BlockCheckpointInfo *)::sysAllocateDoNotZero(sizeof(BlockCheckpointInfo));
-	} catch (...) {
-		freed = NULL;
-	}
+	//} catch (...) {
+	//	freed = NULL;
+	//}
 	if (freed) 
 	{
 		DEBUG_ASSERTCRASH(debugLiteralTagString != NULL, ("null tagstrings are not allowed"));

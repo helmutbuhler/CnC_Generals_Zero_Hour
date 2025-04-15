@@ -167,10 +167,10 @@ public:
 	MFCFileOutputStream(CFile *pFile):m_file(pFile) {};
 	virtual Int write(const void *pData, Int numBytes) {
 		Int numBytesWritten = 0;
-		try {
+		//try {
 			m_file->Write(pData, numBytes);
 			numBytesWritten = numBytes;
-		} catch(...) {}
+		//} catch(...) {}
 		return(numBytesWritten);
 	};
 };
@@ -205,10 +205,10 @@ public:
 		{
 			CachedChunk c = m_cachedChunks.front();
 			m_cachedChunks.pop_front();
-			try {
+			//try {
 				DEBUG_LOG(("Flushing %d bytes\n", c.size));
 				m_file->Write(c.pData, c.size);
-			} catch(...) {}
+			//} catch(...) {}
 			delete[] c.pData;
 			m_totalBytes -= c.size;
 		}
@@ -243,11 +243,11 @@ public:
 		{
 			CachedChunk c = m_cachedChunks.front();
 			m_cachedChunks.pop_front();
-			try {
+			//try {
 				//DEBUG_LOG(("Flushing %d bytes\n", c.size));
 				memcpy(insertPos, c.pData, c.size);
 				insertPos += c.size;
-			} catch(...) {}
+			//} catch(...) {}
 			delete[] c.pData;
 		}
 		CompressionType compressionToUse = CompressionManager::getPreferredCompression();

@@ -812,7 +812,7 @@ static void getPreorderCallback(int localid, int profileid, persisttype_t type, 
 
 void PSThreadClass::Thread_Function()
 {
-	try {
+	//try {
 	_set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
 	/*********
 	First step, set our game authentication info
@@ -1066,9 +1066,9 @@ void PSThreadClass::Thread_Function()
 
 	if (IsStatsConnected())
 		CloseStatsConnection();
-	} catch ( ... ) {
+	/*} catch ( ... ) {
 		DEBUG_CRASH(("Exception in storage thread!"));
-	}
+	}*/
 }
 
 //-------------------------------------------------------------------------

@@ -209,7 +209,7 @@ Bool GameResultsQueue::areGameResultsBeingSent( void )
 
 void GameResultsThreadClass::Thread_Function()
 {
-	try {
+	//try {
 	_set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
 	GameResultsRequest req;
 
@@ -265,9 +265,9 @@ void GameResultsThreadClass::Thread_Function()
 	}
 
 	WSACleanup();
-	} catch ( ... ) {
+	/*} catch ( ... ) {
 		DEBUG_CRASH(("Exception in results thread!"));
-	}
+	}*/
 }
 
 //-------------------------------------------------------------------------

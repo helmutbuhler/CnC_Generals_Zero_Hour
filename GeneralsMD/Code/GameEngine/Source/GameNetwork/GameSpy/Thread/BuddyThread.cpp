@@ -266,7 +266,7 @@ GPProfile GameSpyBuddyMessageQueue::getLocalProfileID( void )
 
 void BuddyThreadClass::Thread_Function()
 {
-	try {
+	//try {
 	_set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
 	GPConnection gpCon;
 	GPConnection *con = &gpCon;
@@ -389,9 +389,9 @@ void BuddyThreadClass::Thread_Function()
 	}
 
 	gpDestroy( con );
-	} catch ( ... ) {
+	/*} catch ( ... ) {
 		DEBUG_CRASH(("Exception in buddy thread!"));
-	}
+	}*/
 }
 
 void BuddyThreadClass::errorCallback( GPConnection *con, GPErrorArg *arg )

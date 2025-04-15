@@ -706,15 +706,15 @@ SaveCode GameState::loadGame( AvailableGameInfo gameInfo )
 	// un-savelock the ghost objects
 	TheGhostObjectManager->saveLockGhostObjects( FALSE );
 
-	try
+	//try
 	{
 		// do the post-process from a save game load
 		gameStatePostProcessLoad();
 	}
-	catch (...)
+	/*catch (...)
 	{
 		error = TRUE;
-	}
+	}*/
 
 	// check for error
 	if( error == TRUE )

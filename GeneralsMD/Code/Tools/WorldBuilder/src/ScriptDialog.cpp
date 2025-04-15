@@ -1374,7 +1374,8 @@ void ScriptDialog::OnSave()
 	CString path = fileDlg.GetPathName();
 
 	CFile theFile(path, CFile::modeCreate|CFile::modeWrite|CFile::shareDenyWrite|CFile::typeBinary);
-	try {
+	//try
+	{
 		LocalMFCFileOutputStream theStream(&theFile);
 		DataChunkOutput chunkWriter(&theStream);
 		ScriptList::WriteScriptsDataChunk(chunkWriter, scripts, numScriptLists);
@@ -1504,9 +1505,9 @@ void ScriptDialog::OnSave()
 			}
 		chunkWriter.closeDataChunk();
 
-	} catch(...) {
+	/*} catch(...) {
 			DEBUG_CRASH(("threw exception in ScriptDialog::OnSave"));
-	}
+	}*/
 	if (!doAllScripts) {
 		scripts[0]->deleteInstance();
 	}
@@ -1542,7 +1543,7 @@ void ScriptDialog::OnLoad()
 
 	CachedFileInputStream theInputStream;
 	if (theInputStream.open(AsciiString(path))) 
-	try {
+	//try {
 		ChunkInputStream *pStrm = &theInputStream;
 		DataChunkInput file( pStrm );
 		m_firstReadObject = NULL;
@@ -1647,9 +1648,9 @@ void ScriptDialog::OnLoad()
 		}
 
 
-	} catch(...) {
+	/*} catch(...) {
    	  	DEBUG_CRASH(("threw exception in ScriptDialog::OnLoad"));
-	}
+	}*/
 }
 
 /**

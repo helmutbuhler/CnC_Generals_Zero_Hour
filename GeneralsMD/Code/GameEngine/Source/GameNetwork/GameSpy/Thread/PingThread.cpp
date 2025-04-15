@@ -247,7 +247,7 @@ AsciiString Pinger::getPingString( Int timeout )
 
 void PingThreadClass::Thread_Function()
 {
-	try {
+	//try {
 	_set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
 	PingRequest req;
 
@@ -323,9 +323,9 @@ void PingThreadClass::Thread_Function()
 	}
 
 	WSACleanup();
-	} catch ( ... ) {
+	/*} catch ( ... ) {
 		DEBUG_CRASH(("Exception in ping thread!"));
-	}
+	}*/
 }
 
 //-------------------------------------------------------------------------

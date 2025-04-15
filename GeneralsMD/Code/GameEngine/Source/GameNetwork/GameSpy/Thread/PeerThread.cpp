@@ -1167,7 +1167,7 @@ static UnsignedInt localIP = 0;
 
 void PeerThreadClass::Thread_Function()
 {
-	try {
+	//try {
 	_set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
 
 	PEER peer;
@@ -1768,7 +1768,7 @@ void PeerThreadClass::Thread_Function()
 	DEBUG_LOG(("voluntarily ending peer thread %d\n", running));
 	peerShutdown( peer );
 
-	} catch ( ... ) {
+	/*} catch ( ... ) {
 		DEBUG_CRASH(("Exception in peer thread!"));
 
 		try {
@@ -1780,7 +1780,7 @@ void PeerThreadClass::Thread_Function()
 		catch (...)
 		{
 		}
-	}
+	}*/
 }
 
 static void qmProfileIDCallback( PEER peer, PEERBool success, const char *nick, int profileID, void *param )
