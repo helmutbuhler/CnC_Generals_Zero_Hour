@@ -33,6 +33,7 @@
 #include "Common/RandomValue.h"
 #include "Common/crc.h"
 #include "Common/Debug.h"
+#include "Common/CRCDebug.h"
 #include "GameLogic/GameLogic.h"
 
 //#define DETERMINISTIC				// to allow repetition for debugging
@@ -178,8 +179,9 @@ void InitRandom( UnsignedInt seed )
 	seedRandom(seed, theGameLogicSeed);
 	theGameLogicBaseSeed = seed;
 #ifdef DEBUG_RANDOM_LOGIC
-DEBUG_LOG(( "InitRandom %08lx\n",seed));
+	DEBUG_LOG(( "InitRandom %08lx\n",seed));
 #endif
+	CRCDEBUG_LOG(("InitRandom %08lx\n",seed));
 }
 
 void InitGameLogicRandom( UnsignedInt seed )
@@ -193,8 +195,9 @@ void InitGameLogicRandom( UnsignedInt seed )
 	theGameLogicBaseSeed = seed;
 #endif
 #ifdef DEBUG_RANDOM_LOGIC
-DEBUG_LOG(( "InitRandom Logic %08lx\n",seed));
+	DEBUG_LOG(( "InitRandom Logic %08lx\n",seed));
 #endif
+	CRCDEBUG_LOG(("InitRandom Logic %08lx\n", seed));
 }
 
 //
@@ -228,6 +231,8 @@ Int GetGameLogicRandomValue( int lo, int hi, const char *file, int line )
 DEBUG_LOG(( "%d: GetGameLogicRandomValue = %d (%d - %d), %s line %d\n",
 				 TheGameLogic->getFrame(), rval, lo, hi, file, line ));
 #endif
+	CRCDEBUG_LOG(("GetGameLogicRandomValue = %d (%d - %d), %s line %d\n",
+					 rval, lo, hi, file, line ));
 /**/
 
 	return rval;
@@ -295,9 +300,11 @@ Real GetGameLogicRandomValueReal( Real lo, Real hi, const char *file, int line )
 	DEBUG_ASSERTCRASH( rval >= lo && rval <= hi, ("Bad random val"));
 /**/
 #ifdef DEBUG_RANDOM_LOGIC
-DEBUG_LOG(( "%d: GetGameLogicRandomValueReal = %f, %s line %d\n",
-					TheGameLogic->getFrame(), rval, file, line ));
+	DEBUG_LOG(( "%d: GetGameLogicRandomValueReal = %f, %s line %d\n",
+						TheGameLogic->getFrame(), rval, file, line ));
 #endif
+	CRCDEBUG_LOG(("GetGameLogicRandomValueReal = %8.8X, %s line %d\n",
+						AS_INT(rval), file, line ));
 /**/
 
 	return rval;
