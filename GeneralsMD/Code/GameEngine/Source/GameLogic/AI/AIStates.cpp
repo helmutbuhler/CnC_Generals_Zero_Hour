@@ -936,7 +936,7 @@ StateReturnType AIStateMachine::setTemporaryState( StateID newStateID, Int frame
 		if (m_temporaryState) {
 			curState = m_temporaryState->getID();
 		}
-		DEBUG_LOG(("%d '%s' -(TEMP)- '%s' %x exit ", TheGameLogic->getFrame(), getOwner()->getTemplate()->getName().str(), getName().str(), this));
+		DEBUG_LOG(("%d '%s' -(TEMP)- '%s' %d exit\n",TheGameLogic->getFrame(), getOwner()->getTemplate()->getName().str(), getName().str(), getCurrentStateID()));
 		if (m_temporaryState) {
 			DEBUG_LOG((" '%s' ", m_temporaryState->getName().str()));
 		} else {

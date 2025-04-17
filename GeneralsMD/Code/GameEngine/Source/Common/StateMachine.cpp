@@ -339,7 +339,7 @@ void StateMachine::internalClear()
 #ifdef STATE_MACHINE_DEBUG
 	if (getWantsDebugOutput())
 	{
-		DEBUG_LOG(("%d '%s'%x -- '%s' %x internalClear()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner, m_name.str(), this));
+		DEBUG_LOG(("%d '%s'%d -- '%s' %d internalClear()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner->getID(), m_name.str(), getCurrentStateID()));
 	}
 #endif
 }
@@ -591,7 +591,7 @@ StateReturnType StateMachine::internalSetState( StateID newStateID )
 			if (m_currentState) {
 				curState = m_currentState->getID();
 			}
-			DEBUG_LOG(("%d '%s'%x -- '%s' %x exit ", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner, m_name.str(), this));
+			DEBUG_LOG(("%d '%s'%d -- '%s' %d exit\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner->getID(), m_name.str(), getCurrentStateID()));
 			if (m_currentState) {
 				DEBUG_LOG((" '%s' ", m_currentState->getName().str()));
 			} else {
@@ -759,7 +759,7 @@ void StateMachine::halt()
 #ifdef STATE_MACHINE_DEBUG
 	if (getWantsDebugOutput())
 	{
-		DEBUG_LOG(("%d '%s' -- '%s' %x halt()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_name.str(), this));
+		DEBUG_LOG(("%d '%s' -- '%s' %d halt()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_name.str(), getCurrentStateID()));
 	}	
 #endif
 }
