@@ -55,7 +55,7 @@
 
 #define no_INTENSE_DEBUG
 
-#define DEBUG_QPF
+//#define DEBUG_QPF
 
 #ifdef INTENSE_DEBUG
 #include "GameLogic/ScriptEngine.h"
@@ -5944,8 +5944,8 @@ void Pathfinder::processPathfindQueue(void)
 			m_queuePRHead = 0;
 		}
 	}
-	if (pathsFound>0) {
 #ifdef DEBUG_QPF
+	if (pathsFound>0) {
 #ifdef DEBUG_LOGGING
 		QueryPerformanceCounter((LARGE_INTEGER *)&endTime64);
 		timeToUpdate = ((double)(endTime64-startTime64) / (double)(freq64));
@@ -5956,8 +5956,8 @@ void Pathfinder::processPathfindQueue(void)
 			DEBUG_LOG(("\n"));
 		}
 #endif
-#endif
 	}
+#endif
 #if defined _DEBUG || defined _INTERNAL
 	doDebugIcons();
 #endif
@@ -7471,7 +7471,7 @@ Path *Pathfinder::internal_findHierarchicalPath( Bool isHuman, const LocomotorSu
 {
 	//CRCDEBUG_LOG(("Pathfinder::findGroundPath()\n"));
 #ifdef DEBUG_LOGGING
-	Int startTimeMS = ::GetTickCount();
+	//Int startTimeMS = ::GetTickCount();
 #endif
 	
 	if (rawTo->x == 0.0f && rawTo->y == 0.0f) {
@@ -7969,7 +7969,7 @@ Path *Pathfinder::internal_findHierarchicalPath( Bool isHuman, const LocomotorSu
 
 	DEBUG_LOG(("%d ", TheGameLogic->getFrame()));
 	DEBUG_LOG(("FindHierarchicalPath failed from (%f,%f) to (%f,%f)\n", from->x, from->y, to->x, to->y));
-	DEBUG_LOG(("time %f\n", (::GetTickCount()-startTimeMS)/1000.0f));
+	//DEBUG_LOG(("time %f\n", (::GetTickCount()-startTimeMS)/1000.0f));
 
 #ifdef DUMP_PERF_STATS
 	TheGameLogic->incrementOverallFailedPathfinds();
@@ -8675,7 +8675,7 @@ Path *Pathfinder::findClosestPath( Object *obj, const LocomotorSet& locomotorSet
 {
 	//CRCDEBUG_LOG(("Pathfinder::findClosestPath()\n"));
 #ifdef DEBUG_LOGGING
-	Int startTimeMS = ::GetTickCount();
+	//Int startTimeMS = ::GetTickCount();
 #endif
 	Bool isHuman = true;
 	if (obj && obj->getControllingPlayer() && (obj->getControllingPlayer()->getPlayerType()==PLAYER_COMPUTER)) {
@@ -8955,7 +8955,7 @@ Path *Pathfinder::findClosestPath( Object *obj, const LocomotorSet& locomotorSet
 
 	DEBUG_LOG(("%d ", TheGameLogic->getFrame()));
 	DEBUG_LOG(("Pathfind(findClosestPath) failed from (%f,%f) to (%f,%f), original valid %d --", from->x, from->y, to->x, to->y, valid));
-	DEBUG_LOG(("Unit '%s', time %f\n", obj->getTemplate()->getName().str(), (::GetTickCount()-startTimeMS)/1000.0f));
+	//DEBUG_LOG(("Unit '%s', time %f\n", obj->getTemplate()->getName().str(), (::GetTickCount()-startTimeMS)/1000.0f));
 #endif
 #if defined _DEBUG || defined _INTERNAL
 	if (TheGlobalData->m_debugAI) 
