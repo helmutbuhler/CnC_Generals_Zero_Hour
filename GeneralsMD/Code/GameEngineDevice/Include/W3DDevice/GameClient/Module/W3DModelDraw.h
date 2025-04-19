@@ -200,7 +200,7 @@ struct ModelConditionInfo
 	}; 
 	typedef std::vector<WeaponBarrelInfo>	WeaponBarrelInfoVec;
 
-#if defined(_DEBUG) || defined(_INTERNAL) || defined(DEBUG_CRASHING)
+#if defined(DEBUG_LOGGING) || defined(DEBUG_CRASHING)
 	AsciiString												m_description;
 #endif
 	std::vector<ModelConditionFlags>	m_conditionsYesVec;
@@ -249,7 +249,7 @@ struct ModelConditionInfo
 
 	inline Int getConditionsYesCount() const { DEBUG_ASSERTCRASH(m_conditionsYesVec.size() > 0, ("empty m_conditionsYesVec.size(), see srj")); return m_conditionsYesVec.size(); }
 	inline const ModelConditionFlags& getNthConditionsYes(Int i) const { return m_conditionsYesVec[i]; }
-#if defined(_DEBUG) || defined(_INTERNAL)
+#ifdef DEBUG_LOGGING
 	inline AsciiString getDescription() const { return m_description; }
 #endif
 

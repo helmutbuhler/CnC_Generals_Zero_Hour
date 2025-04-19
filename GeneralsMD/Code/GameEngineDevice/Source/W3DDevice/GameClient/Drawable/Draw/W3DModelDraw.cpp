@@ -32,7 +32,7 @@
 #define DEFINE_W3DANIMMODE_NAMES
 #define DEFINE_WEAPONSLOTTYPE_NAMES
 
-#define NO_DEBUG_CRC
+//#define NO_DEBUG_CRC
 
 #include <windows.h>
 
@@ -85,7 +85,7 @@ static inline Bool isValidTimeToCalcLogicStuff()
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-#if defined(DEBUG_CRC) && (defined(_DEBUG) || defined(_INTERNAL))
+#if 0//defined(DEBUG_CRC) && (defined(_DEBUG) || defined(_INTERNAL))
 #include <cstdarg>
 class LogClass
 {
@@ -205,7 +205,7 @@ LogClass BonePosLog("bonePositions.txt");
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-#if defined(_DEBUG) || defined(_INTERNAL) || defined(DEBUG_CRASHING)
+#if defined(DEBUG_LOGGING) || defined(DEBUG_CRASHING)
 extern AsciiString TheThingTemplateBeingParsedName;
 #endif
 
@@ -986,7 +986,7 @@ void ModelConditionInfo::loadAnimations() const
 void ModelConditionInfo::clear()
 { 
 	int i;
-#if defined(_DEBUG) || defined(_INTERNAL)
+#if defined(DEBUG_LOGGING)
 	m_description.clear();
 #endif
 	m_conditionsYesVec.clear();
@@ -1482,7 +1482,7 @@ void W3DModelDrawModuleData::parseConditionState(INI* ini, void *instance, void 
 				info.m_conditionsYesVec.clear();
 				info.m_conditionsYesVec.push_back(blankConditions);
 
-	#if defined(_DEBUG) || defined(_INTERNAL)
+	#if defined(DEBUG_LOGGING)
 				info.m_description.clear();
 				info.m_description.concat(TheThingTemplateBeingParsedName);
 				info.m_description.concat(" DEFAULT");
@@ -1513,7 +1513,7 @@ void W3DModelDrawModuleData::parseConditionState(INI* ini, void *instance, void 
 			}
 
 			info.m_transitionSig = buildTransitionSig(firstKey, secondKey);
-	#if defined(_DEBUG) || defined(_INTERNAL)
+	#if defined(DEBUG_LOGGING)
 			info.m_description.clear();
 			info.m_description.concat(TheThingTemplateBeingParsedName);
 			info.m_description.concat(" TRANSITION: ");
@@ -1537,7 +1537,7 @@ void W3DModelDrawModuleData::parseConditionState(INI* ini, void *instance, void 
 			
 			ModelConditionFlags conditionsYes;
 
-	#if defined(_DEBUG) || defined(_INTERNAL)
+	#if defined(DEBUG_LOGGING)
 			AsciiString description;
 			conditionsYes.parse(ini, &description);
 
@@ -1589,7 +1589,7 @@ void W3DModelDrawModuleData::parseConditionState(INI* ini, void *instance, void 
 	//	}
 			
 			ModelConditionFlags conditionsYes;
-	#if defined(_DEBUG) || defined(_INTERNAL) || defined(DEBUG_CRASHING)
+	#if defined(DEBUG_LOGGING) || defined(DEBUG_CRASHING)
 			AsciiString description;
 			conditionsYes.parse(ini, &description);
 
@@ -3425,12 +3425,14 @@ Int W3DModelDraw::getPristineBonePositionsForConditionState(
 	if (!stateToUse)
 		return 0;
 
-//	if (isValidTimeToCalcLogicStuff())
-//	{
-//		CRCDEBUG_LOG(("W3DModelDraw::getPristineBonePositionsForConditionState() - state = '%s'\n",
-//			stateToUse->getDescription().str()));
-//		//CRCDEBUG_LOG(("renderObject == NULL: %d\n", (stateToUse==m_curState)?(m_renderObject == NULL):1));
-//	}
+#ifdef DEBUG_CRC
+	if (isValidTimeToCalcLogicStuff())
+	{
+		CRCDEBUG_LOG(("W3DModelDraw::getPristineBonePositionsForConditionState() - state = '%s'\n",
+			stateToUse->getDescription().str()));
+		//CRCDEBUG_LOG(("renderObject == NULL: %d\n", (stateToUse==m_curState)?(m_renderObject == NULL):1));
+	}
+#endif
 
 	//BONEPOS_LOG(("validateStuff() from within W3DModelDraw::getPristineBonePositionsForConditionState()\n"));
 	//BONEPOS_DUMPREAL(getDrawable()->getScale());
@@ -3472,10 +3474,12 @@ Int W3DModelDraw::getPristineBonePositionsForConditionState(
 		if (mtx)
 		{
 			transforms[posCount] = *mtx;
-//			if (isValidTimeToCalcLogicStuff())
-//			{
-//				DUMPMATRIX3D(mtx);
-//			}
+#ifdef DEBUG_CRC
+			if (isValidTimeToCalcLogicStuff())
+			{
+				DUMPMATRIX3D(mtx);
+			}
+#endif
 		}
 		else
 		{
@@ -3485,6 +3489,10 @@ Int W3DModelDraw::getPristineBonePositionsForConditionState(
 				transforms[posCount] = *obj->getTransformMatrix();
 			else
 				transforms[posCount].Make_Identity();
+#ifdef DEBUG_CRC
+			if (isValidTimeToCalcLogicStuff())
+				DUMPMATRIX3D(&transforms[posCount]);
+#endif
 			break;
 		}
 
@@ -3501,17 +3509,17 @@ Int W3DModelDraw::getPristineBonePositionsForConditionState(
 			positions[i].x = pos.X;
 			positions[i].y = pos.Y;
 			positions[i].z = pos.Z;
-//			if (isValidTimeToCalcLogicStuff())
-//			{
-//				DUMPCOORD3D(&(positions[i]));
-//			}
+#ifdef DEBUG_CRC
+			if (isValidTimeToCalcLogicStuff())
+				DUMPCOORD3D(&(positions[i]));
+#endif
 		}
 	}
 
-//	if (isValidTimeToCalcLogicStuff())
-//	{
-//		CRCDEBUG_LOG(("end of W3DModelDraw::getPristineBonePositionsForConditionState()\n"));
-//	}
+#ifdef DEBUG_CRC
+	if (isValidTimeToCalcLogicStuff())
+		CRCDEBUG_LOG(("end of W3DModelDraw::getPristineBonePositionsForConditionState()\n"));
+#endif
 
 	return posCount;
 }
@@ -4300,7 +4308,7 @@ void W3DModelDrawModuleData::xfer( Xfer *x )
 	{
 		ModelConditionInfo *info = &(*it);
 		x->xferByte(&(info->m_validStuff));
-#if defined(_DEBUG) || defined(_INTERNAL)
+#if defined(DEBUG_LOGGING)
 		x->xferAsciiString(&(info->m_description));
 #endif
 		if (info->m_validStuff)
