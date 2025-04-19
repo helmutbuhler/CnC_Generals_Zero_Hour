@@ -310,7 +310,7 @@ TurretAI::TurretAI(Object* owner, const TurretAIData* data, WhichTurretType tur)
 
 #ifdef _DEBUG
 	char smbuf[256];
-	sprintf(smbuf, "TurretStateMachine for tur %08lx slot %d",this,tur);
+	sprintf(smbuf, "TurretStateMachine for tur %d slot %d", owner->getID(), tur);
 	const char* smname = smbuf;
 #else
 	const char* smname = "TurretStateMachine";
