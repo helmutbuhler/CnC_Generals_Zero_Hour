@@ -301,6 +301,7 @@ Object::Object( const ThingTemplate *tt, const ObjectStatusMaskType &objectStatu
 
 	// assign unique object id
 	setID( TheGameLogic->allocateObjectID() );
+	CRCDEBUG_LOG(("Create Object ID %d %s\n", getID(), getTemplate()->getName().str()));
 
 	//
 	// allocate any modules we need to, we should keep
@@ -414,6 +415,7 @@ Object::Object( const ThingTemplate *tt, const ObjectStatusMaskType &objectStatu
 		modName = mi.getNthName(modIdx);
 		if (modName.isEmpty())
 			continue;
+		CRCDEBUG_LOG(("New Module %s\n", modName.str()));
 
 		BehaviorModule* newMod = (BehaviorModule*)TheModuleFactory->newModule(this, modName, mi.getNthData(modIdx), MODULETYPE_BEHAVIOR);
 		*curB++ = newMod;
@@ -6068,6 +6070,7 @@ Int Object::getMultiLogicalBonePosition(const char* boneNamePrefix, Int maxBones
 																				Coord3D* positions, Matrix3D* transforms, 
 																				Bool convertToWorld ) const
 {
+	CRCDEBUG_LOG(("Object::getMultiLogicalBonePosition %d m_drawable %d\n", getID(), (int)(m_drawable != NULL)));
 	Int count;
 	if (m_drawable && (count = m_drawable->getPristineBonePositions( boneNamePrefix, 1, positions, transforms, maxBones )) > 0 )
 	{

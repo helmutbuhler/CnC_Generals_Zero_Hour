@@ -344,6 +344,7 @@ void ActiveBody::doDamageFX( const DamageInfo *damageInfo )
 //-------------------------------------------------------------------------------------------------
 void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 {
+	CRCDEBUG_LOG(("ActiveBody::attemptDamage\n"));
 	validateArmorAndDamageFX();
 
 	// sanity
@@ -351,7 +352,10 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 		return;
 
 	if ( m_indestructible )
+	{
+		CRCDEBUG_LOG(("m_indestructible\n"));
 		return;
+	}
 
 	// initialize these, just in case we bail out early
 	damageInfo->out.m_actualDamageDealt = 0.0f;
@@ -360,7 +364,10 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 	// we cannot damage again objects that are already dead
 	Object* obj = getObject();
 	if( obj->isEffectivelyDead() )
+	{
+		CRCDEBUG_LOG(("isEffectivelyDead\n"));
 		return;
+	}
 
 	Object *damager = TheGameLogic->findObjectByID( damageInfo->in.m_sourceID );
 	if( damager )
@@ -373,6 +380,7 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 	Bool alreadyHandled = FALSE;
 	Bool allowModifier = TRUE;
 	Real amount = m_curArmor.adjustDamage(damageInfo->in.m_damageType, damageInfo->in.m_amount);
+	DUMPREAL(amount);
 
 	switch( damageInfo->in.m_damageType )
 	{
@@ -645,7 +653,8 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 			}
 
 		}
-		
+		DUMPREAL(m_prevHealth);
+		DUMPREAL(m_maxHealth);
 		// Should we play our fear sound?
 		if( (m_prevHealth / m_maxHealth) > YELLOW_DAMAGE_PERCENT && 
 				(m_currentHealth / m_maxHealth) < YELLOW_DAMAGE_PERCENT && 
@@ -1212,6 +1221,9 @@ void ActiveBody::updateBodyParticleSystems( void )
 //-------------------------------------------------------------------------------------------------
 void ActiveBody::internalChangeHealth( Real delta )
 {
+	DUMPREAL(m_prevHealth);
+	DUMPREAL(m_currentHealth);
+	DUMPREAL(delta);
 	// save the current health as the previous health
 	m_prevHealth = m_currentHealth;
 

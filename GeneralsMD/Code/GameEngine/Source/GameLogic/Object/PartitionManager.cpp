@@ -62,6 +62,7 @@
 #include "Common/ThingFactory.h"	// for bullet type hack
 #include "Common/ThingTemplate.h"
 #include "Common/Xfer.h"
+#include "Common/CRCDebug.h"
 
 #include "GameLogic/AIPathfind.h"
 #include "GameLogic/GameLogic.h"
@@ -3901,8 +3902,13 @@ Bool PartitionManager::findPositionAround( const Coord3D *center,
 	if( center == NULL || result == NULL || options == NULL )
 		return FALSE;
 
+	DUMPREAL(options->startAngle);
+	DUMPCOORD3D(center);
+
 	Region3D extent;
 	TheTerrainLogic->getMaximumPathfindExtent(&extent);
+	DUMPCOORD3D(&extent.lo);
+	DUMPCOORD3D(&extent.hi);
 	// If the goal is off the map, it is a scripted setup, so just
 	// use the center.
 	if (!extent.isInRegionNoZ(center)) {

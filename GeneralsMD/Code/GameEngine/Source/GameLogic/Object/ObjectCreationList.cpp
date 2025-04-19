@@ -938,6 +938,9 @@ protected:
 		UnsignedInt lifetimeFrames
 	) const
 	{
+		CRCDEBUG_LOG(("GenericObjectCreationNugget::doStuffToObj %d %s %d %d %d\n",
+			obj->getID(), modelName, lifetimeFrames, m_minFrames, m_maxFrames));
+
 		obj->setProducer(sourceObj);
 
 		static NameKeyType key_LifetimeUpdate = NAMEKEY("LifetimeUpdate");
