@@ -930,23 +930,30 @@ StateReturnType AIStateMachine::setTemporaryState( StateID newStateID, Int frame
 	// extract the state associated with the given ID
 	State *newState = internalGetState( newStateID );
 #ifdef STATE_MACHINE_DEBUG
-	if (getWantsDebugOutput()) 
 	{
-		StateID curState = INVALID_STATE_ID;
+		AsciiString logString;
+		AsciiString tmp;
+
+		tmp.format("%d '%s' -(TEMP)- '%s' %d exit",  TheGameLogic->getFrame(), getOwner()->getTemplate()->getName().str(), getName().str(), getCurrentStateID());
+		logString.concat(tmp);
+
 		if (m_temporaryState) {
-			curState = m_temporaryState->getID();
-		}
-		DEBUG_LOG(("%d '%s' -(TEMP)- '%s' %d exit\n",TheGameLogic->getFrame(), getOwner()->getTemplate()->getName().str(), getName().str(), getCurrentStateID()));
-		if (m_temporaryState) {
-			DEBUG_LOG((" '%s' ", m_temporaryState->getName().str()));
+			tmp.format(" '%s' ", m_temporaryState->getName().str());
 		} else {
-			DEBUG_LOG((" INVALID_STATE_ID "));
+			tmp.format(" INVALID_STATE_ID ");
 		}
+		logString.concat(tmp);
+
 		if (newState) {
-			DEBUG_LOG(("enter '%s' \n", newState->getName().str()));
+			tmp.format(" enter '%s'", newState->getName().str());
 		} else {
-			DEBUG_LOG(("to INVALID_STATE\n"));
+			tmp.format((" to INVALID_STATE"));
 		}
+		logString.concat(tmp);
+
+		if (getWantsDebugOutput())
+			DEBUG_LOG(("%s\n", logString.str()));
+		CRCDEBUG_LOG(("%s\n", logString.str()));
 	}
 #endif
 	if (m_temporaryState) {

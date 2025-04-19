@@ -45,12 +45,16 @@ class State;
 class StateMachine;
 class Object;
 
+// TheSuperHackers @info helmutbuhler 04/19/2025
+// State Machine transitions can be logged, but all the output is quite extensive.
+// To enable it, you need to do one of the following:
+// - Supply -stateMachineDebug
+// - Use TheDebugSelectionMode to select an object (TheObjectIDToDebug) whose states are logged
+// - Look into CRC Log after mismatch (CRC log contains all transitions, but is memory only unless dumped)
+
 //#undef STATE_MACHINE_DEBUG
-#if defined(_DEBUG)
+#if defined(DEBUG_LOGGING)
 	#define STATE_MACHINE_DEBUG
-#endif
-#if defined(_INTERNAL)
-	#define STATE_MACHINE_DEBUG	//uncomment to debug state machines in internal.  jba.
 #endif
 
 //-----------------------------------------------------------------------------

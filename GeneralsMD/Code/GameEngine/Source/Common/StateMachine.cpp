@@ -34,6 +34,7 @@
 #include "Common/GameState.h"
 #include "Common/GlobalData.h"
 #include "Common/Xfer.h"
+#include "Common/CRCDebug.h"
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Object.h"
 
@@ -179,6 +180,8 @@ StateReturnType State::friend_checkForTransitions( StateReturnType status )
 											getMachine()->getName().str(), it->description ? it->description : "[no description]"));
 						}
 	#endif
+						CRCDEBUG_LOG(("'%s' -- '%s' condition '%s' returned true!\n", getMachineOwner()->getTemplate()->getName().str(),
+										getMachine()->getName().str(), it->description ? it->description : "[no description]"));
 
 						// check if machine should exit
 						if (it->toStateID == EXIT_MACHINE_WITH_SUCCESS)
@@ -237,6 +240,8 @@ StateReturnType State::friend_checkForSleepTransitions( StateReturnType status )
 							getMachine()->getName().str(), it->description ? it->description : "[no description]"));
 		}
 #endif
+		CRCDEBUG_LOG(("'%s' -- '%s' condition '%s' returned true!\n", getMachineOwner()->getTemplate()->getName().str(),
+						getMachine()->getName().str(), it->description ? it->description : "[no description]"));
 
 		// check if machine should exit
 		if (it->toStateID == EXIT_MACHINE_WITH_SUCCESS)
@@ -310,10 +315,12 @@ Bool StateMachine::getWantsDebugOutput() const
 		return true;
 	}
 
+#if defined(_DEBUG) || defined(_INTERNAL)
 	if (TheGlobalData->m_stateMachineDebug)
 	{
 		return true;
 	}
+#endif
 
 #ifdef DEBUG_OBJECT_ID_EXISTS
 	if (TheObjectIDToDebug != 0 && getOwner() != NULL && getOwner()->getID() == TheObjectIDToDebug)
@@ -342,6 +349,7 @@ void StateMachine::internalClear()
 		DEBUG_LOG(("%d '%s'%d -- '%s' %d internalClear()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner->getID(), m_name.str(), getCurrentStateID()));
 	}
 #endif
+	CRCDEBUG_LOG(("'%s'%d -- '%s' %d internalClear()\n", m_owner->getTemplate()->getName().str(), m_owner->getID(), m_name.str(), getCurrentStateID()));
 }
 
 //-----------------------------------------------------------------------------
@@ -357,6 +365,8 @@ void StateMachine::clear()
 		if (m_currentState) DEBUG_LOG((" cur state '%s'\n", m_currentState->getName().str()));
 		DEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
 #endif
+		CRCDEBUG_LOG((" cur state '%s'\n", m_currentState ? m_currentState->getName().str() : "null"));
+		CRCDEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
 		return;
 	}
 
@@ -382,6 +392,8 @@ StateReturnType StateMachine::resetToDefaultState()
 		if (m_currentState) DEBUG_LOG((" cur state '%s'\n", m_currentState->getName().str()));
 		DEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
 #endif
+		CRCDEBUG_LOG((" cur state '%s'\n", m_currentState ? m_currentState->getName().str() : "null"));
+		CRCDEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
 		return STATE_FAILURE;
 	}
 
@@ -486,6 +498,7 @@ void StateMachine::defineState( StateID id, State *state, StateID successID, Sta
 #ifdef STATE_MACHINE_DEBUG
 	DEBUG_ASSERTCRASH(m_stateMap.find( id ) == m_stateMap.end(), ("duplicate state ID in statemachine %s\n",m_name.str()));
 #endif
+	CRCDEBUG_LOG(("Duplicate state ID in statemachine %s %d\n", m_name.str(), (int)(m_stateMap.find( id ) == m_stateMap.end())));
 
 	// map the ID to the state
 	m_stateMap.insert( std::map<StateID, State *>::value_type( id, state ) );
@@ -548,6 +561,8 @@ StateReturnType StateMachine::setState( StateID newStateID )
 		if (m_currentState) DEBUG_LOG((" cur state '%s'\n", m_currentState->getName().str()));
 		DEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
 #endif
+		CRCDEBUG_LOG(("cur state '%s'\n", m_currentState ? m_currentState->getName().str() : "null"));
+		CRCDEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
 		return STATE_CONTINUE;
 	}
 
@@ -585,23 +600,30 @@ StateReturnType StateMachine::internalSetState( StateID newStateID )
 		// extract the state associated with the given ID
 		newState = internalGetState( newStateID );
 #ifdef STATE_MACHINE_DEBUG
-		if (getWantsDebugOutput()) 
 		{
-			StateID curState = INVALID_STATE_ID;
+			AsciiString logString;
+			AsciiString tmp;
+
+			tmp.format("%d '%s'%d -- '%s' %d exit", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner->getID(), m_name.str(), getCurrentStateID());
+			logString.concat(tmp);
+
 			if (m_currentState) {
-				curState = m_currentState->getID();
-			}
-			DEBUG_LOG(("%d '%s'%d -- '%s' %d exit\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner->getID(), m_name.str(), getCurrentStateID()));
-			if (m_currentState) {
-				DEBUG_LOG((" '%s' ", m_currentState->getName().str()));
+				tmp.format(" '%s' ", m_currentState->getName().str());
 			} else {
-				DEBUG_LOG((" INVALID_STATE_ID "));
+				tmp.format(" INVALID_STATE_ID ");
 			}
+			logString.concat(tmp);
+
 			if (newState) {
-				DEBUG_LOG(("enter '%s' \n", newState->getName().str()));
+				tmp.format(" enter '%s'", newState->getName().str());
 			} else {
-				DEBUG_LOG(("to INVALID_STATE\n"));
+				tmp.format((" to INVALID_STATE"));
 			}
+			logString.concat(tmp);
+
+			if (getWantsDebugOutput())
+				DEBUG_LOG(("%s\n", logString.str()));
+			CRCDEBUG_LOG(("%s\n", logString.str()));
 		}
 #endif
 	}
@@ -760,8 +782,9 @@ void StateMachine::halt()
 	if (getWantsDebugOutput())
 	{
 		DEBUG_LOG(("%d '%s' -- '%s' %d halt()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_name.str(), getCurrentStateID()));
-	}	
+	}
 #endif
+	CRCDEBUG_LOG(("'%s' -- '%s' %d halt()\n", m_owner->getTemplate()->getName().str(), m_name.str(), getCurrentStateID()));
 }
 
 //-----------------------------------------------------------------------------
