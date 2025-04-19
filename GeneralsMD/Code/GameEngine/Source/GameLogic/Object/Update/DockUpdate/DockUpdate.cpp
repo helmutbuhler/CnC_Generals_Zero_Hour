@@ -30,6 +30,7 @@
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 #include "Common/Debug.h"
 #include "Common/Xfer.h"
+#include "Common/CRCDebug.h"
 #include "GameClient/Drawable.h"
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Object.h"
@@ -457,6 +458,7 @@ Coord3D DockUpdate::computeApproachPosition( Int positionIndex, Object *forWhom 
 	// Start with the pristine bone, then convert it to the world, then find a clean spot around it.
 	
 	Object *us = getObject();
+	DUMPCOORD3D(&m_approachPositions[positionIndex]);
 	us->convertBonePosToWorldPos( &m_approachPositions[positionIndex], NULL, &workingPosition, NULL );
 
 	if( m_numberApproachPositionBones == 0 )
@@ -516,11 +518,13 @@ void DockUpdate::loadDockPositions()
 
 				Coord3D approachBones[DEFAULT_APPROACH_VECTOR_SIZE];
 				m_numberApproachPositionBones = myDrawable->getPristineBonePositions( "DockWaiting", 1, approachBones, NULL, m_numberApproachPositions);
+				CRCDEBUG_LOG(("m_numberApproachPositions %d m_numberApproachPositionBones %d m_approachPositions %d\n", m_numberApproachPositions, m_numberApproachPositionBones, m_approachPositions.size()));
 				if( m_numberApproachPositions == m_approachPositions.size() )//safeguard: will always be true
 				{
 					for( Int copyIndex = 0; copyIndex < m_numberApproachPositions; ++copyIndex )
 					{
 						m_approachPositions[copyIndex] = approachBones[copyIndex];
+						DUMPCOORD3D(&m_approachPositions[copyIndex]);
 					}
 				}
 			}
