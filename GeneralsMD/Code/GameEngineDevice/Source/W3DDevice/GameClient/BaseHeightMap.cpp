@@ -2374,7 +2374,8 @@ void BaseHeightMapRenderObjClass::staticLightingChanged( void )
 	m_scorchesInBuffer = 0; // If we just allocated the buffers, we got no scorches in the buffer.
 	m_curNumScorchVertices=0;
 	m_curNumScorchIndices=0;
-	if (m_roadBuffer) m_roadBuffer->updateLighting();
+	if (m_roadBuffer)
+		m_roadBuffer->updateLighting();
 
 }
 

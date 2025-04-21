@@ -874,12 +874,12 @@ int W3DAssetManager::Recolor_Asset(RenderObjClass *robj, const int color)
 */
 int W3DAssetManager::Recolor_Mesh(RenderObjClass *robj, const int color)
 {
-	int i;
-	int didRecolor=0;
-	const char *meshName;
 	if (TheGlobalData->m_headless)
 		return 0;
 
+	int i;
+	int didRecolor=0;
+	const char *meshName;
 	MeshClass *mesh=(MeshClass*) robj;	
 	MeshModelClass * model = mesh->Get_Model();
 	MaterialInfoClass	*material = mesh->Get_Material_Info();
@@ -921,10 +921,10 @@ int W3DAssetManager::Recolor_Mesh(RenderObjClass *robj, const int color)
 
 int W3DAssetManager::Recolor_HLOD(RenderObjClass *robj, const int color)
 {
-	int didRecolor=0;
 	if (TheGlobalData->m_headless)
 		return 0;
 
+	int didRecolor=0;
 	int num_sub = robj->Get_Num_Sub_Objects();
 	for(int i = 0; i < num_sub; i++) {
 		RenderObjClass *sub_obj = robj->Get_Sub_Object(i);
