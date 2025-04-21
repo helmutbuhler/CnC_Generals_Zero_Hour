@@ -179,9 +179,9 @@ StateReturnType State::friend_checkForTransitions( StateReturnType status )
 							DEBUG_LOG(("%d '%s' -- '%s' condition '%s' returned true!\n", TheGameLogic->getFrame(), getMachineOwner()->getTemplate()->getName().str(),
 											getMachine()->getName().str(), it->description ? it->description : "[no description]"));
 						}
-	#endif
 						CRCDEBUG_LOG(("'%s' -- '%s' condition '%s' returned true!\n", getMachineOwner()->getTemplate()->getName().str(),
 										getMachine()->getName().str(), it->description ? it->description : "[no description]"));
+	#endif
 
 						// check if machine should exit
 						if (it->toStateID == EXIT_MACHINE_WITH_SUCCESS)
@@ -239,9 +239,9 @@ StateReturnType State::friend_checkForSleepTransitions( StateReturnType status )
 			DEBUG_LOG(("%d '%s' -- '%s' condition '%s' returned true!\n", TheGameLogic->getFrame(), getMachineOwner()->getTemplate()->getName().str(),
 							getMachine()->getName().str(), it->description ? it->description : "[no description]"));
 		}
-#endif
 		CRCDEBUG_LOG(("'%s' -- '%s' condition '%s' returned true!\n", getMachineOwner()->getTemplate()->getName().str(),
 						getMachine()->getName().str(), it->description ? it->description : "[no description]"));
+#endif
 
 		// check if machine should exit
 		if (it->toStateID == EXIT_MACHINE_WITH_SUCCESS)
@@ -348,8 +348,8 @@ void StateMachine::internalClear()
 	{
 		DEBUG_LOG(("%d '%s'%d -- '%s' %d internalClear()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner->getID(), m_name.str(), getCurrentStateID()));
 	}
-#endif
 	CRCDEBUG_LOG(("'%s'%d -- '%s' %d internalClear()\n", m_owner->getTemplate()->getName().str(), m_owner->getID(), m_name.str(), getCurrentStateID()));
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -364,9 +364,9 @@ void StateMachine::clear()
 #ifdef STATE_MACHINE_DEBUG
 		if (m_currentState) DEBUG_LOG((" cur state '%s'\n", m_currentState->getName().str()));
 		DEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
-#endif
 		CRCDEBUG_LOG((" cur state '%s'\n", m_currentState ? m_currentState->getName().str() : "null"));
 		CRCDEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
+#endif
 		return;
 	}
 
@@ -391,9 +391,9 @@ StateReturnType StateMachine::resetToDefaultState()
 #ifdef STATE_MACHINE_DEBUG
 		if (m_currentState) DEBUG_LOG((" cur state '%s'\n", m_currentState->getName().str()));
 		DEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
-#endif
 		CRCDEBUG_LOG((" cur state '%s'\n", m_currentState ? m_currentState->getName().str() : "null"));
 		CRCDEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
+#endif
 		return STATE_FAILURE;
 	}
 
@@ -497,8 +497,8 @@ void StateMachine::defineState( StateID id, State *state, StateID successID, Sta
 {
 #ifdef STATE_MACHINE_DEBUG
 	DEBUG_ASSERTCRASH(m_stateMap.find( id ) == m_stateMap.end(), ("duplicate state ID in statemachine %s\n",m_name.str()));
-#endif
 	CRCDEBUG_LOG(("Duplicate state ID in statemachine %s %d\n", m_name.str(), (int)(m_stateMap.find( id ) == m_stateMap.end())));
+#endif
 
 	// map the ID to the state
 	m_stateMap.insert( std::map<StateID, State *>::value_type( id, state ) );
@@ -560,9 +560,9 @@ StateReturnType StateMachine::setState( StateID newStateID )
 #ifdef STATE_MACHINE_DEBUG
 		if (m_currentState) DEBUG_LOG((" cur state '%s'\n", m_currentState->getName().str()));
 		DEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
-#endif
 		CRCDEBUG_LOG(("cur state '%s'\n", m_currentState ? m_currentState->getName().str() : "null"));
 		CRCDEBUG_LOG(("machine is locked (by %s), cannot be cleared (Please don't ignore; this generally indicates a potential logic flaw)\n",m_lockedby));
+#endif
 		return STATE_CONTINUE;
 	}
 
@@ -783,8 +783,8 @@ void StateMachine::halt()
 	{
 		DEBUG_LOG(("%d '%s' -- '%s' %d halt()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_name.str(), getCurrentStateID()));
 	}
-#endif
 	CRCDEBUG_LOG(("'%s' -- '%s' %d halt()\n", m_owner->getTemplate()->getName().str(), m_name.str(), getCurrentStateID()));
+#endif
 }
 
 //-----------------------------------------------------------------------------
