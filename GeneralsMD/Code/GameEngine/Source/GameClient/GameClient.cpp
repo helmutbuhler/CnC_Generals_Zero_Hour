@@ -633,10 +633,9 @@ void GameClient::update( void )
 	if(TheGlobalData->m_playIntro || TheGlobalData->m_afterIntro)
 	{
 		// redraw all views, update the GUI
+		if (!TheGlobalData->m_headless)
 		{
 			TheDisplay->DRAW();
-		}
-		{
 			TheDisplay->UPDATE();
 		}
 		return;
@@ -757,10 +756,12 @@ void GameClient::update( void )
 	}
 
 	// update display
+	if (!TheGlobalData->m_headless)
 	{
 		TheDisplay->UPDATE();
 	}
 
+	if (!TheGlobalData->m_headless)
 	{
 		USE_PERF_TIMER(GameClient_draw)
 			

@@ -1538,8 +1538,6 @@ void W3DView::draw( void )
 	CustomScenePassModes customScenePassMode  = SCENE_PASS_DEFAULT;
 	Bool preRenderResult = false;
 
-	if (TheGlobalData->m_headless)
-		return;
 	if (m_viewFilterMode && 
 			m_viewFilter > FT_NULL_FILTER && 
 			m_viewFilter < FT_MAX)
