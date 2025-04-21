@@ -1031,7 +1031,8 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//Create a mutex with a unique name to Generals in order to determine if
 		//our app is already running.
 		//WARNING: DO NOT use this number for any other application except Generals.
-#if ENABLE_FAKE_IP == 0
+#if 0
+//#if ENABLE_FAKE_IP == 0
 		// With Fake IPs, we allow multiple instances though
 		GeneralsMutex = CreateMutex(NULL, FALSE, GENERALS_GUID);
 		if (GetLastError() == ERROR_ALREADY_EXISTS)
