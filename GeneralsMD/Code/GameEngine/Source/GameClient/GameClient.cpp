@@ -457,11 +457,6 @@ void GameClient::init( void )
 void GameClient::reset( void )
 {
 	Drawable *draw, *nextDraw;
-//	m_drawableHash.clear();
-//	m_drawableHash.resize(DRAWABLE_HASH_SIZE);
-
-	m_drawableVector.clear();
-	m_drawableVector.resize(DRAWABLE_HASH_SIZE, NULL);
 
 	// need to reset the in game UI to clear drawables before they are destroyed
 	TheInGameUI->reset();
@@ -473,6 +468,13 @@ void GameClient::reset( void )
 		destroyDrawable( draw );
 	}
 	m_drawableList = NULL;
+
+	// TheSuperHackers @info helmutbuhler 22/04/2025
+	// Moved this down so destroyDrawable can properly remove itself from this.
+//	m_drawableHash.clear();
+//	m_drawableHash.resize(DRAWABLE_HASH_SIZE);
+	m_drawableVector.clear();
+	m_drawableVector.resize(DRAWABLE_HASH_SIZE, NULL);
 
 	TheDisplay->reset();
 	TheTerrainVisual->reset();
