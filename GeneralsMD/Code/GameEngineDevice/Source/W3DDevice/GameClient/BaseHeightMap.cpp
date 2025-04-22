@@ -2306,7 +2306,8 @@ void BaseHeightMapRenderObjClass::notifyShroudChanged(void)
 void BaseHeightMapRenderObjClass::addTerrainBib(Vector3 corners[4], 
 																						ObjectID id, Bool highlight)
 {
-	m_bibBuffer->addBib(corners, id, highlight); 
+	if (m_bibBuffer)
+		m_bibBuffer->addBib(corners, id, highlight); 
 };
 
 //=============================================================================
@@ -2317,7 +2318,8 @@ void BaseHeightMapRenderObjClass::addTerrainBib(Vector3 corners[4],
 void BaseHeightMapRenderObjClass::addTerrainBibDrawable(Vector3 corners[4], 
 																						DrawableID id, Bool highlight)
 {
-	m_bibBuffer->addBibDrawable(corners, id, highlight); 
+	if (m_bibBuffer)
+		m_bibBuffer->addBibDrawable(corners, id, highlight); 
 };
 
 //=============================================================================
@@ -2327,7 +2329,8 @@ void BaseHeightMapRenderObjClass::addTerrainBibDrawable(Vector3 corners[4],
 //=============================================================================
 void BaseHeightMapRenderObjClass::removeTerrainBibHighlighting()
 {
-	m_bibBuffer->removeHighlighting(  ); 
+	if (m_bibBuffer)
+		m_bibBuffer->removeHighlighting(  ); 
 };
 
 //=============================================================================
@@ -2337,7 +2340,8 @@ void BaseHeightMapRenderObjClass::removeTerrainBibHighlighting()
 //=============================================================================
 void BaseHeightMapRenderObjClass::removeAllTerrainBibs()
 {
-	m_bibBuffer->clearAllBibs(  ); 
+	if (m_bibBuffer)
+		m_bibBuffer->clearAllBibs(  ); 
 };
 
 //=============================================================================
@@ -2347,7 +2351,8 @@ void BaseHeightMapRenderObjClass::removeAllTerrainBibs()
 //=============================================================================
 void BaseHeightMapRenderObjClass::removeTerrainBib(ObjectID id)
 {
-	m_bibBuffer->removeBib( id ); 
+	if (m_bibBuffer)
+		m_bibBuffer->removeBib( id ); 
 };
 
 //=============================================================================
@@ -2357,7 +2362,8 @@ void BaseHeightMapRenderObjClass::removeTerrainBib(ObjectID id)
 //=============================================================================
 void BaseHeightMapRenderObjClass::removeTerrainBibDrawable(DrawableID id)
 {
-	m_bibBuffer->removeBibDrawable( id ); 
+	if (m_bibBuffer)
+		m_bibBuffer->removeBibDrawable( id ); 
 };
 
 //=============================================================================
