@@ -3989,8 +3989,6 @@ void InGameUI::playCameoMovie( const AsciiString& movieName )
 void InGameUI::stopCameoMovie( void )
 {
 //RightHUD
-	if (TheWindowManager == NULL)
-		return;
 	//GameWindow *window = TheWindowManager->winGetWindowFromId(NULL,TheNameKeyGenerator->nameToKey( AsciiString("ControlBar.wnd:CameoMovieWindow") ));
 	GameWindow *window = TheWindowManager->winGetWindowFromId(NULL,TheNameKeyGenerator->nameToKey( AsciiString("ControlBar.wnd:RightHUD") ));
 //	window->winHide(FALSE);
@@ -4986,8 +4984,6 @@ void InGameUI::buildRegion( const ICoord2D *anchor, const ICoord2D *dest, IRegio
 //-------------------------------------------------------------------------------------------------
 void InGameUI::addFloatingText(const UnicodeString& text,const Coord3D *pos, Color color)
 {
-	if (TheWindowManager == NULL)
-		return;
 	if( TheGameLogic->getDrawIconUI() )
 	{
 		FloatingTextData *newFTD = newInstance( FloatingTextData );
@@ -5021,8 +5017,6 @@ inline Bool isClose(const Coord3D& a, const Coord3D& b)
 }
 void InGameUI::DEBUG_addFloatingText(const AsciiString& text, const Coord3D * pos, Color color)
 {
-	if (TheWindowManager == NULL)
-		return;
 	const Int POINTSIZE = 8;
 	const Int LEADING = 0;
 
@@ -5180,8 +5174,6 @@ void InGameUI::popupMessage( const AsciiString& message, Int x, Int y, Int width
 //-------------------------------------------------------------------------------------------------
 void InGameUI::popupMessage( const AsciiString& identifier, Int x, Int y, Int width, Color textColor, Bool pause, Bool pauseMusic)
 {
-	if (TheWindowManager == NULL)
-		return;
 	if(m_popupMessageData)
 		clearPopupMessageData();
 
@@ -5224,7 +5216,7 @@ void InGameUI::popupMessage( const AsciiString& identifier, Int x, Int y, Int wi
 //-------------------------------------------------------------------------------------------------
 void InGameUI::clearPopupMessageData( void )
 {
-	if(!m_popupMessageData || TheWindowManager == NULL)
+	if(!m_popupMessageData)
 		return;
 	if(m_popupMessageData->layout)
 	{

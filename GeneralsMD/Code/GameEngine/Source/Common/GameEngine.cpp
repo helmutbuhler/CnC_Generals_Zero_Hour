@@ -717,7 +717,7 @@ void GameEngine::init( int argc, char *argv[] )
 void GameEngine::reset( void )
 {
 
-	WindowLayout *background = TheWindowManager ? TheWindowManager->winCreateLayout("Menus/BlankWindow.wnd") : NULL;
+	WindowLayout *background = TheWindowManager->winCreateLayout("Menus/BlankWindow.wnd");
 	if (background != NULL)
 	{
 		DEBUG_ASSERTCRASH(background,("We Couldn't Load Menus/BlankWindow.wnd"));

@@ -1654,8 +1654,6 @@ const Image *ControlBar::getStarImage(void )
 	else
 		m_lastFlashedAtPointValue = ThePlayerList->getLocalPlayer()->getSciencePurchasePoints();
 	
-	if (TheWindowManager == NULL)
-		return NULL;
 	GameWindow *win= TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey( "ControlBar.wnd:ButtonGeneral" ) );
 	if(!win)
 		return NULL;
@@ -2145,12 +2143,6 @@ void ControlBar::switchToContext( ControlBarContext context, Drawable *draw )
 	// save a pointer for the currently selected drawable
 	m_currentSelectedDrawable = draw;
 
-	if (TheWindowManager == NULL)
-	{
-		m_currContext = context;
-		return;
-	}
-
 	if (IsInGameChatActive() == FALSE && TheGameLogic && !TheGameLogic->isInShellGame()) {
 		TheWindowManager->winSetFocus( NULL );
 	}
@@ -2603,9 +2595,6 @@ void ControlBar::setPortraitByImage( const Image *image )
 //-------------------------------------------------------------------------------------------------
 void ControlBar::setPortraitByObject( Object *obj )
 {
-	if (TheWindowManager == NULL)
-		return;
-
 	if( obj )
 	{
 		if( obj->isKindOf( KINDOF_SHOW_PORTRAIT_WHEN_CONTROLLED ) && !obj->isLocallyControlled() )
@@ -2766,8 +2755,6 @@ void ControlBar::setControlBarSchemeByPlayer(Player *p)
 {
 	if(m_controlBarSchemeManager)
 		m_controlBarSchemeManager->setControlBarSchemeByPlayer(p);
-	if (TheWindowManager == NULL)
-		return;
 	static NameKeyType buttonPlaceBeaconID = NAMEKEY( "ControlBar.wnd:ButtonPlaceBeacon" );
 	static NameKeyType buttonIdleWorkerID = NAMEKEY("ControlBar.wnd:ButtonIdleWorker");
 	static NameKeyType buttonGeneralID = NAMEKEY("ControlBar.wnd:ButtonGeneral");
@@ -3259,8 +3246,7 @@ void ControlBar::initSpecialPowershortcutBar( Player *player)
 	if(!player || !pt|| !player->isLocalPlayer()
 			|| pt->getSpecialPowerShortcutButtonCount() == 0  
 			|| pt->getSpecialPowerShortcutWinName().isEmpty()
-			|| !player->isPlayerActive()
-			|| TheWindowManager == NULL)
+			|| !player->isPlayerActive())
 		return;
 	m_currentlyUsedSpecialPowersButtons = pt->getSpecialPowerShortcutButtonCount();
 	AsciiString layoutName, tempName, windowName, parentName;
