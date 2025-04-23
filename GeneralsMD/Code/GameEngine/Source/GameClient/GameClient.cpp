@@ -345,25 +345,21 @@ void GameClient::init( void )
 		TheHeaderTemplateManager->init();
 	}
 
-	if (!TheGlobalData->m_headless)
+	// create the window manager
+	TheWindowManager = TheGlobalData->m_headless ? NEW DummyGameWindowManager : createWindowManager();
+	if( TheWindowManager )
 	{
-		// create the window manager
-		TheWindowManager = createWindowManager();
-		if( TheWindowManager )
-		{
+		TheWindowManager->init();
+ 		TheWindowManager->setName("TheWindowManager");
+//		TheWindowManager->initTestGUI();
+	}  // end if
 
-			TheWindowManager->init();
- 			TheWindowManager->setName("TheWindowManager");
-	//		TheWindowManager->initTestGUI();
-
-		}  // end if
-		// create the IME manager
-		TheIMEManager = CreateIMEManagerInterface();
-		if ( TheIMEManager )
-		{
-			TheIMEManager->init();
- 			TheIMEManager->setName("TheIMEManager");
-		}
+	// create the IME manager
+	TheIMEManager = CreateIMEManagerInterface();
+	if ( TheIMEManager )
+	{
+		TheIMEManager->init();
+ 		TheIMEManager->setName("TheIMEManager");
 	}
 
 	// create the shell
