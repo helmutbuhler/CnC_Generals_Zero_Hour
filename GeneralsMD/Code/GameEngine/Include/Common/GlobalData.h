@@ -101,7 +101,7 @@ public:
 	Int m_framesPerSecondLimit;
 	Int	m_chipSetType;	///<See W3DShaderManager::ChipsetType for options
 
-	// TheSuperHackers @feature helmutbuhler 04/11/2025
+	// TheSuperHackers @feature helmutbuhler 11/04/2025
 	// Run game without graphics, input or audio.
 	Bool m_headless;
 	

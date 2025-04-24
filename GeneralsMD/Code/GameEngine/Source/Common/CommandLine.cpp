@@ -1243,7 +1243,7 @@ static CommandLineParam params[] =
 	{ "-noshaders", parseNoShaders },
 	{ "-quickstart", parseQuickStart },
 
-	// TheSuperHackers @feature helmutbuhler 04/11/2025
+	// TheSuperHackers @feature helmutbuhler 11/04/2025
 	// This runs the game without a window, graphics, input and audio. Used for testing.
 	{ "-headless", parseHeadless },
 	

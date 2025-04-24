@@ -260,7 +260,7 @@ inline Drawable* GameClient::findDrawableByID( const DrawableID id )
 extern GameClient *TheGameClient;
 
 
-// TheSuperHackers @logic-client-separation helmutbuhler 04/11/2025
+// TheSuperHackers @logic-client-separation helmutbuhler 11/04/2025
 // Some information about the architecture and headless mode:
 // The game is structurally separated into GameLogic and GameClient.
 // The Logic is responsible for everything that affects the game mechanic and what is synchronized over

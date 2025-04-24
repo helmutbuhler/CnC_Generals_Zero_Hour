@@ -513,7 +513,7 @@ void DockUpdate::loadDockPositions()
 			{
 				// Dynamic means no bones
 				
-				// TheSuperHackers @logic-client-separation helmutbuhler 04/11/2025
+				// TheSuperHackers @logic-client-separation helmutbuhler 11/04/2025
 				// We shouldn't depend on bones of a drawable here!
 
 				// TheSuperHackers @fix helmutbuhler 04/19/2025

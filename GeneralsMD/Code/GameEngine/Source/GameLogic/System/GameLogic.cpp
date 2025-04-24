@@ -737,7 +737,7 @@ static void populateRandomSideAndColor( GameInfo *game )
 		// This is also enforced at GUI setup (GUIUtil.cpp).
 		// @todo: unlock these when something rad happens
 
-		// TheSuperHackers @logic-client-separation helmutbuhler 04/11/2025
+		// TheSuperHackers @logic-client-separation helmutbuhler 11/04/2025
 		// TheChallengeGenerals belongs to client, we shouldn't depend on that here.
 		Bool disallowLockedGenerals = TRUE;
 		const GeneralPersona *general = TheChallengeGenerals->getGeneralByTemplateName(ptTest->getName());
@@ -1986,7 +1986,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 				// This is also enforced at GUI setup (GUIUtil.cpp and UserPreferences.cpp).
 				// @todo: unlock these when something rad happens
 				
-				// TheSuperHackers @logic-client-separation helmutbuhler 04/11/2025
+				// TheSuperHackers @logic-client-separation helmutbuhler 11/04/2025
 				// TheChallengeGenerals belongs to client, we shouldn't depend on that here.
 				Bool disallowLockedGenerals = TRUE;
 				const GeneralPersona *general = TheChallengeGenerals->getGeneralByTemplateName(pt->getName());

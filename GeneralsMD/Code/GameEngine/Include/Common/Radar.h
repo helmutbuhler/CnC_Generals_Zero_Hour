@@ -293,7 +293,7 @@ protected:
 // EXTERNALS //////////////////////////////////////////////////////////////////////////////////////
 extern Radar *TheRadar;  ///< the radar singleton extern
 
-// TheSuperHackers @feature helmutbuhler 04/10/2025
+// TheSuperHackers @feature helmutbuhler 10/04/2025
 // Radar that does nothing. Used for Headless Mode.
 class RadarDummy : public Radar
 {
