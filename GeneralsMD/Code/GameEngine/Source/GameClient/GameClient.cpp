@@ -454,6 +454,9 @@ void GameClient::reset( void )
 {
 	Drawable *draw, *nextDraw;
 
+	m_drawableVector.clear();
+	m_drawableVector.resize(DRAWABLE_HASH_SIZE, NULL);
+
 	// need to reset the in game UI to clear drawables before they are destroyed
 	TheInGameUI->reset();
 
