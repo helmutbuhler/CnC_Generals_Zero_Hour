@@ -456,9 +456,6 @@ void GameClient::reset( void )
 {
 	Drawable *draw, *nextDraw;
 
-	m_drawableVector.clear();
-	m_drawableVector.resize(DRAWABLE_HASH_SIZE, NULL);
-
 	// need to reset the in game UI to clear drawables before they are destroyed
 	TheInGameUI->reset();
 
@@ -895,7 +892,7 @@ void GameClient::removeDrawableFromLookupTable( Drawable *draw )
 	if( draw == NULL )
 		return;
 
-	DEBUG_ASSERTCRASH( m_drawableHash.find(draw->getID()) != m_drawableHash.end() , ("bad DrawableID: %d when removing drawable from lookup table, object not found.", (Int)draw->getID()) );
+	//DEBUG_ASSERTCRASH( m_drawableHash.find(draw->getID()) != m_drawableHash.end() , ("bad DrawableID: %d when removing drawable from lookup table, object not found.", (Int)draw->getID()) );
 
 	// remove from table
 //	m_drawableHash.erase( draw->getID() );

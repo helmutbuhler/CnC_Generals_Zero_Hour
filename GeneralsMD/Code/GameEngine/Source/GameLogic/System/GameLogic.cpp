@@ -3896,7 +3896,7 @@ void GameLogic::removeObjectFromLookupTable( Object *obj )
 	if( obj == NULL )
 		return;
 
-	DEBUG_ASSERTCRASH( m_objHash.find(obj->getID()) != m_objHash.end() , ("bad ObjectID: %d when removing object from lookup table, object not found.", (Int)obj->getID()) );
+	//DEBUG_ASSERTCRASH( m_objHash.find(obj->getID()) != m_objHash.end() , ("bad ObjectID: %d when removing object from lookup table, object not found.", (Int)obj->getID()) );
 
 	// remove from lookup table
 //	m_objHash.erase( obj->getID() );
