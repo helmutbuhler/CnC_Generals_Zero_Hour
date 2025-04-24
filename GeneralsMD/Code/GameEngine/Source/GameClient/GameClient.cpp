@@ -349,9 +349,11 @@ void GameClient::init( void )
 	TheWindowManager = TheGlobalData->m_headless ? NEW DummyGameWindowManager : createWindowManager();
 	if( TheWindowManager )
 	{
+
 		TheWindowManager->init();
  		TheWindowManager->setName("TheWindowManager");
 //		TheWindowManager->initTestGUI();
+
 	}  // end if
 
 	// create the IME manager

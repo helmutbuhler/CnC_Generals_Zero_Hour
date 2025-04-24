@@ -1805,42 +1805,39 @@ void InGameUI::update( void )
 	static NameKeyType moneyWindowKey = TheNameKeyGenerator->nameToKey( "ControlBar.wnd:MoneyDisplay" );	
 	static NameKeyType powerWindowKey = TheNameKeyGenerator->nameToKey( "ControlBar.wnd:PowerWindow" );	
 
-	if (TheWindowManager != NULL)
+	GameWindow *moneyWin = TheWindowManager->winGetWindowFromId( NULL, moneyWindowKey );
+	GameWindow *powerWin = TheWindowManager->winGetWindowFromId( NULL, powerWindowKey );
+//	if( moneyWin == NULL )
+//	{
+//		NameKeyType moneyWindowKey = TheNameKeyGenerator->nameToKey( "ControlBar.wnd:MoneyDisplay" );	
+//
+//		moneyWin = TheWindowManager->winGetWindowFromId( NULL, moneyWindowKey );
+//
+//	}  // end if
+	Player *moneyPlayer = NULL;
+	if( TheControlBar->isObserverControlBarOn())
+		moneyPlayer = TheControlBar->getObserverLookAtPlayer();
+	else
+		moneyPlayer = ThePlayerList->getLocalPlayer();
+	if( moneyPlayer)
 	{
-		GameWindow *moneyWin = TheWindowManager->winGetWindowFromId( NULL, moneyWindowKey );
-		GameWindow *powerWin = TheWindowManager->winGetWindowFromId( NULL, powerWindowKey );
-	//	if( moneyWin == NULL )
-	//	{
-	//		NameKeyType moneyWindowKey = TheNameKeyGenerator->nameToKey( "ControlBar.wnd:MoneyDisplay" );	
-	//
-	//		moneyWin = TheWindowManager->winGetWindowFromId( NULL, moneyWindowKey );
-	//
-	//	}  // end if
-		Player *moneyPlayer = NULL;
-		if( TheControlBar->isObserverControlBarOn())
-			moneyPlayer = TheControlBar->getObserverLookAtPlayer();
-		else
-			moneyPlayer = ThePlayerList->getLocalPlayer();
-		if( moneyPlayer)
+		Int currentMoney = moneyPlayer->getMoney()->countMoney();
+		if( lastMoney != currentMoney )
 		{
-			Int currentMoney = moneyPlayer->getMoney()->countMoney();
-			if( lastMoney != currentMoney )
-			{
-				UnicodeString buffer;
+			UnicodeString buffer;
 
-				buffer.format( TheGameText->fetch( "GUI:ControlBarMoneyDisplay" ), currentMoney );
-				GadgetStaticTextSetText( moneyWin, buffer );
-				lastMoney = currentMoney;
+			buffer.format( TheGameText->fetch( "GUI:ControlBarMoneyDisplay" ), currentMoney );
+			GadgetStaticTextSetText( moneyWin, buffer );
+			lastMoney = currentMoney;
 			
-			}  // end if
-			moneyWin->winHide(FALSE);
-			powerWin->winHide(FALSE);
-		}
-		else
-		{
-			moneyWin->winHide(TRUE);
-			powerWin->winHide(TRUE);
-		}
+		}  // end if
+		moneyWin->winHide(FALSE);
+		powerWin->winHide(FALSE);
+	}
+	else
+	{
+		moneyWin->winHide(TRUE);
+		powerWin->winHide(TRUE);
 	}
 	
 	// Update the floating Text;
@@ -3869,8 +3866,8 @@ void InGameUI::expireHint( HintType type, UnsignedInt hintIndex )
 //-------------------------------------------------------------------------------------------------
 void InGameUI::createControlBar( void )
 {
-	if (TheWindowManager != NULL)
-		TheWindowManager->winCreateFromScript( AsciiString("ControlBar.wnd") );
+
+	TheWindowManager->winCreateFromScript( AsciiString("ControlBar.wnd") );
 	HideControlBar();
 /*	
 	// hide all windows created from this layout
@@ -3886,8 +3883,8 @@ void InGameUI::createControlBar( void )
 //-------------------------------------------------------------------------------------------------
 void InGameUI::createReplayControl( void )
 {
-	if (TheWindowManager != NULL)
-		m_replayWindow = TheWindowManager->winCreateFromScript( AsciiString("ReplayControl.wnd") );
+
+	m_replayWindow = TheWindowManager->winCreateFromScript( AsciiString("ReplayControl.wnd") );
 
 /*	
 	// hide all windows created from this layout

@@ -235,13 +235,11 @@ void GameLogic::closeWindows( void )
 	
 	// hide the options menu
 	NameKeyType buttonID = TheNameKeyGenerator->nameToKey( "OptionsMenu.wnd:ButtonBack" );
-	if (TheWindowManager)
-	{
-		GameWindow *button = TheWindowManager->winGetWindowFromId( NULL, buttonID );
-		GameWindow *window = TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey("OptionsMenu.wnd:OptionsMenuParent") );
-		if(window)
-			TheWindowManager->winSendSystemMsg( window, GBM_SELECTED, (WindowMsgData)button, buttonID );
-	}
+	GameWindow *button = TheWindowManager->winGetWindowFromId( NULL, buttonID );
+	GameWindow *window = TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey("OptionsMenu.wnd:OptionsMenuParent") );
+	if(window)
+		TheWindowManager->winSendSystemMsg( window, GBM_SELECTED, 
+																			(WindowMsgData)button, buttonID );
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -329,15 +327,14 @@ void GameLogic::prepareNewGame( Int gameMode, GameDifficulty diff, Int rankPoint
 
 	TheScriptEngine->setGlobalDifficulty(diff);
 
-	if(!m_background && TheWindowManager != NULL)
+	if(!m_background)
 	{
 		m_background = TheWindowManager->winCreateLayout("Menus/BlankWindow.wnd");
 		DEBUG_ASSERTCRASH(m_background,("We Couldn't Load Menus/BlankWindow.wnd"));
 		m_background->hide(FALSE);
 		m_background->bringForward();
 	}
-	if (m_background != NULL)
-		m_background->getFirstWindow()->winClearStatus(WIN_STATUS_IMAGE);
+	m_background->getFirstWindow()->winClearStatus(WIN_STATUS_IMAGE);
 	TheGameLogic->setGameMode( gameMode );
 	if (!TheGlobalData->m_pendingFile.isEmpty())
 	{

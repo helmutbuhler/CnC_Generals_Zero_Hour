@@ -2595,6 +2595,7 @@ void ControlBar::setPortraitByImage( const Image *image )
 //-------------------------------------------------------------------------------------------------
 void ControlBar::setPortraitByObject( Object *obj )
 {
+
 	if( obj )
 	{
 		if( obj->isKindOf( KINDOF_SHOW_PORTRAIT_WHEN_CONTROLLED ) && !obj->isLocallyControlled() )
@@ -2755,6 +2756,7 @@ void ControlBar::setControlBarSchemeByPlayer(Player *p)
 {
 	if(m_controlBarSchemeManager)
 		m_controlBarSchemeManager->setControlBarSchemeByPlayer(p);
+
 	static NameKeyType buttonPlaceBeaconID = NAMEKEY( "ControlBar.wnd:ButtonPlaceBeacon" );
 	static NameKeyType buttonIdleWorkerID = NAMEKEY("ControlBar.wnd:ButtonIdleWorker");
 	static NameKeyType buttonGeneralID = NAMEKEY("ControlBar.wnd:ButtonGeneral");
@@ -2961,7 +2963,7 @@ void ControlBar::showPurchaseScience( void )
 
 void ControlBar::hidePurchaseScience( void )
 {
-	if(m_contextParent[ CP_PURCHASE_SCIENCE ] == NULL || m_contextParent[ CP_PURCHASE_SCIENCE ]->winIsHidden())
+	if(m_contextParent[ CP_PURCHASE_SCIENCE ]->winIsHidden())
 		return;
 
 	if( m_contextParent[ CP_PURCHASE_SCIENCE ] )
@@ -2986,8 +2988,6 @@ void ControlBar::hidePurchaseScience( void )
 
 void ControlBar::togglePurchaseScience( void )
 {
-	if (m_contextParent[ CP_PURCHASE_SCIENCE ] == NULL)
-		return;
 	if(m_contextParent[ CP_PURCHASE_SCIENCE ]->winIsHidden())
 		showPurchaseScience();
 	else

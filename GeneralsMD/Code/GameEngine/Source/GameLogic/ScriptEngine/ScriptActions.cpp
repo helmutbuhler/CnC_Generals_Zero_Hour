@@ -217,7 +217,7 @@ void ScriptActions::doVictory( void )
 	closeWindows(FALSE);
 	TheGameLogic->closeWindows();
 	doDisableInput();
-	if (!m_suppressNewWindows && TheWindowManager)
+	if (!m_suppressNewWindows)
 	{
 		const Player *localPlayer = ThePlayerList->getLocalPlayer();
 		Bool showObserverWindow = localPlayer->isPlayerObserver() || TheScriptEngine->hasShownMPLocalDefeatWindow();
@@ -241,7 +241,7 @@ void ScriptActions::doDefeat( void )
 	closeWindows(FALSE);
 	TheGameLogic->closeWindows();
 	doDisableInput();
-	if (!m_suppressNewWindows && TheWindowManager != NULL)
+	if (!m_suppressNewWindows)
 	{
 		const Player *localPlayer = ThePlayerList->getLocalPlayer();
 		Bool showObserverWindow = localPlayer->isPlayerObserver() || TheScriptEngine->hasShownMPLocalDefeatWindow();
@@ -3201,16 +3201,18 @@ void ScriptActions::doMergeTeamIntoTeam(const AsciiString& teamSrcName, const As
 void ScriptActions::doDisableInput()
 {
 #if defined(_DEBUG) || defined(_INTERNAL)
-	if (TheGlobalData->m_disableScriptedInputDisabling)
-		return;
+	if (!TheGlobalData->m_disableScriptedInputDisabling)
 #endif
-	TheInGameUI->setInputEnabled(false);
-	if (TheMouse) TheMouse->setVisibility(false);
-	TheInGameUI->deselectAllDrawables();
-	TheInGameUI->clearAttackMoveToMode();
-	TheInGameUI->setWaypointMode( FALSE );
-	TheControlBar->deleteBuildTooltipLayout();
-	TheLookAtTranslator->resetModes();
+	{
+		TheInGameUI->setInputEnabled(false);
+		if (TheMouse)
+			TheMouse->setVisibility(false);
+		TheInGameUI->deselectAllDrawables();
+		TheInGameUI->clearAttackMoveToMode();
+		TheInGameUI->setWaypointMode( FALSE );
+		TheControlBar->deleteBuildTooltipLayout();
+		TheLookAtTranslator->resetModes();
+	}
 }
 
 //-------------------------------------------------------------------------------------------------
