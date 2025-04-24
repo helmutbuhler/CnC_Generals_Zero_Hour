@@ -1298,7 +1298,7 @@ void InGameUI::setRadiusCursor(RadiusCursorType cursorType, const SpecialPowerTe
 //-------------------------------------------------------------------------------------------------
 void InGameUI::handleRadiusCursor()
 {
-	if (!m_curRadiusCursor.isEmpty() && TheMouse)
+	if (!m_curRadiusCursor.isEmpty() && TheMouse != NULL)
 	{
 		const MouseIO* mouseIO = TheMouse->getMouseStatus();
 		Coord3D pos;
