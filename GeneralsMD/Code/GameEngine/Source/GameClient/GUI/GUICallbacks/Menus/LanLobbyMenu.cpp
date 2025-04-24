@@ -419,7 +419,7 @@ void LanLobbyMenuInit( WindowLayout *layout, void *userData )
 	if (getFakeIPNo())
 	{
 		IP = getFakeIPNo();
-		//IPSource = L"Using Fake IP";
+		IPSource = L"Using Fake IP";
 	}
 	else
 #endif
