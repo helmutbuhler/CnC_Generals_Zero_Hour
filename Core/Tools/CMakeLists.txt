@@ -2,7 +2,7 @@
 
 # Build useful tool binaries.
 if(RTS_BUILD_CORE_TOOLS)
-    # TODO: add subdirectory...
+    add_subdirectory(DebugWindow)
 endif()
 
 # Build less useful tool/test binaries.
@@ -30,4 +30,6 @@ endif()
 # Add library interfaces here
 if(RTS_BUILD_GENERALS_EXTRAS OR RTS_BUILD_ZEROHOUR_EXTRAS)
     add_subdirectory(Autorun)
+    add_subdirectory(Launcher)
+    add_subdirectory(PATCHGET)
 endif()

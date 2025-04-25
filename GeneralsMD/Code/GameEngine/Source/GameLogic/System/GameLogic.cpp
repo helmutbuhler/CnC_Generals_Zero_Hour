@@ -3893,7 +3893,8 @@ void GameLogic::removeObjectFromLookupTable( Object *obj )
 {
 
 	// sanity
-	if( obj == NULL )
+	// TheSuperHackers @fix Mauller/Xezon 24/04/2025 Prevent out of range access to vector lookup table
+	if( obj == NULL || static_cast<size_t>(obj->getID()) >= m_objVector.size() )
 		return;
 
 	//DEBUG_ASSERTCRASH( m_objHash.find(obj->getID()) != m_objHash.end() , ("bad ObjectID: %d when removing object from lookup table, object not found.", (Int)obj->getID()) );

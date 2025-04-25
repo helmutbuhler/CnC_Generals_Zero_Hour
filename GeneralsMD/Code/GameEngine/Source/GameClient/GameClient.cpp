@@ -889,7 +889,8 @@ void GameClient::removeDrawableFromLookupTable( Drawable *draw )
 {
 
 	// sanity
-	if( draw == NULL )
+	// TheSuperHackers @fix Mauller/Xezon 24/04/2025 Prevent out of range access to vector lookup table
+	if( draw == NULL || static_cast<size_t>(draw->getID()) >= m_drawableVector.size() )
 		return;
 
 	//DEBUG_ASSERTCRASH( m_drawableHash.find(draw->getID()) != m_drawableHash.end() , ("bad DrawableID: %d when removing drawable from lookup table, object not found.", (Int)draw->getID()) );
