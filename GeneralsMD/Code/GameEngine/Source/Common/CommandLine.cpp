@@ -427,27 +427,15 @@ Int parseReplay(char *args[], int num)
 			exit(1);
 		}
 		TheWritableGlobalData->m_simulateReplays.push_back(filename);
-
+		
 		TheWritableGlobalData->m_playIntro = FALSE;
 		TheWritableGlobalData->m_afterIntro = TRUE;
 		TheWritableGlobalData->m_playSizzle = FALSE;
 		TheWritableGlobalData->m_shellMapOn = FALSE;
 
-		return 2;
-	}
-	return 1;
-}
-
-Int parseReplayForClientInstance(char *args[], int num)
-{
-	if (num > 1)
-	{
-		if (!rts::ClientInstance::isInitialized())
-		{
-			// Make replay playback possible while other clients (possible retail) are running
-			rts::ClientInstance::setMultiInstance(TRUE);
-			rts::ClientInstance::skipPrimaryInstance();
-		}
+		// Make replay playback possible while other clients (possible retail) are running
+		rts::ClientInstance::setMultiInstance(TRUE);
+		rts::ClientInstance::skipPrimaryInstance();
 
 		return 2;
 	}
@@ -1152,11 +1140,6 @@ Int parseClearDebugLevel(char *args[], int num)
 }
 #endif
 
-static CommandLineParam paramsForClientInstance[] =
-{
-	{ "-replay", parseReplayForClientInstance },
-};
-
 // Initial Params are parsed before Windows Creation.
 // Note that except for TheGlobalData, no other global objects exist yet when these are parsed.
 static CommandLineParam paramsForStartup[] =
@@ -1399,9 +1382,9 @@ char *nextParam(char *newSource, const char *seps)
 
 static void parseCommandLine(const CommandLineParam* params, int numParams)
 {
-	std::vector<char*, stl::malloc_allocator<char*> > argv;
+	std::vector<char*> argv;
 
-	stl::malloc_string cmdLine = GetCommandLineA();
+	std::string cmdLine = GetCommandLineA();
 	char *token = nextParam(&cmdLine[0], "\" ");
 	while (token != NULL)
 	{
@@ -1458,14 +1441,6 @@ void createTheGlobalData()
 {
 	if (TheGlobalData == NULL)
 		TheWritableGlobalData = NEW GlobalData;
-}
-
-void CommandLine::parseCommandLineForClientInstance()
-{
-	// TheSuperHackers @info This function must not allocate using 'new' because it can be called before the Memory Manager is initialized.
-	// This function is potentially called multiple times.
-
-	parseCommandLine(paramsForClientInstance, ARRAY_SIZE(paramsForClientInstance));
 }
 
 void CommandLine::parseCommandLineForStartup()

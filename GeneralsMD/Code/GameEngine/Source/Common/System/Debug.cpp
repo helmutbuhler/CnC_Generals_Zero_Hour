@@ -368,7 +368,7 @@ void DebugInit(int flags)
 
 		// TheSuperHackers @info Debug initialization can happen very early.
 		// Determine the client instance id before creating the log file with an instance specific name.
-		CommandLine::parseCommandLineForClientInstance();
+		CommandLine::parseCommandLineForStartup();
 
 		if (!rts::ClientInstance::initialize())
 			return;
