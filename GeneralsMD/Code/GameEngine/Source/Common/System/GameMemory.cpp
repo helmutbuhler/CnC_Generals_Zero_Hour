@@ -3412,8 +3412,8 @@ void initMemoryManager()
 {
 	if (TheMemoryPoolFactory == NULL) 
 	{
-		DEBUG_LOG(("*** Initing Memory Manager"));
-
+		// TheSuperHackers @info Note we must not use debug functions or plain new
+		// before we assign TheMemoryPoolFactory here to avoid unwanted recursion.
 		Int numSubPools;
 		const PoolInitRec *pParms;
 		userMemoryManagerGetDmaParms(&numSubPools, &pParms);
@@ -3422,6 +3422,8 @@ void initMemoryManager()
 		TheDynamicMemoryAllocator = TheMemoryPoolFactory->createDynamicMemoryAllocator(numSubPools, pParms);	// will throw on failure
 		userMemoryManagerInitPools();
 		thePreMainInitFlag = false;
+		
+		DEBUG_LOG(("*** Inited Memory Manager"));
 	}
 	else
 	{
@@ -3485,9 +3487,8 @@ static void preMainInitMemoryManager()
 {
 	if (TheMemoryPoolFactory == NULL)
 	{
-		DEBUG_INIT(DEBUG_FLAGS_DEFAULT);
-		DEBUG_LOG(("*** Initing Memory Manager prior to main!\n"));
-
+		// TheSuperHackers @info Note we must not use debug functions or plain new
+		// before we assign TheMemoryPoolFactory here to avoid unwanted recursion.
 		Int numSubPools;
 		const PoolInitRec *pParms;
 		userMemoryManagerGetDmaParms(&numSubPools, &pParms);
@@ -3497,6 +3498,9 @@ static void preMainInitMemoryManager()
 		TheDynamicMemoryAllocator = TheMemoryPoolFactory->createDynamicMemoryAllocator(numSubPools, pParms);	// will throw on failure
 		userMemoryManagerInitPools();
 		thePreMainInitFlag = true;
+
+		DEBUG_INIT(DEBUG_FLAGS_DEFAULT);
+		DEBUG_LOG(("*** Inited Memory Manager prior to main!\n"));
 	}
 }
 
