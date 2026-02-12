@@ -39,7 +39,6 @@
 
 // SYSTEM INCLUDES ////////////////////////////////////////////////////////////
 #include <windows.h>
-#include <stdio.h>
 #include <WWCommon.h>
 
 // USER INCLUDES //////////////////////////////////////////////////////////////
@@ -200,7 +199,7 @@ BOOL CALLBACK DirectorySelectProc( HWND hWndDialog, UINT message,
 								char message[ _MAX_PATH + 32 ];
 
 								sprintf( message, "Ignoring folder '%s', already in list.", toAdd );
-								MessageBox( NULL, message, "Folder Already In List",
+								MessageBox( nullptr, message, "Folder Already In List",
 														MB_OK | MB_ICONINFORMATION );
 								continue;
 

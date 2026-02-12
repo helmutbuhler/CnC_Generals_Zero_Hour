@@ -76,8 +76,6 @@ public:
 
 	GuardRetaliateExitConditions() : m_attackGiveUpFrame(0), m_conditionsToConsider(0), m_radiusSqr(0.0f)
 	{
-		//Added By Sadullah Nader
-		// Initializations missing and needed
 		m_center.zero();
 	}
 
@@ -177,7 +175,7 @@ class AIGuardRetaliateOuterState : public State
 public:
 	AIGuardRetaliateOuterState( StateMachine *machine ) : State( machine, "AIGuardRetaliateOuter" )
 	{
-		m_attackState = NULL;
+		m_attackState = nullptr;
 	}
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );

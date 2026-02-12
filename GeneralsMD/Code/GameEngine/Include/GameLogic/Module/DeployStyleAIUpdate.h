@@ -59,10 +59,7 @@ public:
 		m_packTime = 0;
 		m_resetTurretBeforePacking = false;
 		m_turretsFunctionOnlyWhenDeployed = false;
-		// Added By Sadullah Nader
-		// Initialization necessary
 		m_turretsMustCenterBeforePacking = FALSE;
-		// End Add
 		m_manualDeployAnimations = FALSE;
 	}
 
@@ -72,12 +69,12 @@ public:
 
 		static const FieldParse dataFieldParse[] =
 		{
-			{ "UnpackTime",					INI::parseDurationUnsignedInt,	NULL, offsetof( DeployStyleAIUpdateModuleData, m_unpackTime ) },
-			{ "PackTime",						INI::parseDurationUnsignedInt,	NULL, offsetof( DeployStyleAIUpdateModuleData, m_packTime ) },
-			{ "ResetTurretBeforePacking", INI::parseBool,						NULL, offsetof( DeployStyleAIUpdateModuleData, m_resetTurretBeforePacking ) },
-			{ "TurretsFunctionOnlyWhenDeployed", INI::parseBool,		NULL, offsetof( DeployStyleAIUpdateModuleData, m_turretsFunctionOnlyWhenDeployed ) },
-			{ "TurretsMustCenterBeforePacking", INI::parseBool,			NULL, offsetof( DeployStyleAIUpdateModuleData, m_turretsMustCenterBeforePacking ) },
-			{ "ManualDeployAnimations",	INI::parseBool,							NULL, offsetof( DeployStyleAIUpdateModuleData, m_manualDeployAnimations ) },
+			{ "UnpackTime",					INI::parseDurationUnsignedInt,	nullptr, offsetof( DeployStyleAIUpdateModuleData, m_unpackTime ) },
+			{ "PackTime",						INI::parseDurationUnsignedInt,	nullptr, offsetof( DeployStyleAIUpdateModuleData, m_packTime ) },
+			{ "ResetTurretBeforePacking", INI::parseBool,						nullptr, offsetof( DeployStyleAIUpdateModuleData, m_resetTurretBeforePacking ) },
+			{ "TurretsFunctionOnlyWhenDeployed", INI::parseBool,		nullptr, offsetof( DeployStyleAIUpdateModuleData, m_turretsFunctionOnlyWhenDeployed ) },
+			{ "TurretsMustCenterBeforePacking", INI::parseBool,			nullptr, offsetof( DeployStyleAIUpdateModuleData, m_turretsMustCenterBeforePacking ) },
+			{ "ManualDeployAnimations",	INI::parseBool,							nullptr, offsetof( DeployStyleAIUpdateModuleData, m_manualDeployAnimations ) },
 			{ 0, 0, 0, 0 }
 		};
 		p.add(dataFieldParse);

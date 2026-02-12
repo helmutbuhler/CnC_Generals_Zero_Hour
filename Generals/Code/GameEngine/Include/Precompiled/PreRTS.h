@@ -40,6 +40,10 @@ class STLSpecialAlloc;
 // PLEASE DO NOT ABUSE WINDOWS OR IT WILL BE REMOVED ENTIRELY. :-)
 //--------------------------------------------------------------------------------- System Includes
 #define WIN32_LEAN_AND_MEAN
+// TheSuperHackers @build JohnsterID 05/01/2026 Add ATL compatibility for MinGW-w64 builds
+#if defined(__GNUC__) && defined(_WIN32)
+    #include <Utility/atl_compat.h>
+#endif
 #include <atlbase.h>
 #include <windows.h>
 
@@ -68,9 +72,7 @@ class STLSpecialAlloc;
 #include <snmp.h>
 #include <stdarg.h>
 #include <stddef.h>
-#include <Utility/stdio_adapter.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <sys/timeb.h>
 #include <sys/types.h>
@@ -125,3 +127,7 @@ class STLSpecialAlloc;
 
 #include "Common/Thing.h"
 #include "Common/UnicodeString.h"
+
+#if defined(__GNUC__) && defined(_WIN32)
+    #pragma GCC diagnostic pop
+#endif

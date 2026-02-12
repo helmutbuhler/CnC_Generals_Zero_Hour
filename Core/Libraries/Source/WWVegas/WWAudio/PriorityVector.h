@@ -32,7 +32,7 @@
 
 #pragma once
 
-#include "Vector.H"
+#include "Vector.h"
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -67,7 +67,7 @@ template <class T>
 __inline bool PriorityVectorClass<T>::Process_Head (T &object)
 {
 	bool retval = false;
-	if (Vector != NULL) {
+	if (Vector != nullptr) {
 
 		// Pass the object back to the caller
 		object = Vector[0];

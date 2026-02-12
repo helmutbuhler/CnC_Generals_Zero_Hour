@@ -39,10 +39,9 @@
 
 #pragma once
 
-#include "refcount.h"
+#include "always.h"
 #include "w3d_file.h"
 #include "w3derr.h"
-#include "wwdebug.h"
 #include "vector2.h"
 #include "vector3.h"
 #include "ww3d.h"
@@ -247,7 +246,7 @@ private:
 
 /*
 ** SineLinearOffsetTextureMapperClass
-** Modifies the UV coodinates by a sine linear offset
+** Modifies the UV coordinates by a sine linear offset
 */
 class SineLinearOffsetTextureMapperClass : public ScaleTextureMapperClass
 {
@@ -274,7 +273,7 @@ private:
 
 /*
 ** StepLinearOffsetTextureMapperClass
-** Modifies the UV coodinates by a Step linear offset
+** Modifies the UV coordinates by a Step linear offset
 */
 class StepLinearOffsetTextureMapperClass : public ScaleTextureMapperClass
 {
@@ -304,7 +303,7 @@ private:
 
 /*
 ** ZigZagLinearOffsetTextureMapperClass
-** Modifies the UV coodinates by a ZigZag linear offset
+** Modifies the UV coordinates by a ZigZag linear offset
 */
 class ZigZagLinearOffsetTextureMapperClass : public ScaleTextureMapperClass
 {

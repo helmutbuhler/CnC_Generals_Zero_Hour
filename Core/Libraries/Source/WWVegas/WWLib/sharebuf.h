@@ -36,7 +36,7 @@
 
 #pragma once
 
-#include "refcount.h"
+#include "always.h"
 
 
 /*
@@ -113,7 +113,7 @@ template <class T>
 ShareBufferClass<T>::~ShareBufferClass(void)
 {
 	delete[] Array;
-	Array = NULL;
+	Array = nullptr;
 }
 
 template<class T>

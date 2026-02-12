@@ -42,7 +42,7 @@
 #include "vector3.h"
 #include "vector3i.h"
 #include "aaplane.h"
-#include "BITTYPE.H"
+#include "BITTYPE.h"
 #include <float.h>
 
 class AABTreeClass;
@@ -84,7 +84,7 @@ private:
 	*/
 	struct CullNodeStruct
 	{
-		CullNodeStruct(void) : Index(0),Min(0,0,0),Max(0,0,0),Front(NULL),Back(NULL),PolyCount(0),PolyIndices(NULL) {}
+		CullNodeStruct(void) : Index(0),Min(0,0,0),Max(0,0,0),Front(nullptr),Back(nullptr),PolyCount(0),PolyIndices(nullptr) {}
 		~CullNodeStruct(void)
 		{
 			if (Front) { delete Front; }
@@ -133,8 +133,8 @@ private:
 		SplitArraysStruct(void) :
 			FrontCount(0),
 			BackCount(0),
-			FrontPolys(NULL),
-			BackPolys(NULL)
+			FrontPolys(nullptr),
+			BackPolys(nullptr)
 		{
 		}
 

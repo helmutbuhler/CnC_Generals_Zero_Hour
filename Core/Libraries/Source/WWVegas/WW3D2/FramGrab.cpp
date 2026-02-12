@@ -21,7 +21,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "framgrab.h"
-#include <stdio.h>
 #include <io.h>
 //#include <errno.h>
 
@@ -38,8 +37,8 @@ FrameGrabClass::FrameGrabClass(const char *filename, MODE mode, int width, int h
 	FrameRate = framerate;
 	Counter = 0;
 
-	Stream = 0;
-	AVIFile = 0;
+	Stream = nullptr;
+	AVIFile = nullptr;
 
 	if(Mode != AVI) return;
 
@@ -50,15 +49,15 @@ FrameGrabClass::FrameGrabClass(const char *filename, MODE mode, int width, int h
 	int result;
 	char file[256];
 	do {
-		sprintf(file, "%s%d.AVI", filename, counter++);
+		snprintf(file, ARRAY_SIZE(file), "%s%d.AVI", filename, counter++);
 		result = _access(file, 0);
 	} while(result != -1);
 
 	// Create new AVI file using AVIFileOpen.
-    hr = AVIFileOpen(&AVIFile, file, OF_WRITE | OF_CREATE, NULL);
+    hr = AVIFileOpen(&AVIFile, file, OF_WRITE | OF_CREATE, nullptr);
     if (hr != 0) {
 		char buf[256];
-		sprintf(buf, "Unable to open %s\n", Filename);
+		snprintf(buf, ARRAY_SIZE(buf), "Unable to open %s\n", Filename);
 		OutputDebugString(buf);
 		CleanupAVI();
 		return;
@@ -121,9 +120,9 @@ FrameGrabClass::~FrameGrabClass()
 }
 
 void FrameGrabClass::CleanupAVI() {
-	if(Bitmap != 0) { GlobalFreePtr(Bitmap); Bitmap = 0; }
-	if(Stream != 0) { AVIStreamRelease(Stream); Stream = 0; }
-	if(AVIFile != 0) { AVIFileRelease(AVIFile); AVIFile = 0; }
+	if(Bitmap != nullptr) { GlobalFreePtr(Bitmap); Bitmap = nullptr; }
+	if(Stream != nullptr) { AVIStreamRelease(Stream); Stream = nullptr; }
+	if(AVIFile != nullptr) { AVIFileRelease(AVIFile); AVIFile = nullptr; }
 
 	AVIFileExit();
 	Mode = RAW;
@@ -134,7 +133,7 @@ void FrameGrabClass::GrabAVI(void *BitmapPointer)
     // CompressDIB(&bi, lpOld, &biNew, lpNew);
 
     // Save the compressed data using AVIStreamWrite.
-    HRESULT hr = AVIStreamWrite(Stream, Counter++, 1, BitmapPointer, BitmapInfoHeader.biSizeImage, AVIIF_KEYFRAME, NULL, NULL);
+    HRESULT hr = AVIStreamWrite(Stream, Counter++, 1, BitmapPointer, BitmapInfoHeader.biSizeImage, AVIIF_KEYFRAME, nullptr, nullptr);
 	if(hr != 0) {
 		char buf[256];
 		sprintf(buf, "avi write error %x/%d\n", hr, hr);

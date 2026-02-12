@@ -85,7 +85,7 @@ protected:
 	void drawContours(CDC *pDc, CRgn *pRgn, Int minX, Int maxX, Int minY, Int maxY);
 
 	/// Compound boolean expression.
-	static inline Bool isBetween(Int cur, Int first, Int second) {
+	static Bool isBetween(Int cur, Int first, Int second) {
 		Bool is = false;
 		if (cur>=first && cur<=second) is = true;
 		if (cur<=first && cur>=second) is = true;
@@ -124,7 +124,7 @@ public:
 	/// the doc has changed size; readjust view as necessary.
 	virtual void adjustDocSize();
 
-	/// Invalidates an object. Pass NULL to inval all objects.
+	/// Invalidates an object. Pass null to inval all objects.
 	virtual void invalObjectInView(MapObject *pObj);
 
 	/// Invalidates the area of one height map cell in the 2d view.

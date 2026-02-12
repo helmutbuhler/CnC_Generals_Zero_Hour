@@ -44,7 +44,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // SYSTEM INCLUDES ////////////////////////////////////////////////////////////
-#include <stdio.h>
 #include <assert.h>
 
 // USER INCLUDES //////////////////////////////////////////////////////////////
@@ -306,7 +305,7 @@ static Bool saveCallbacks( GameWindow *window, FILE *fp, Int dataIndent )
 	GameWindowEditData *editData = window->winGetEditData();
 
 	// if no edit data don't write anything for callbacks
-	if( editData == NULL )
+	if( editData == nullptr )
 		return FALSE;
 
 	// system
@@ -366,7 +365,7 @@ static Bool saveFont( GameWindow *window, FILE *fp, Int dataIndent )
 	GameFont *font = window->winGetFont();
 
 	// if no font data don't write anything
-	if( font == NULL )
+	if( font == nullptr )
 		return TRUE;
 
 	// write the font data
@@ -613,7 +612,7 @@ static Bool saveListboxData( GameWindow *window, FILE *fp, Int dataIndent )
 	ListboxData *listData = (ListboxData *)window->winGetUserData();
 
 	// sanity
-	if( listData == NULL )
+	if( listData == nullptr )
 	{
 
 		DEBUG_LOG(( "No listbox data to save for window '%d'",
@@ -699,7 +698,7 @@ static Bool saveComboBoxData( GameWindow *window, FILE *fp, Int dataIndent )
 	ComboBoxData *comboData = (ComboBoxData *)window->winGetUserData();
 
 	// sanity
-	if( comboData == NULL )
+	if( comboData == nullptr )
 	{
 
 		DEBUG_LOG(( "No comboData data to save for window '%d'",
@@ -720,7 +719,7 @@ static Bool saveComboBoxData( GameWindow *window, FILE *fp, Int dataIndent )
 	sprintf( &buffer[ dataIndent ], "              LETTERSANDNUMBERS: %d;\n", comboData->lettersAndNumbersOnly );
 	writeBufferToFile( fp, buffer );
 
-	//Save teh dropDownButton draw data for the combo box
+	//Save the dropDownButton draw data for the combo box
 	if( comboData->dropDownButton )
 	{
 
@@ -798,7 +797,7 @@ static Bool saveRadioButtonData( GameWindow *window, FILE *fp, Int dataIndent )
 {
 	RadioButtonData *radioData = (RadioButtonData *)window->winGetUserData();
 
-	if( radioData == NULL )
+	if( radioData == nullptr )
 	{
 
 
@@ -824,7 +823,7 @@ static Bool saveSliderData( GameWindow *window, FILE *fp, Int dataIndent )
 	SliderData *sliderData = (SliderData *)window->winGetUserData();
 
 	// sanity
-	if( sliderData == NULL )
+	if( sliderData == nullptr )
 	{
 
 		DEBUG_LOG(( "No slider data in window to save for window %d",
@@ -862,7 +861,7 @@ static Bool saveStaticTextData( GameWindow *window, FILE *fp, Int dataIndent )
 	TextData *textData = (TextData *)window->winGetUserData();
 
 	// sanity
-	if( textData == NULL )
+	if( textData == nullptr )
 	{
 
 		DEBUG_LOG(( "No text data in window to save for window %d",
@@ -887,7 +886,7 @@ static Bool saveTextEntryData( GameWindow *window, FILE *fp, Int dataIndent )
 	EntryData *entryData = (EntryData *)window->winGetUserData();
 
 	// sanity
-	if( entryData == NULL )
+	if( entryData == nullptr )
 	{
 
 		DEBUG_LOG(( "No text entry data in window to save for window %d",
@@ -920,7 +919,7 @@ static Bool saveTabControlData( GameWindow *window, FILE *fp, Int dataIndent )
 	TabControlData *tabControlData = (TabControlData *)window->winGetUserData();
 
 	// sanity
-	if( tabControlData == NULL )
+	if( tabControlData == nullptr )
 	{
 
 		DEBUG_LOG(( "No text entry data in window to save for window %d",
@@ -1039,7 +1038,7 @@ static Bool saveWindow( FILE *fp, GameWindow *window, Int indent )
 		{
 
 			// traverse to end of child list
-			while( child->winGetNext() != NULL )
+			while( child->winGetNext() != nullptr )
 				child = child->winGetNext();
 
 			// save children windows in reverse order
@@ -1096,7 +1095,7 @@ void GUIEdit::validateNames( GameWindow *root, char *filename, Bool *valid )
 {
 
 	// the end of recursion
-	if( root == NULL )
+	if( root == nullptr )
 		return;
 
 	// trivial case
@@ -1125,7 +1124,7 @@ void GUIEdit::validateNames( GameWindow *root, char *filename, Bool *valid )
 	}
 
 	// check for a duplicate filename
-	if( TheEditor->isNameDuplicate( TheWindowManager->winGetWindowList(),
+	if( isNameDuplicate( TheWindowManager->winGetWindowList(),
 																	root, instData->m_decoratedNameString ) )
 	{
 
@@ -1154,7 +1153,7 @@ void GUIEdit::updateRadioScreenIdentifiers( GameWindow *window, Int screenID )
 {
 
 	// end recursion
-	if( window == NULL )
+	if( window == nullptr )
 		return;
 
 	// is this a radio button
@@ -1213,12 +1212,12 @@ Bool GUIEdit::saveData( char *filePathAndFilename, char *filename )
 	writeFontFile( GUIEDIT_FONT_FILENAME );
 
 	// sanity
-	if( filePathAndFilename == NULL )
+	if( filePathAndFilename == nullptr )
 		return FALSE;
 
 	// check for empty layout and just get out of here
 	window = TheWindowManager->winGetWindowList();
-	if( window == NULL )
+	if( window == nullptr )
 		return TRUE;
 
 	// check all the names for sizes once decorated with filename
@@ -1229,18 +1228,18 @@ Bool GUIEdit::saveData( char *filePathAndFilename, char *filename )
 	if( valid == FALSE )
 	{
 
-		MessageBox( TheEditor->getWindowHandle(), offendingNames, "Window Name Error", MB_OK );
+		MessageBox( getWindowHandle(), offendingNames, "Window Name Error", MB_OK );
 		return FALSE;
 
 	}
 
 	// update all radio button screen identifiers with the filename
 	updateRadioScreenIdentifiers( TheWindowManager->winGetWindowList(),
-																TheNameKeyGenerator->nameToKey( AsciiString(m_saveFilename) ) );
+																TheNameKeyGenerator->nameToKey( m_saveFilename ) );
 
 	// open the file
 	fp = fopen( filePathAndFilename, "w" );
-	if( fp == NULL )
+	if( fp == nullptr )
 		return FALSE;
 
 	// write out a single line for our window file version
@@ -1253,12 +1252,12 @@ Bool GUIEdit::saveData( char *filePathAndFilename, char *filename )
 	// save each of the windows in reverse order, when we load a layout
 	// file in this reverse order, the original window order we presently
 	// see in the editor will be recreated because windows loaded after
-	// other windows are placed on the top of the widnow stack
+	// other windows are placed on the top of the window stack
 	//
 
 	// go to end of window list
 	window = TheWindowManager->winGetWindowList();
-	while( window->winGetNext() != NULL )
+	while( window->winGetNext() != nullptr )
 		window = window->winGetNext();
 
 	// loop backwards saving all windows

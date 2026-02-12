@@ -39,13 +39,11 @@
 
 #include "always.h"
 #include "quat.h"
-#include "refcount.h"
 #include "w3d_file.h"
 #include "hash.h"
 #include "mempool.h"
-#include <refcount.h>
-#include <SLIST.H>
-#include <Vector.H>
+#include <SLIST.h>
+#include <Vector.h>
 
 struct NodeMotionStruct;
 class MotionChannelClass;
@@ -151,7 +149,7 @@ private:
 
 	// This info is packaged into a struct to minimize DynamicVectorClass overhead
 	struct WeightInfoStruct {
-		WeightInfoStruct() : Name(NULL) {}
+		WeightInfoStruct() : Name(nullptr) {}
 		~WeightInfoStruct() { delete [] Name; }
 
 		char *Name;

@@ -23,7 +23,7 @@
  *                                                                                             *
  *                 Project Name : Commando / G 3D engine                                       *
  *                                                                                             *
- *                    File Name : MESH.H                                                       *
+ *                    File Name : MESH.h                                                       *
  *                                                                                             *
  *                   Programmer : Greg Hjelstrom                                               *
  *                                                                                             *
@@ -141,9 +141,9 @@ public:
 	void								Get_Deformed_Vertices(Vector3 *dst_vert, Vector3 *dst_norm);
 	void								Get_Deformed_Vertices(Vector3 *dst_vert);
 
-	void								Set_Lighting_Environment(LightEnvironmentClass * light_env) { if (light_env) {m_localLightEnv=*light_env;LightEnvironment = &m_localLightEnv;} else {LightEnvironment = NULL;} }
+	void								Set_Lighting_Environment(LightEnvironmentClass * light_env) { if (light_env) {m_localLightEnv=*light_env;LightEnvironment = &m_localLightEnv;} else {LightEnvironment = nullptr;} }
 	LightEnvironmentClass *		Get_Lighting_Environment(void) { return LightEnvironment; }
-	inline float	Get_Alpha_Override(void) { return m_alphaOverride;}
+	float	Get_Alpha_Override(void) { return m_alphaOverride;}
 
 	void								Set_Next_Visible_Skin(MeshClass * next_visible) { NextVisibleSkin = next_visible; }
 	MeshClass *						Peek_Next_Visible_Skin(void) { return NextVisibleSkin; }

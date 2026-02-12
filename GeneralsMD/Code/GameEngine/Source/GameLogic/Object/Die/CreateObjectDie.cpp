@@ -27,7 +27,7 @@
 // Desc:   Create an object upon this object's death
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
+#include "PreRTS.h"	// This must go first in EVERY cpp file in the GameEngine
 
 #define DEFINE_OBJECT_STATUS_NAMES
 #include "GameLogic/Module/AIUpdate.h"
@@ -45,7 +45,7 @@
 CreateObjectDieModuleData::CreateObjectDieModuleData()
 {
 
-	m_ocl = NULL;
+	m_ocl = nullptr;
 	m_transferPreviousHealth = FALSE;
 	m_transferSelection = FALSE;
 }
@@ -58,10 +58,10 @@ CreateObjectDieModuleData::CreateObjectDieModuleData()
 
 	static const FieldParse dataFieldParse[] =
 	{
-		{ "CreationList",	INI::parseObjectCreationList,		NULL,											offsetof( CreateObjectDieModuleData, m_ocl ) },
-		{ "TransferPreviousHealth", INI::parseBool, NULL	,offsetof( CreateObjectDieModuleData, m_transferPreviousHealth ) },
-		{ "TransferSelection", INI::parseBool, NULL, offsetof( CreateObjectDieModuleData, m_transferSelection ) },
-		{ 0, 0, 0, 0 }
+		{ "CreationList",	INI::parseObjectCreationList,		nullptr,											offsetof( CreateObjectDieModuleData, m_ocl ) },
+		{ "TransferPreviousHealth", INI::parseBool, nullptr	,offsetof( CreateObjectDieModuleData, m_transferPreviousHealth ) },
+		{ "TransferSelection", INI::parseBool, nullptr, offsetof( CreateObjectDieModuleData, m_transferSelection ) },
+		{ nullptr, nullptr, nullptr, 0 }
 	};
 	p.add(dataFieldParse);
 
@@ -99,7 +99,7 @@ void CreateObjectDie::onDie( const DamageInfo * damageInfo )
 	if (!newObject)
 		return;
 
-	//If we're transferring previous health, we're transfering the last known
+	//If we're transferring previous health, we're transferring the last known
 	//health before we died. In the case of the sneak attack tunnel network, it
 	//is killed after the lifetime update expires.
 	if( data->m_transferPreviousHealth )

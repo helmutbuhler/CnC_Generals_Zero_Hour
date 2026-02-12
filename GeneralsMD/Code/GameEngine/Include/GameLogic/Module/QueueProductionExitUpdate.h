@@ -60,11 +60,11 @@ public:
     UpdateModuleData::buildFieldParse(p);
 		static const FieldParse dataFieldParse[] =
 		{
-			{ "UnitCreatePoint",				INI::parseCoord3D,							NULL, offsetof( QueueProductionExitUpdateModuleData, m_unitCreatePoint ) },
-			{ "NaturalRallyPoint",			INI::parseCoord3D,							NULL, offsetof( QueueProductionExitUpdateModuleData, m_naturalRallyPoint ) },
-			{ "ExitDelay",							INI::parseDurationUnsignedInt,	NULL, offsetof( QueueProductionExitUpdateModuleData, m_exitDelayData ) },
-			{ "AllowAirborneCreation",	INI::parseBool,									NULL, offsetof( QueueProductionExitUpdateModuleData, m_allowAirborneCreationData ) },
-			{ "InitialBurst",						INI::parseUnsignedInt,					NULL, offsetof( QueueProductionExitUpdateModuleData, m_initialBurst ) },
+			{ "UnitCreatePoint",				INI::parseCoord3D,							nullptr, offsetof( QueueProductionExitUpdateModuleData, m_unitCreatePoint ) },
+			{ "NaturalRallyPoint",			INI::parseCoord3D,							nullptr, offsetof( QueueProductionExitUpdateModuleData, m_naturalRallyPoint ) },
+			{ "ExitDelay",							INI::parseDurationUnsignedInt,	nullptr, offsetof( QueueProductionExitUpdateModuleData, m_exitDelayData ) },
+			{ "AllowAirborneCreation",	INI::parseBool,									nullptr, offsetof( QueueProductionExitUpdateModuleData, m_allowAirborneCreationData ) },
+			{ "InitialBurst",						INI::parseUnsignedInt,					nullptr, offsetof( QueueProductionExitUpdateModuleData, m_initialBurst ) },
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -85,7 +85,7 @@ public:
 	QueueProductionExitUpdate( Thing *thing, const ModuleData* moduleData );
 	// virtual destructor prototype provided by memory pool declaration
 
-	// Required funcs to fufill interface requirements
+	// Required funcs to fulfill interface requirements
 	virtual Bool isExitBusy() const {return FALSE;}	///< Contain style exiters are getting the ability to space out exits, so ask this before reserveDoor as a kind of no-commitment check.
 	virtual ExitDoorType reserveDoorForExit( const ThingTemplate* objType, Object *specificObject );
 	virtual void exitObjectViaDoor( Object *newObj, ExitDoorType exitDoor );
@@ -121,5 +121,5 @@ inline const Coord3D *QueueProductionExitUpdate::getRallyPoint( void )  const
 	if (m_rallyPointExists)
 		return &m_rallyPoint;
 
-	return NULL;
+	return nullptr;
 }

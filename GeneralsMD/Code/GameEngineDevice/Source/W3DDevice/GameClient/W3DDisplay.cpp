@@ -25,7 +25,7 @@
 // FILE: W3DDisplay.cpp ///////////////////////////////////////////////////////
 //
 // W3D Implementation for the Game Display which is responsible for creating
-// and maintaning the entire visual display
+// and maintaining the entire visual display
 //
 // Author: Colin Day, April 2001
 //
@@ -99,8 +99,7 @@ static void drawFramerateBar(void);
 #include "WW3D2/meshmatdesc.h"
 #include "WW3D2/meshmdl.h"
 #include "WW3D2/rddesc.h"
-#include "TARGA.H"
-#include "Lib/BaseType.h"
+#include "TARGA.h"
 
 #include "GameLogic/ScriptEngine.h"		// For TheScriptEngine - jkmcd
 #include "GameLogic/GameLogic.h"
@@ -115,7 +114,7 @@ static void drawFramerateBar(void);
 
 #define no_SAMPLE_DYNAMIC_LIGHT	1
 #ifdef SAMPLE_DYNAMIC_LIGHT
-static W3DDynamicLight * theDynamicLight = NULL;
+static W3DDynamicLight * theDynamicLight = nullptr;
 static Real theLightXOffset = 0.1f;
 static Real theLightYOffset = 0.07f;
 static Int theFlashCount = 0;
@@ -147,16 +146,10 @@ protected:
 StatDumpClass::StatDumpClass( const char *fname )
 {
 	char buffer[ _MAX_PATH ];
-	GetModuleFileName( NULL, buffer, sizeof( buffer ) );
-	char *pEnd = buffer + strlen( buffer );
-	while( pEnd != buffer )
+	GetModuleFileName( nullptr, buffer, sizeof( buffer ) );
+	if (char *pEnd = strrchr(buffer, '\\'))
 	{
-		if( *pEnd == '\\' )
-		{
-			*pEnd = 0;
-			break;
-		}
-		pEnd--;
+		*pEnd = 0;
 	}
 	// TheSuperHackers @fix Caball009 03/06/2025 Don't use AsciiString here anymore because its memory allocator may not have been initialized yet.
 	const std::string fullPath = std::string(buffer) + "\\" + fname;
@@ -320,7 +313,7 @@ void StatDumpClass::dumpStats( Bool brief, Bool flagSpikes )
 #if defined(RTS_DEBUG)
   if ( ! beBrief )
   {
-    TheAudio->audioDebugDisplay( NULL, NULL, m_fp );
+    TheAudio->audioDebugDisplay( nullptr, nullptr, m_fp );
 	  fprintf( m_fp, "\n" );
   }
 #endif
@@ -361,10 +354,10 @@ StatDumpClass TheStatDump("StatisticsDump.txt");
 ///////////////////////////////////////////////////////////////////////////////
 
 //=============================================================================
-RTS3DScene *W3DDisplay::m_3DScene = NULL;
-RTS2DScene *W3DDisplay::m_2DScene = NULL;
-RTS3DInterfaceScene *W3DDisplay::m_3DInterfaceScene = NULL;
-W3DAssetManager *W3DDisplay::m_assetManager = NULL;
+RTS3DScene *W3DDisplay::m_3DScene = nullptr;
+RTS2DScene *W3DDisplay::m_2DScene = nullptr;
+RTS3DInterfaceScene *W3DDisplay::m_3DInterfaceScene = nullptr;
+W3DAssetManager *W3DDisplay::m_assetManager = nullptr;
 
 //=============================================================================
 	// note, can't use the ones from PerfTimer.h 'cuz they are currently
@@ -391,17 +384,17 @@ W3DDisplay::W3DDisplay()
 	Int i;
 
 	m_initialized = false;
-	m_assetManager = NULL;
-	m_3DScene = NULL;
-	m_2DScene = NULL;
-	m_3DInterfaceScene = NULL;
+	m_assetManager = nullptr;
+	m_3DScene = nullptr;
+	m_2DScene = nullptr;
+	m_3DInterfaceScene = nullptr;
 	m_averageFPS = TheGlobalData->m_framesPerSecondLimit;
 #if defined(RTS_DEBUG)
 	m_timerAtCumuFPSStart = 0;
 #endif
 	for (i=0; i<LightEnvironmentClass::MAX_LIGHTS; i++)
-		m_myLight[i] = NULL;
-	m_2DRender = NULL;
+		m_myLight[i] = nullptr;
+	m_2DRender = nullptr;
 	m_isClippedEnabled = FALSE;
 	m_clipRegion.lo.x = 0;
 	m_clipRegion.lo.y = 0;
@@ -409,7 +402,7 @@ W3DDisplay::W3DDisplay()
 	m_clipRegion.hi.y = 0;
 
 	for (i = 0; i < DisplayStringCount; i++)
-		m_displayStrings[i] = NULL;
+		m_displayStrings[i] = nullptr;
 
 }
 
@@ -421,8 +414,8 @@ W3DDisplay::~W3DDisplay()
 
 	// get rid of the debug display
 	delete m_debugDisplay;
-	m_debugDisplay = NULL;
-	m_nativeDebugDisplay = NULL;
+	m_debugDisplay = nullptr;
+	m_nativeDebugDisplay = nullptr;
 
 	// delete the display strings
 	for (int i = 0; i < DisplayStringCount; i++)
@@ -439,7 +432,7 @@ W3DDisplay::~W3DDisplay()
 
 		m_2DRender->Reset();
 		delete m_2DRender;
-		m_2DRender = NULL;
+		m_2DRender = nullptr;
 
 	}
 
@@ -469,7 +462,7 @@ W3DDisplay::~W3DDisplay()
 	if (!TheGlobalData->m_headless)
 		DX8WebBrowser::Shutdown();
 	delete TheW3DFileSystem;
-	TheW3DFileSystem = NULL;
+	TheW3DFileSystem = nullptr;
 
 }
 
@@ -829,7 +822,7 @@ void W3DDisplay::init( void )
 					TheGlobalLanguageData->m_nativeDebugDisplay.bold);
 			}
 			else
-				font=TheFontLibrary->getFont( AsciiString("FixedSys"), 8, FALSE );
+				font=TheFontLibrary->getFont( "FixedSys", 8, FALSE );
 
 			m_nativeDebugDisplay->setFont( font );
 			m_nativeDebugDisplay->setFontHeight( 13 );
@@ -858,7 +851,7 @@ void W3DDisplay::reset( void )
 
 	// Remove all render objects.
 
-	if (m_3DScene != NULL)
+	if (m_3DScene != nullptr)
 	{
 		SceneIterator *sceneIter = m_3DScene->Create_Iterator();
 		sceneIter->First();
@@ -937,7 +930,7 @@ void W3DDisplay::gatherDebugStats( void )
 	static Int s_sortedPolysSinceLastUpdate = 0;
 
 	// allocate the display strings if needed
-	if( m_displayStrings[0] == NULL )
+	if( m_displayStrings[0] == nullptr )
 	{
 		GameFont *font;
 		if (TheGlobalLanguageData && TheGlobalLanguageData->m_nativeDebugDisplay.name.isNotEmpty())
@@ -948,11 +941,11 @@ void W3DDisplay::gatherDebugStats( void )
 				TheGlobalLanguageData->m_nativeDebugDisplay.bold);
 		}
 		else
-			font = TheFontLibrary->getFont( AsciiString("FixedSys"), 8, FALSE );
+			font = TheFontLibrary->getFont( "FixedSys", 8, FALSE );
 
 		for (int i = 0; i < DisplayStringCount; i++)
 		{
-			if (m_displayStrings[i] == NULL)
+			if (m_displayStrings[i] == nullptr)
 			{
 				m_displayStrings[i] = TheDisplayStringManager->newDisplayString();
 				DEBUG_ASSERTCRASH( m_displayStrings[i], ("Failed to create DisplayString") );
@@ -962,9 +955,9 @@ void W3DDisplay::gatherDebugStats( void )
 
 	}
 
-	if (m_benchmarkDisplayString == NULL)
+	if (m_benchmarkDisplayString == nullptr)
 	{
-		GameFont *thisFont = TheFontLibrary->getFont( AsciiString("FixedSys"), 8, FALSE );
+		GameFont *thisFont = TheFontLibrary->getFont( "FixedSys", 8, FALSE );
 		m_benchmarkDisplayString = TheDisplayStringManager->newDisplayString();
 		DEBUG_ASSERTCRASH( m_benchmarkDisplayString, ("Failed to create DisplayString") );
 		m_benchmarkDisplayString->setFont( thisFont );
@@ -980,10 +973,10 @@ void W3DDisplay::gatherDebugStats( void )
 	s_timeSinceLastUpdateInSecs = ((double)(time64 - s_lastUpdateTime64) / (double)(freq64));
 
 #ifdef EXTENDED_STATS
-		static FILE *pListFile = NULL;
+		static FILE *pListFile = nullptr;
 		static Int64 lastFrameTime=0;
 		static samples = 0;
-		if (pListFile == NULL) {
+		if (pListFile == nullptr) {
 			pListFile = fopen("FrameRateLog.txt", "w");
 		}
 		samples++;
@@ -1233,26 +1226,20 @@ void W3DDisplay::gatherDebugStats( void )
 		Real FXPitch = TheTacticalView->getFXPitch();
 		Real angle = TheTacticalView->getAngle();
 		Real FOV = TheTacticalView->getFieldOfView();
-		//Real desiredHeight = TheTacticalView->getHeightAboveGround();
-		Real terrainHeight = TheTacticalView->getTerrainHeightUnderCamera();
+		Real terrainHeight = TheTacticalView->getTerrainHeightAtPivot();
 		Real actualHeightAboveGround = TheTacticalView->getCurrentHeightAboveGround();
 
-		unibuffer.format( L"Camera zoom: %g, pitch: %g/%g, yaw: %g, pos: %g, %g, %g, FOV: %g\n       Height above ground: %g Terrain height: %g",
-												zoom,
-												pitch,
-												FXPitch,
-												angle,
-												camPos.x, camPos.y, camPos.z,
-												FOV,
-												/*
-												zoom,
-												pitch * 180.0f / PI,
-												FXPitch * 180.0f / PI,
-												angle * 180.0f / PI,
-												camPos.x, camPos.y, camPos.z,
-												FOV * 180.0f / PI,
-												*/
-												actualHeightAboveGround, terrainHeight );
+		unibuffer.format(
+			L"Camera zoom: %.3f, pitch: %.2f, FXpitch: %.2f, yaw: %.2f, pos: (%.2f, %.2f, %.2f), FOV: %.2f\n"
+			L"Height above ground: %.2f, Terrain height at camera pivot: %.2f",
+			zoom,
+			RAD_TO_DEGF(pitch),
+			RAD_TO_DEGF(FXPitch),
+			RAD_TO_DEGF(angle),
+			camPos.x, camPos.y, camPos.z,
+			RAD_TO_DEGF(FOV),
+			actualHeightAboveGround, terrainHeight );
+
 		m_displayStrings[DebugInfo]->setText( unibuffer );
 
 		// display the keyboard modifier and mouse states.
@@ -1312,7 +1299,7 @@ void W3DDisplay::gatherDebugStats( void )
 			unibuffer.concat( L"RMB " );
 		}
 
-		Object *object = NULL;
+		Object *object = nullptr;
 #if defined(RTS_DEBUG)	//debug hack to view object under mouse stats
 		Drawable *draw = 	TheTacticalView->pickDrawable(&TheMousePos, FALSE, (PickType)0xffffffff );
 #else
@@ -1354,7 +1341,7 @@ void W3DDisplay::gatherDebugStats( void )
 		m_displayStrings[Objects]->setText( unibuffer );
 
 		// Network incoming bandwidth stats
-		if (TheNetwork != NULL) {
+		if (TheNetwork != nullptr) {
 			unibuffer.format(L"IN: %.2f bytes/sec, %.2f packets/sec",
 				TheNetwork->getIncomingBytesPerSecond(), TheNetwork->getIncomingPacketsPerSecond());
 			m_displayStrings[NetIncoming]->setText( unibuffer );
@@ -1385,7 +1372,7 @@ void W3DDisplay::gatherDebugStats( void )
 			// Network outgoing bandwidth stats
 //			unibuffer.format(L"OUT: 0.0 bytes/sec, 0.0 packets/sec");
 //			m_displayStrings[NetOutgoing]->setText( unibuffer );
-      unibuffer.format(L"");
+			unibuffer.clear();
 //			unibuffer.format(L"Network not present");
 			m_displayStrings[NetOutgoing]->setText(unibuffer);
 			m_displayStrings[NetIncoming]->setText(unibuffer);
@@ -1489,7 +1476,7 @@ void W3DDisplay::gatherDebugStats( void )
 void W3DDisplay::drawDebugStats( void )
 {
 	Int	x = 3;
-	Int	y = 3;
+	Int	y = 30;
 	Color textColor = GameMakeColor( 255, 255, 255, 255 );
 	Color dropColor = GameMakeColor( 0, 0, 0, 255 );
 
@@ -1552,7 +1539,7 @@ void W3DDisplay::drawCurrentDebugDisplay( void )
 		if ( m_debugDisplay && m_debugDisplayCallback )
 		{
 			m_debugDisplay->reset();
-			m_debugDisplayCallback( m_debugDisplay, m_debugDisplayUserData, NULL );
+			m_debugDisplayCallback( m_debugDisplay, m_debugDisplayUserData, nullptr );
 		}
 	}
 }
@@ -1711,7 +1698,7 @@ AGAIN:
     if ( TheGameLogic->getFrame() > 0 && (TheGameLogic->getFrame() % interval) == 0 )
     {
   	  TheStatDump.dumpStats( TRUE, TRUE );
-    	TheInGameUI->message( UnicodeString( L"-stats is running, at interval: %d." ), TheGlobalData->m_statsInterval );
+    	TheInGameUI->message( L"-stats is running, at interval: %d.", TheGlobalData->m_statsInterval );
     }
   }
 #endif
@@ -1899,7 +1886,7 @@ AGAIN:
 				{
 					DisplayString *displayString = TheDisplayStringManager->newDisplayString();
 
-					// set word wrap if neccessary
+					// set word wrap if necessary
 
 					Int wordWrapWidth = TheDisplay->getWidth() - 20;
 					displayString->setWordWrap( wordWrapWidth );
@@ -2053,7 +2040,7 @@ void W3DDisplay::createLightPulse( const Coord3D *pos, const RGBColor *color,
 																	 UnsignedInt decayFrameTime//, Bool donut
 																	 )
 {
-	if (m_3DScene == NULL)
+	if (m_3DScene == nullptr)
 		return;
 	if (innerRadius+attenuationWidth<2.0*PATHFIND_CELL_SIZE_F + 1.0f) {
 		return; // it basically won't make any visual difference.  jba.
@@ -2266,7 +2253,7 @@ void W3DDisplay::drawRectClock(Int startX, Int startY, Int width, Int height, In
 	m_2DRender->Reset();
 	m_2DRender->Enable_Texturing( FALSE );
 
-// The rectanges are numberd as follows
+// The rectangles are numberd as follows
 //(x,y)	|---------|
 //			| 4  | 1  |
 //			|----+----|
@@ -2349,7 +2336,7 @@ void W3DDisplay::drawRectClock(Int startX, Int startY, Int width, Int height, In
 	}
 	else if(percent > 25)
 	{
-		// rectangel #1
+		// rectangle #1
 		m_2DRender->Add_Rect(RectClass( startX + width/2, startY,
 																		startX + width, startY + height/2), 0,0, color);
 		// draw the part of rectangle 2
@@ -2430,7 +2417,7 @@ void W3DDisplay::drawRemainingRectClock(Int startX, Int startY, Int width, Int h
 	m_2DRender->Reset();
 	m_2DRender->Enable_Texturing( FALSE );
 
-// The rectanges are numbered as follows
+// The rectangles are numbered as follows
 //(x,y)	|---------|
 //			| 4  | 1  |
 //			|----+----|
@@ -2602,7 +2589,7 @@ void W3DDisplay::drawImage( const Image *image, Int startX, Int startY,
 {
 
 	// sanity
-	if( image == NULL )
+	if( image == nullptr )
 		return;
 
 	// !!
@@ -2807,11 +2794,11 @@ VideoBuffer*	W3DDisplay::createVideoBuffer( void )
 		else
 		{
 			// card does not support any of the formats we need
-			return NULL;
+			return nullptr;
 		}
 	}
-	// on low mem machines, render every video in 16bit except for the EA Logo movie
-	if(!TheGlobalData->m_playIntro )//&& TheGameLODManager && (!TheGameLODManager->didMemPass() || W3DShaderManager::getChipset() == DC_GEFORCE2))
+	// on low mem machines, render every video in 16bit
+	if (TheGameLODManager && (!TheGameLODManager->didMemPass() || W3DShaderManager::getChipset() == DC_GEFORCE2))
 		format = VideoBuffer::TYPE_R5G6B5;
 
 	W3DVideoBuffer *buffer = NEW W3DVideoBuffer( format );
@@ -2942,7 +2929,7 @@ static void CreateBMPFile(LPTSTR pszFile, char *image, Int width, Int height)
 	PBITMAPINFO pbmi;
 
 	pbmi = (PBITMAPINFO) LocalAlloc(LPTR,sizeof(BITMAPINFOHEADER));
-	if (pbmi == NULL)
+	if (pbmi == nullptr)
 		return;
 
 	pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
@@ -2961,10 +2948,10 @@ static void CreateBMPFile(LPTSTR pszFile, char *image, Int width, Int height)
 	hf = CreateFile(pszFile,
 		GENERIC_READ | GENERIC_WRITE,
 		(DWORD) 0,
-		NULL,
+		nullptr,
 		CREATE_ALWAYS,
 		FILE_ATTRIBUTE_NORMAL,
-		(HANDLE) NULL);
+		(HANDLE) nullptr);
 
 	if (hf != INVALID_HANDLE_VALUE)
 	{
@@ -2983,15 +2970,15 @@ static void CreateBMPFile(LPTSTR pszFile, char *image, Int width, Int height)
 
 		// Copy the BITMAPFILEHEADER into the .BMP file.
 		if (WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER),
-				(LPDWORD) &dwTmp,  NULL))
+				(LPDWORD) &dwTmp,  nullptr))
 		{
 			// Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
-			if (WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER) + pbih->biClrUsed * sizeof (RGBQUAD),(LPDWORD) &dwTmp, NULL))
+			if (WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER) + pbih->biClrUsed * sizeof (RGBQUAD),(LPDWORD) &dwTmp, nullptr))
 			{
 				// Copy the array of color indices into the .BMP file.
 				dwTotal = cb = pbih->biSizeImage;
 				hp = lpBits;
-				WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp, NULL);
+				WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp, nullptr);
 			}
 		}
 
@@ -3018,7 +3005,7 @@ void W3DDisplay::takeScreenShot(void)
 #else
 		sprintf( leafname, "%s%.3d.bmp", "sshot", frame_number++);
 #endif
-		strcpy(pathname, TheGlobalData->getPath_UserData().str());
+		strlcpy(pathname, TheGlobalData->getPath_UserData().str(), ARRAY_SIZE(pathname));
 		strlcat(pathname, leafname, ARRAY_SIZE(pathname));
 		if (_access( pathname, 0 ) == -1)
 			done = true;
@@ -3033,10 +3020,10 @@ void W3DDisplay::takeScreenShot(void)
 	surface->Get_Description(surfaceDesc);
 
 	SurfaceClass* surfaceCopy = NEW_REF(SurfaceClass, (DX8Wrapper::_Create_DX8_Surface(surfaceDesc.Width, surfaceDesc.Height, surfaceDesc.Format)));
-	DX8Wrapper::_Copy_DX8_Rects(surface->Peek_D3D_Surface(), NULL, 0, surfaceCopy->Peek_D3D_Surface(), NULL);
+	DX8Wrapper::_Copy_DX8_Rects(surface->Peek_D3D_Surface(), nullptr, 0, surfaceCopy->Peek_D3D_Surface(), nullptr);
 
 	surface->Release_Ref();
-	surface = NULL;
+	surface = nullptr;
 
 	struct Rect
 	{
@@ -3045,7 +3032,7 @@ void W3DDisplay::takeScreenShot(void)
 	} lrect;
 
 	lrect.pBits = surfaceCopy->Lock(&lrect.Pitch);
-	if (lrect.pBits == NULL)
+	if (lrect.pBits == nullptr)
 	{
 		surfaceCopy->Release_Ref();
 		return;
@@ -3076,7 +3063,7 @@ void W3DDisplay::takeScreenShot(void)
 
 	surfaceCopy->Unlock();
 	surfaceCopy->Release_Ref();
-	surfaceCopy = NULL;
+	surfaceCopy = nullptr;
 
 	Targa targ;
 	memset(&targ.Header,0,sizeof(targ.Header));
@@ -3107,7 +3094,7 @@ void W3DDisplay::takeScreenShot(void)
 
 	surfaceCopy->Unlock();
 	surfaceCopy->Release_Ref();
-	surfaceCopy = NULL;
+	surfaceCopy = nullptr;
 
 	//Flip the image
 	char *ptr,*ptr1;
@@ -3150,7 +3137,7 @@ void W3DDisplay::toggleMovieCapture(void)
 
 #if defined(RTS_DEBUG)
 
-static FILE *AssetDumpFile=NULL;
+static FILE *AssetDumpFile=nullptr;
 
 void dumpMeshAssets(MeshClass *mesh)
 {
@@ -3167,7 +3154,7 @@ void dumpMeshAssets(MeshClass *mesh)
 				{
 					for (int i=0;i<model->Get_Polygon_Count();++i)
 					{
-						if ((texture=model->Peek_Texture(i,pass,stage)) != NULL)
+						if ((texture=model->Peek_Texture(i,pass,stage)) != nullptr)
 						{
 							fprintf(AssetDumpFile,"\t%s\n",texture->Get_Texture_Name().str());
 						}
@@ -3175,7 +3162,7 @@ void dumpMeshAssets(MeshClass *mesh)
 				}
 				else
 				{
-					if ((texture=model->Peek_Single_Texture(pass,stage)) != NULL)
+					if ((texture=model->Peek_Single_Texture(pass,stage)) != nullptr)
 					{
 						fprintf(AssetDumpFile,"\t%s\n",texture->Get_Texture_Name().str());
 					}

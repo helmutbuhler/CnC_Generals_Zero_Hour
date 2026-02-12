@@ -23,7 +23,7 @@
  *                                                                                             *
  *                 Project Name : Commando / G 3D engine                                       *
  *                                                                                             *
- *                    File Name : GAMEMAPS.H                                                   *
+ *                    File Name : GAMEMAPS.h                                                   *
  *                                                                                             *
  *                   Programmer : Greg Hjelstrom                                               *
  *                                                                                             *
@@ -57,7 +57,7 @@ public:
 	float			Amount;
 	Texmap *		Map;
 
-	TexmapSlotClass() : MapOn(FALSE), Amount(1.0f), Map(NULL) {};
+	TexmapSlotClass() : MapOn(FALSE), Amount(1.0f), Map(nullptr) {};
 
 	RGBA		Eval(ShadeContext& sc)						{ return Map->EvalColor(sc); 	}
 	float		EvalMono(ShadeContext& sc) 				{ return Map->EvalMono(sc); }
@@ -84,7 +84,7 @@ public:
 	MtlBase *			Client;
 	TexmapSlotClass	TextureSlot[NTEXMAPS];
 
-	GameMapsClass()				 												{ Client = NULL; }
+	GameMapsClass()				 												{ Client = nullptr; }
 	GameMapsClass(MtlBase *mb)	 												{ Client = mb;	}
 
 	void					DeleteThis()											{ delete this;	}

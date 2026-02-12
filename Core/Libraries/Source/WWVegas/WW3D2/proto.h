@@ -81,15 +81,15 @@ class PrototypeClass
 
 public:
 
-	PrototypeClass(void) : NextHash(NULL) {}
+	PrototypeClass(void) : NextHash(nullptr) {}
 
 	virtual const char *			Get_Name(void)	const = 0;
 	virtual int								Get_Class_ID(void) const = 0;
 	virtual RenderObjClass *	Create(void) = 0;
 	virtual void							DeleteSelf() = 0;
 
-	inline void friend_setNextHash(PrototypeClass* n) { NextHash = n; }
-	inline PrototypeClass* friend_getNextHash() { return NextHash; }
+	void friend_setNextHash(PrototypeClass* n) { NextHash = n; }
+	PrototypeClass* friend_getNextHash() { return NextHash; }
 
 protected:
 	virtual ~PrototypeClass(void) {};

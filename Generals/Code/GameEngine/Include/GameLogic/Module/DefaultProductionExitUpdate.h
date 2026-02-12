@@ -54,8 +54,8 @@ public:
     UpdateModuleData::buildFieldParse(p);
 		static const FieldParse dataFieldParse[] =
 		{
-			{ "UnitCreatePoint",		INI::parseCoord3D,		NULL, offsetof( DefaultProductionExitUpdateModuleData, m_unitCreatePoint ) },
-			{ "NaturalRallyPoint",  INI::parseCoord3D,		NULL, offsetof( DefaultProductionExitUpdateModuleData, m_naturalRallyPoint ) },
+			{ "UnitCreatePoint",		INI::parseCoord3D,		nullptr, offsetof( DefaultProductionExitUpdateModuleData, m_unitCreatePoint ) },
+			{ "NaturalRallyPoint",  INI::parseCoord3D,		nullptr, offsetof( DefaultProductionExitUpdateModuleData, m_naturalRallyPoint ) },
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -76,7 +76,7 @@ public:
 	DefaultProductionExitUpdate( Thing *thing, const ModuleData* moduleData );
 	// virtual destructor prototype provided by memory pool declaration
 
-	// Required funcs to fufill interface requirements
+	// Required funcs to fulfill interface requirements
 	virtual Bool isExitBusy() const {return FALSE;}	///< Contain style exiters are getting the ability to space out exits, so ask this before reserveDoor as a kind of no-commitment check.
 	virtual ExitDoorType reserveDoorForExit( const ThingTemplate* objType, Object *specificObject ) { return DOOR_1; }
 	virtual void exitObjectViaDoor( Object *newObj, ExitDoorType exitDoor );
@@ -109,5 +109,5 @@ inline const Coord3D *DefaultProductionExitUpdate::getRallyPoint( void ) const
 	if (m_rallyPointExists)
 		return &m_rallyPoint;
 
-	return NULL;
+	return nullptr;
 }

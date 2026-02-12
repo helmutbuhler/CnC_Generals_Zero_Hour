@@ -23,8 +23,8 @@
 // Note: Retail compatibility must not be broken before this project officially does.
 // Use RETAIL_COMPATIBLE_CRC and RETAIL_COMPATIBLE_XFER_SAVE to guard breaking changes.
 
-#ifndef RETAIL_COMPATIBLE_BUG
-#define RETAIL_COMPATIBLE_BUG (1) // Retain bugs present in retail Generals 1.08 and Zero Hour 1.04
+#ifndef PRESERVE_RETAIL_BEHAVIOR
+#define PRESERVE_RETAIL_BEHAVIOR (1) // Retain behavior present in retail Generals 1.08 and Zero Hour 1.04
 #endif
 
 #ifndef RETAIL_COMPATIBLE_CRC
@@ -36,10 +36,13 @@
 #endif
 
 // This is here to easily toggle between the retail compatible with fixed pathfinding fallback and pure fixed pathfinding mode
-#if RETAIL_COMPATIBLE_CRC
+#ifndef RETAIL_COMPATIBLE_PATHFINDING
 #define RETAIL_COMPATIBLE_PATHFINDING (1)
-#else
-#define RETAIL_COMPATIBLE_PATHFINDING (0)
+#endif
+
+// This is here to easily toggle between the retail compatible pathfinding memory allocation and the new static allocated data mode
+#ifndef RETAIL_COMPATIBLE_PATHFINDING_ALLOCATION
+#define RETAIL_COMPATIBLE_PATHFINDING_ALLOCATION (1)
 #endif
 
 // This is essentially synonymous for RETAIL_COMPATIBLE_CRC. There is a lot wrong with AIGroup, such as use-after-free, double-free, leaks,

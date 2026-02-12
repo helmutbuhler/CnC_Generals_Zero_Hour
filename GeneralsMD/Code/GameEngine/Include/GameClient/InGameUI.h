@@ -142,7 +142,7 @@ static const char *const TheRadiusCursorNames[] =
 	"CLEARMINES",
 	"AMBULANCE",
 
-	NULL
+	nullptr
 };
 static_assert(ARRAY_SIZE(TheRadiusCursorNames) == RADIUSCURSOR_COUNT + 1, "Incorrect array size");
 #endif
@@ -207,7 +207,7 @@ public:
 	UnsignedInt									m_timestamp;									  ///< seconds shown in display string
 	Bool												m_hiddenByScript;
 	Bool												m_hiddenByScience;
- 	Bool												m_ready;											///< Stores if we were ready last draw, since readyness can change without time changing
+ 	Bool												m_ready;											///< Stores if we were ready last draw, since readiness can change without time changing
   Bool                        m_evaReadyPlayed;             ///< Stores if Eva announced superweapon is ready
 // not saved, but public
  	Bool												m_forceUpdateText;
@@ -462,7 +462,7 @@ public:  // ********************************************************************
 	virtual Bool isAllSelectedKindOf( KindOfType kindOf ) const;		///< are all selected objects a kind of
 
 	virtual void setRadiusCursor(RadiusCursorType r, const SpecialPowerTemplate* sp, WeaponSlotType wslot);
-	virtual void setRadiusCursorNone() { setRadiusCursor(RADIUSCURSOR_NONE, NULL, PRIMARY_WEAPON); }
+	virtual void setRadiusCursorNone() { setRadiusCursor(RADIUSCURSOR_NONE, nullptr, PRIMARY_WEAPON); }
 
 	virtual void setInputEnabled( Bool enable );										///< Set the input enabled or disabled
 	virtual Bool getInputEnabled( void ) { return m_inputEnabled; }	///< Get the current input status
@@ -531,7 +531,7 @@ public:  // ********************************************************************
 	Bool				isDrawableCaptionBold( void )				{ return m_drawableCaptionBold; }
 	Color				getDrawableCaptionColor( void )			{ return m_drawableCaptionColor; }
 
-	inline Bool shouldMoveRMBScrollAnchor( void ) { return m_moveRMBScrollAnchor; }
+	Bool shouldMoveRMBScrollAnchor( void ) { return m_moveRMBScrollAnchor; }
 
 	Bool isClientQuiet( void ) const			{ return m_clientQuiet; }
 	Bool isInWaypointMode( void ) const			{ return m_waypointMode; }
@@ -572,6 +572,7 @@ public:  // ********************************************************************
 	virtual void refreshRenderFpsResources(void);
 	virtual void refreshSystemTimeResources( void );
 	virtual void refreshGameTimeResources( void );
+	virtual void refreshPlayerInfoListResources( void );
 
 	virtual void disableTooltipsUntil(UnsignedInt frameNum);
 	virtual void clearTooltipsDisabled();
@@ -596,6 +597,7 @@ private:
 	void drawRenderFps(Int &x, Int &y);
 	void drawSystemTime(Int &x, Int &y);
 	void drawGameTime();
+	void drawPlayerInfoList();
 
 public:
 	void registerWindowLayout(WindowLayout *layout); // register a layout for updates
@@ -665,7 +667,7 @@ protected:
 	struct MilitarySubtitleData
 	{
 		UnicodeString subtitle;										///< The complete subtitle to be drawn, each line is separated by L"\n"
-		UnsignedInt index;												///< the current index that we are at through the sibtitle
+		UnsignedInt index;												///< the current index that we are at through the subtitle
 		ICoord2D position;												///< Where on the screen the subtitle should be drawn
 		DisplayString *displayStrings[MAX_SUBTITLE_LINES];	///< We'll only allow MAX_SUBTITLE_LINES worth of display strings
 		UnsignedInt currentDisplayString;					///< contains the current display string we're on. (also lets us know the last display string allocated
@@ -688,7 +690,7 @@ protected:
 	void incrementSelectCount( void ) { ++m_selectCount; }			///< Increase by one the running total of "selected" drawables
 	void decrementSelectCount( void ) { --m_selectCount; }			///< Decrease by one the running total of "selected" drawables
 	virtual View *createView( void ) = 0;												///< Factory for Views
-	void evaluateSoloNexus( Drawable *newlyAddedDrawable = NULL );
+	void evaluateSoloNexus( Drawable *newlyAddedDrawable = nullptr );
 
 	/// expire a hint from of the specified type at the hint index
 	void expireHint( HintType type, UnsignedInt hintIndex );
@@ -699,7 +701,7 @@ protected:
 	void setMouseCursor(Mouse::MouseCursor c);
 
 
-	void addMessageText( const UnicodeString& formattedMessage, const RGBColor *rgbColor = NULL );  ///< internal workhorse for adding plain text for messages
+	void addMessageText( const UnicodeString& formattedMessage, const RGBColor *rgbColor = nullptr );  ///< internal workhorse for adding plain text for messages
 	void removeMessageAtIndex( Int i );				///< remove the message at index i
 
 	void updateFloatingText( void );						///< Update function to move our floating text
@@ -798,6 +800,55 @@ protected:
 	Coord2D												m_gameTimePosition;
 	Color												m_gameTimeColor;
 	Color												m_gameTimeDropColor;
+
+	struct PlayerInfoList
+	{
+		PlayerInfoList();
+		void init(const AsciiString &fontName, Int pointSize, Bool bold);
+		void clear();
+
+		enum LabelType
+		{
+			LabelType_Team,
+			LabelType_Money,
+			LabelType_Rank,
+			LabelType_Xp,
+
+			LabelType_Count
+		};
+
+		enum ValueType
+		{
+			ValueType_Team,
+			ValueType_Money,
+			ValueType_Rank,
+			ValueType_Xp,
+			ValueType_Name,
+
+			ValueType_Count
+		};
+
+		struct LastValues
+		{
+			LastValues();
+			UnsignedInt values[LabelType_Count][MAX_PLAYER_COUNT];
+			UnicodeString name[MAX_PLAYER_COUNT];
+		};
+
+		DisplayString *labels[LabelType_Count];
+		DisplayString *values[ValueType_Count][MAX_PLAYER_COUNT];
+		LastValues lastValues;
+	};
+
+	PlayerInfoList								m_playerInfoList;
+	AsciiString										m_playerInfoListFont;
+	Int														m_playerInfoListPointSize;
+	Bool													m_playerInfoListBold;
+	Coord2D												m_playerInfoListPosition;
+	Color													m_playerInfoListLabelColor;
+	Color													m_playerInfoListValueColor;
+	Color													m_playerInfoListDropColor;
+	UnsignedInt										m_playerInfoListBackgroundAlpha;
 
 	// message data
 	UIMessage										m_uiMessages[ MAX_UI_MESSAGES ];/**< messages to display to the user, the

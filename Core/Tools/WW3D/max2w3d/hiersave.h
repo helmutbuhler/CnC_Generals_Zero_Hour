@@ -47,7 +47,7 @@
 #endif
 
 #ifndef PROGRESS_H
-#include "PROGRESS.H"
+#include "PROGRESS.h"
 #endif
 
 #ifndef CHUNKIO_H
@@ -59,7 +59,7 @@
 #endif
 
 #ifndef VECTOR_H
-#include "Vector.H"
+#include "Vector.h"
 #endif
 
 
@@ -94,7 +94,7 @@ public:
 					Progress_Meter_Class &	treemeter,
 					char *						hname,
 					int							fixup_type = MATRIX_FIXUP_NONE,
-					HierarchySaveClass *		fixuptree = NULL);
+					HierarchySaveClass *		fixuptree = nullptr);
 
 	HierarchySaveClass(
 					INodeListClass *			rootlist,
@@ -102,7 +102,7 @@ public:
 					Progress_Meter_Class &	treemeter,
 					char *						hname,
 					int							fixup_type = MATRIX_FIXUP_NONE,
-					HierarchySaveClass *		fixuptree = NULL,
+					HierarchySaveClass *		fixuptree = nullptr,
 					const Matrix3 &			origin_offset = Matrix3(1));
 
 	~HierarchySaveClass();

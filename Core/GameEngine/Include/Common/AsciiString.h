@@ -46,8 +46,6 @@
 #pragma once
 
 #include <stdarg.h>
-#include <stdio.h>
-#include <string.h>
 #include "Lib/BaseType.h"
 #include "Common/Debug.h"
 #include "Common/Errors.h"
@@ -93,13 +91,13 @@ private:
 		unsigned short	m_numCharsAllocated;  // length of data allocated
 		// char m_stringdata[];
 
-		inline char* peek() { return (char*)(this+1); }
+		char* peek() { return (char*)(this+1); }
 	};
 
 	#ifdef RTS_DEBUG
 	void validate() const;
 	#else
-	inline void validate() const { }
+	void validate() const { }
 	#endif
 
 protected:
@@ -127,7 +125,7 @@ public:
 		string, so we don't need to construct temporaries
 		for such a common thing.
 	*/
-	static AsciiString TheEmptyString;
+	static const AsciiString TheEmptyString;
 
 	/**
 		Default constructor -- construct a new, empty AsciiString.
@@ -254,7 +252,7 @@ public:
 	void trimEnd(void);
 
 	/**
-	  Remove all consecutive occurances of c from the end of the string.
+	  Remove all consecutive occurrences of c from the end of the string.
 	*/
 	void trimEnd(const char c);
 
@@ -327,13 +325,13 @@ public:
 		return true iff self starts with the given string.
 	*/
 	Bool startsWith(const char* p) const;
-	inline Bool startsWith(const AsciiString& stringSrc) const { return startsWith(stringSrc.str()); }
+	Bool startsWith(const AsciiString& stringSrc) const { return startsWith(stringSrc.str()); }
 
 	/**
 		return true iff self starts with the given string. (case insensitive)
 	*/
 	Bool startsWithNoCase(const char* p) const;
-	inline Bool startsWithNoCase(const AsciiString& stringSrc) const { return startsWithNoCase(stringSrc.str()); }
+	Bool startsWithNoCase(const AsciiString& stringSrc) const { return startsWithNoCase(stringSrc.str()); }
 
 	/**
 		return true iff self ends with the given string.
@@ -355,7 +353,7 @@ public:
 		token was found. (note that this modifies 'this' as well, stripping
 		the token off!)
 	*/
-	Bool nextToken(AsciiString* token, const char* seps = NULL);
+	Bool nextToken(AsciiString* token, const char* seps = nullptr);
 
 	/**
 		return true iff the string is "NONE" (case-insensitive).
@@ -422,7 +420,7 @@ inline int AsciiString::getByteCount() const
 inline Bool AsciiString::isEmpty() const
 {
 	validate();
-	return m_data == NULL || peek()[0] == 0;
+	return m_data == nullptr || peek()[0] == 0;
 }
 
 // -----------------------------------------------------

@@ -36,18 +36,15 @@
 
 #pragma once
 
-#ifndef ALWAYS_H
 #include "always.h"
-#endif
-
 #include "mutex.h"
-#include "Vector.H"
+#include "Vector.h"
 #include "wwstring.h"
 
 /*
 **
 */
-#include	"RAWFILE.H"
+#include "RAWFILE.h"
 class	FileClass;
 
 /*
@@ -129,7 +126,7 @@ public:
 	virtual FileClass *	Get_File( char const *filename );
 	virtual void			Return_File( FileClass *file );
 
-	// sub_directory may be a semicolon seperated search path.  New files will always
+	// sub_directory may be a semicolon separated search path.  New files will always
 	//   go in the last dir in the path.
 	void						Get_Sub_Directory( StringClass& new_dir ) const;
 	void						Set_Sub_Directory( const char * sub_directory );

@@ -101,7 +101,7 @@ DECLARE_PERF_TIMER(FileSystem)
 	*/
 //===============================
 
-FileSystem	*TheFileSystem = NULL;
+FileSystem	*TheFileSystem = nullptr;
 
 //----------------------------------------------------------------------------
 //         Private Prototypes
@@ -174,9 +174,9 @@ void		FileSystem::reset( void )
 File*		FileSystem::openFile( const Char *filename, Int access, size_t bufferSize, FileInstance instance )
 {
 	USE_PERF_TIMER(FileSystem)
-	File *file = NULL;
+	File *file = nullptr;
 
-	if ( TheLocalFileSystem != NULL )
+	if ( TheLocalFileSystem != nullptr )
 	{
 		if (instance != 0)
 		{
@@ -190,8 +190,9 @@ File*		FileSystem::openFile( const Char *filename, Int access, size_t bufferSize
 			file = TheLocalFileSystem->openFile( filename, access, bufferSize );
 
 #if ENABLE_FILESYSTEM_EXISTENCE_CACHE
-			if (file != NULL && (file->getAccess() & File::CREATE))
+			if (file != nullptr && (file->getAccess() & File::CREATE))
 			{
+				FastCriticalSectionClass::LockClass lock(m_fileExistMutex);
 				FileExistMap::iterator it = m_fileExist.find(FileExistMap::key_type::temporary(filename));
 				if (it != m_fileExist.end())
 				{
@@ -208,7 +209,7 @@ File*		FileSystem::openFile( const Char *filename, Int access, size_t bufferSize
 		}
 	}
 
-	if ( (TheArchiveFileSystem != NULL) && (file == NULL) )
+	if ( (TheArchiveFileSystem != nullptr) && (file == nullptr) )
 	{
 		// TheSuperHackers @todo Pass 'access' here?
 		file = TheArchiveFileSystem->openFile( filename, 0, instance );
@@ -227,6 +228,7 @@ Bool FileSystem::doesFileExist(const Char *filename, FileInstance instance) cons
 
 #if ENABLE_FILESYSTEM_EXISTENCE_CACHE
 	{
+		FastCriticalSectionClass::LockClass lock(m_fileExistMutex);
 		FileExistMap::const_iterator it = m_fileExist.find(FileExistMap::key_type::temporary(filename));
 		if (it != m_fileExist.end())
 		{
@@ -244,7 +246,10 @@ Bool FileSystem::doesFileExist(const Char *filename, FileInstance instance) cons
 		if (instance == 0)
 		{
 #if ENABLE_FILESYSTEM_EXISTENCE_CACHE
-			m_fileExist[filename];
+			{
+				FastCriticalSectionClass::LockClass lock(m_fileExistMutex);
+				m_fileExist[filename];
+			}
 #endif
 			return TRUE;
 		}
@@ -255,15 +260,21 @@ Bool FileSystem::doesFileExist(const Char *filename, FileInstance instance) cons
 	if (TheArchiveFileSystem->doesFileExist(filename, instance))
 	{
 #if ENABLE_FILESYSTEM_EXISTENCE_CACHE
-		FileExistMap::mapped_type& value = m_fileExist[filename];
-		value.instanceExists = max(value.instanceExists, instance);
+		{
+			FastCriticalSectionClass::LockClass lock(m_fileExistMutex);
+			FileExistMap::mapped_type& value = m_fileExist[filename];
+			value.instanceExists = max(value.instanceExists, instance);
+		}
 #endif
 		return TRUE;
 	}
 
 #if ENABLE_FILESYSTEM_EXISTENCE_CACHE
-	FileExistMap::mapped_type& value = m_fileExist[filename];
-	value.instanceDoesNotExist = min(value.instanceDoesNotExist, instance);
+	{
+		FastCriticalSectionClass::LockClass lock(m_fileExistMutex);
+		FileExistMap::mapped_type& value = m_fileExist[filename];
+		value.instanceDoesNotExist = min(value.instanceDoesNotExist, instance);
+	}
 #endif
 	return FALSE;
 }
@@ -287,7 +298,7 @@ Bool FileSystem::getFileInfo(const AsciiString& filename, FileInfo *fileInfo, Fi
 
 	// TheSuperHackers @todo Add file info cache?
 
-	if (fileInfo == NULL) {
+	if (fileInfo == nullptr) {
 		return FALSE;
 	}
 	memset(fileInfo, 0, sizeof(*fileInfo));
@@ -313,7 +324,7 @@ Bool FileSystem::getFileInfo(const AsciiString& filename, FileInfo *fileInfo, Fi
 Bool FileSystem::createDirectory(AsciiString directory)
 {
 	USE_PERF_TIMER(FileSystem)
-	if (TheLocalFileSystem != NULL) {
+	if (TheLocalFileSystem != nullptr) {
 		return TheLocalFileSystem->createDirectory(directory);
 	}
 	return FALSE;

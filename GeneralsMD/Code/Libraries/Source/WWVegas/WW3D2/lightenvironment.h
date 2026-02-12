@@ -116,7 +116,7 @@ public:
 	static int			Get_Max_Lights() { return MAX_LIGHTS; }
 	enum { MAX_LIGHTS = 4 };	//Made this public, so other code can tell how many lights are allowed. - MW
 
-	inline bool operator== (const LightEnvironmentClass& that) const
+	bool operator== (const LightEnvironmentClass& that) const
 	{
 		if (LightCount!=that.LightCount) return false;
 		bool dif=!(ObjectCenter==that.ObjectCenter);
@@ -168,7 +168,7 @@ protected:
 	InputLightStruct	InputLights[MAX_LIGHTS];	// Sorted list of input lights from the greatest contributor to the least
 
 	Vector3				OutputAmbient;					// scene ambient + lights' ambients
-	OutputLightStruct	OutputLights[MAX_LIGHTS];	// ouput lights
+	OutputLightStruct	OutputLights[MAX_LIGHTS];	// output lights
 
 	InputLightStruct 	FillLight;						// Used to store the calculated fill light
 	float					FillIntensity;					// Used to determine how strong the fill light should be

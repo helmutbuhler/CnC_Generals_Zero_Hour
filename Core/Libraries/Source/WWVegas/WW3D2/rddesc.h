@@ -36,7 +36,7 @@
 
 #pragma once
 
-#include "Vector.H"
+#include "Vector.h"
 #include "wwstring.h"
 #include <d3d8types.h>
 #include <d3d8caps.h>
@@ -61,9 +61,9 @@ class RenderDeviceDescClass
 
 public:
 
-	RenderDeviceDescClass(void) : DeviceName(NULL), DeviceVendor(NULL), DevicePlatform(NULL),
-											DriverName(NULL), DriverVendor(NULL), DriverVersion(NULL),
-											HardwareName(NULL), HardwareVendor(NULL), HardwareChipset(NULL)
+	RenderDeviceDescClass(void) : DeviceName(), DeviceVendor(), DevicePlatform(),
+											DriverName(), DriverVendor(), DriverVersion(),
+											HardwareName(), HardwareVendor(), HardwareChipset()
 	{
 	}
 

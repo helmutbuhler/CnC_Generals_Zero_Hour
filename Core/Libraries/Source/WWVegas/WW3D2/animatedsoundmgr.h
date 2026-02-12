@@ -40,7 +40,7 @@
 #pragma once
 
 #include "simplevec.h"
-#include "Vector.H"
+#include "Vector.h"
 #include "hashtemplate.h"
 
 
@@ -68,7 +68,7 @@ public:
 	//
 	//	Initialization and shutdown
 	//
-	static void		Initialize (const char *ini_filename = NULL);
+	static void		Initialize (const char *ini_filename = nullptr);
 	static void		Shutdown (void);
 
 	//

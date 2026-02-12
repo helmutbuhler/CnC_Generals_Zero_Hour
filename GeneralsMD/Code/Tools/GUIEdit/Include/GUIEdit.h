@@ -31,7 +31,6 @@
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include <windows.h>
-#include <stdio.h>
 
 #include "GameClient/GameWindow.h"
 #include "GameClient/WindowLayout.h"
@@ -101,7 +100,7 @@ typedef enum
 } CursorType;
 
 //-------------------------------------------------------------------------------------------------
-/** These entrys make up the selection list of windows */
+/** These entries make up the selection list of windows */
 //-------------------------------------------------------------------------------------------------
 struct WindowSelectionEntry
 {

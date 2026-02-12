@@ -27,20 +27,18 @@
 // Author: Michael S. Booth, October 2000
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
+#include "PreRTS.h"	// This must go first in EVERY cpp file in the GameEngine
 
 #include "Common/Xfer.h"
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/GhostObject.h"
 #include "GameLogic/Object.h"
 
-GhostObjectManager *TheGhostObjectManager = NULL;
+GhostObjectManager *TheGhostObjectManager = nullptr;
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 GhostObject::GhostObject(void):
-//Added By Sadullah Nader
-//Initializations missing and needed
 m_parentAngle(0.0f),
 // TheSuperHackers @bugfix tomsons26 26/04/2025 Change initialization of m_parentGeometryIsSmall from 0.0f.
 // Assigning a float to a bool results in the compiler using a random 1 byte value to assign to the bool.
@@ -48,8 +46,8 @@ m_parentAngle(0.0f),
 m_parentGeometryIsSmall(true),
 m_parentGeometryMajorRadius(0.0f),
 m_parentGeometryminorRadius(0.0f),
-m_parentObject(NULL),
-m_partitionData(NULL)
+m_parentObject(nullptr),
+m_partitionData(nullptr)
 {
 	m_parentPosition.zero();
 }
@@ -90,7 +88,7 @@ void GhostObject::xfer( Xfer *xfer )
 		m_parentObject = TheGameLogic->findObjectByID( parentObjectID );
 
 		// sanity
-		if( parentObjectID != INVALID_ID && m_parentObject == NULL )
+		if( parentObjectID != INVALID_ID && m_parentObject == nullptr )
 		{
 			DEBUG_CRASH(( "GhostObject::xfer - Unable to connect m_parentObject" ));
 			throw INI_INVALID_DATA;
@@ -154,7 +152,7 @@ void GhostObjectManager::reset(void)
 // ------------------------------------------------------------------------------------------------
 GhostObject *GhostObjectManager::addGhostObject(Object *object, PartitionData *pd)
 {
-	return 0;
+	return nullptr;
 }
 
 // ------------------------------------------------------------------------------------------------

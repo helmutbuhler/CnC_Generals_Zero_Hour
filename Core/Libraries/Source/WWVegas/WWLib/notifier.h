@@ -60,7 +60,7 @@ template<typename Event> class Observer
 		typedef std::vector< Notifier<Event>* > NotifierColl;
 
 		Observer() :
-				mNotifiers(NULL)
+				mNotifiers()
 			{}
 
 		virtual ~Observer()
@@ -88,10 +88,10 @@ template<typename Event> class Observer
 		//! Stop observing event
 		void StopObserving()
 			{
-			while (mNotifiers.size() > 0)
+			while (!mNotifiers.empty())
 				{
 				Notifier<Event>* notifier = mNotifiers.back();
-				assert(notifier && "ERROR: NULL pointer in collection.");
+				assert(notifier && "ERROR: null pointer in collection.");
 				notifier->RemoveObserver(*this);
 				}
 			}

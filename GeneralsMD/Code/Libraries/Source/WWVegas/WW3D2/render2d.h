@@ -38,7 +38,7 @@
 
 #include "always.h"
 //#include "simplevec.h"
-#include "Vector.H"
+#include "Vector.h"
 #include "vector2.h"
 
 #include "shader.h"
@@ -95,7 +95,7 @@ class Render2DClass : public W3DMPO
 {
 	W3DMPO_GLUE(Render2DClass)
 public:
-	Render2DClass( TextureClass* tex = NULL );
+	Render2DClass( TextureClass* tex = nullptr );
 	virtual ~Render2DClass(void);
 
 	virtual	void	Reset(void);
@@ -140,7 +140,7 @@ public:
 
 	void Set_Hidden( bool hide )			{ IsHidden = hide; }
 
-	// Z-value support (this is usefull for playing tricks with the z-buffer)
+	// Z-value support (this is useful for playing tricks with the z-buffer)
 	void	Set_Z_Value (float z_value)	{ ZValue = z_value; }
 
 	// Move all verts
@@ -197,7 +197,7 @@ protected:
 */
 class Render2DTextClass : public Render2DClass {
 public:
-	Render2DTextClass(Font3DInstanceClass *font=NULL);
+	Render2DTextClass(Font3DInstanceClass *font=nullptr);
 	~Render2DTextClass();
 
 	virtual	void	Reset(void);

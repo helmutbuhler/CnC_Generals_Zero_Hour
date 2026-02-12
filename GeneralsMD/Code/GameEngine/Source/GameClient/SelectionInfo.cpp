@@ -63,7 +63,7 @@ SelectionInfo::SelectionInfo() :
 { }
 
 //-------------------------------------------------------------------------------------------------
-PickDrawableStruct::PickDrawableStruct() : drawableListToFill(NULL), isPointSelection(FALSE)
+PickDrawableStruct::PickDrawableStruct() : drawableListToFill(nullptr), isPointSelection(FALSE)
 {
 	forceAttackMode = TheInGameUI->isInForceAttackMode();
 	UnsignedInt pickType = getPickTypesForContext(forceAttackMode);
@@ -126,10 +126,10 @@ extern Bool contextCommandForNewSelection(const DrawableList *currentlySelectedD
 		}
 	}
 
-	Drawable *newMine = NULL;
-	Drawable *newFriendly = NULL;
-	Drawable *newEnemy = NULL;
-	Drawable *newCivilian = NULL;
+	Drawable *newMine = nullptr;
+	Drawable *newFriendly = nullptr;
+	Drawable *newEnemy = nullptr;
+	Drawable *newCivilian = nullptr;
 
 	for (it = newlySelectedDrawables->begin(); it != newlySelectedDrawables->end(); ++it) {
 		if (!(*it)) {
@@ -253,7 +253,7 @@ UnsignedInt getPickTypesForContext( Bool forceAttackMode )
 	//
 	const CommandButton *command = TheInGameUI->getGUICommand();
 
-	if (command != NULL) {
+	if (command != nullptr) {
 		if (BitIsSet( command->getOptions(), ALLOW_MINE_TARGET)) {
 			types |= PICK_TYPE_MINES;
 		}
@@ -345,7 +345,7 @@ Bool addDrawableToList( Drawable *draw, void *userData )
 	if (!pds->drawableListToFill)
 		return FALSE;
 
-#if !RTS_GENERALS || !RETAIL_COMPATIBLE_BUG
+#if !RTS_GENERALS || !PRESERVE_RETAIL_BEHAVIOR
 	if (draw->getFullyObscuredByShroud())
 		return FALSE;
 
@@ -372,7 +372,7 @@ Bool addDrawableToList( Drawable *draw, void *userData )
       return FALSE;
   }
 
-#if !RTS_GENERALS && RETAIL_COMPATIBLE_BUG
+#if !RTS_GENERALS && PRESERVE_RETAIL_BEHAVIOR
 	// TheSuperHackers @info
 	// In retail, hidden objects such as passengers are included here when drag-selected, which causes
 	// enemy selection logic to exit early (only 1 enemy unit can be selected at a time). Some players

@@ -640,7 +640,7 @@ struct W3dRGBAStruct
 // MATERIALS
 //
 // Surrender 1.40 significantly changed the way that materials are described.  To
-// accomodate this, the w3d file format has changed since there are new features and
+// accommodate this, the w3d file format has changed since there are new features and
 // optimizations that we want to take advangage of.
 //
 // The VertexMaterial defines parameters which control the calculation of the primary
@@ -897,7 +897,7 @@ struct W3dShaderStruct
 	uint8						pad[1];
 
 	// Required by DynamicVectorClass...
-	inline bool			operator == (const W3dShaderStruct & that)
+	bool			operator == (const W3dShaderStruct & that)
 	{
 		return (
 			(DepthCompare == that.DepthCompare) &&
@@ -915,7 +915,7 @@ struct W3dShaderStruct
 			(AlphaTest == that.AlphaTest) );
 	}
 
-	inline bool			operator != (const W3dShaderStruct & that)
+	bool			operator != (const W3dShaderStruct & that)
 	{
 		return !(*this == that);
 	}
@@ -1686,7 +1686,7 @@ struct W3dCollectionHeaderStruct
 #define W3D_CURRENT_PLACEHOLDER_VERSION	W3D_MAKE_VERSION(1,0)
 
 //
-//	Note:  This structure is follwed directly by an array of char's 'name_len' in length
+//	Note:  This structure is followed directly by an array of char's 'name_len' in length
 // which specify the name of the placeholder object in our Commando-level editor.
 //
 struct W3dPlaceholderStruct
@@ -2119,11 +2119,11 @@ struct W3dHLodSubObjectStruct
 #define W3D_BOX_ATTRIBUTE_ALIGNED							0x00000002
 #define W3D_BOX_ATTRIBUTE_COLLISION_TYPE_MASK			0x00000FF0		// mask for the collision type bits
 #define W3D_BOX_ATTRIBUTE_COLLISION_TYPE_SHIFT						4		// shifting to get to the collision type bits
-#define W3D_BOX_ATTRIBTUE_COLLISION_TYPE_PHYSICAL		0x00000010		// physical collisions
-#define W3D_BOX_ATTRIBTUE_COLLISION_TYPE_PROJECTILE	0x00000020		// projectiles (rays) collide with this
-#define W3D_BOX_ATTRIBTUE_COLLISION_TYPE_VIS				0x00000040		// vis rays collide with this mesh
-#define W3D_BOX_ATTRIBTUE_COLLISION_TYPE_CAMERA			0x00000080		// cameras collide with this mesh
-#define W3D_BOX_ATTRIBTUE_COLLISION_TYPE_VEHICLE		0x00000100		// vehicles collide with this mesh
+#define W3D_BOX_ATTRIBUTE_COLLISION_TYPE_PHYSICAL		0x00000010		// physical collisions
+#define W3D_BOX_ATTRIBUTE_COLLISION_TYPE_PROJECTILE	0x00000020		// projectiles (rays) collide with this
+#define W3D_BOX_ATTRIBUTE_COLLISION_TYPE_VIS				0x00000040		// vis rays collide with this mesh
+#define W3D_BOX_ATTRIBUTE_COLLISION_TYPE_CAMERA			0x00000080		// cameras collide with this mesh
+#define W3D_BOX_ATTRIBUTE_COLLISION_TYPE_VEHICLE		0x00000100		// vehicles collide with this mesh
 
 struct W3dBoxStruct
 {
@@ -2187,7 +2187,7 @@ struct W3dNullObjectStruct
 #define W3D_CURRENT_SOUNDROBJ_VERSION			0x00010000
 
 //
-//	Note:  This structure is follwed directly by a chunk (W3D_CHUNK_SOUNDROBJ_DEFINITION)
+//	Note:  This structure is followed directly by a chunk (W3D_CHUNK_SOUNDROBJ_DEFINITION)
 // that contains an embedded AudibleSoundDefinitionClass's storage.  See audibledound.h
 // for details.
 //

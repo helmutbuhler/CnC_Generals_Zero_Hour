@@ -79,7 +79,7 @@
 //         Public Data
 //----------------------------------------------------------------------------
 
-ArchiveFileSystem *TheArchiveFileSystem = NULL;
+ArchiveFileSystem *TheArchiveFileSystem = nullptr;
 
 
 //----------------------------------------------------------------------------
@@ -120,7 +120,7 @@ void ArchiveFileSystem::loadIntoDirectoryTree(ArchiveFile *archiveFile, Bool ove
 
 	FilenameList filenameList;
 
-	archiveFile->getFileListInDirectory(AsciiString(""), AsciiString(""), AsciiString("*"), filenameList, TRUE);
+	archiveFile->getFileListInDirectory("", "", "*", filenameList, TRUE);
 
 	FilenameListIter it = filenameList.begin();
 
@@ -216,7 +216,7 @@ void ArchiveFileSystem::loadMods()
 	{
 		ArchiveFile *archiveFile = openArchiveFile(TheGlobalData->m_modBIG.str());
 
-		if (archiveFile != NULL) {
+		if (archiveFile != nullptr) {
 			DEBUG_LOG(("ArchiveFileSystem::loadMods - loading %s into the directory tree.", TheGlobalData->m_modBIG.str()));
 			loadIntoDirectoryTree(archiveFile, TRUE);
 			m_archiveFileMap[TheGlobalData->m_modBIG] = archiveFile;
@@ -278,7 +278,7 @@ ArchiveFileSystem::ArchivedDirectoryInfoResult ArchiveFileSystem::getArchivedDir
 		else
 		{
 			// the directory doesn't exist
-			result.dirInfo = NULL;
+			result.dirInfo = nullptr;
 			result.lastToken = AsciiString::TheEmptyString;
 			return result;
 		}
@@ -293,25 +293,25 @@ File * ArchiveFileSystem::openFile(const Char *filename, Int access, FileInstanc
 {
 	ArchiveFile* archive = getArchiveFile(filename, instance);
 
-	if (archive == NULL)
-		return NULL;
+	if (archive == nullptr)
+		return nullptr;
 
 	return archive->openFile(filename, access);
 }
 
 Bool ArchiveFileSystem::getFileInfo(const AsciiString& filename, FileInfo *fileInfo, FileInstance instance) const
 {
-	if (fileInfo == NULL) {
+	if (fileInfo == nullptr) {
 		return FALSE;
 	}
 
-	if (filename.getLength() <= 0) {
+	if (filename.isEmpty()) {
 		return FALSE;
 	}
 
 	ArchiveFile* archive = getArchiveFile(filename, instance);
 
-	if (archive == NULL)
+	if (archive == nullptr)
 		return FALSE;
 
 	return archive->getFileInfo(filename, fileInfo);
@@ -322,12 +322,12 @@ ArchiveFile* ArchiveFileSystem::getArchiveFile(const AsciiString& filename, File
 	ArchivedDirectoryInfoResult result = const_cast<ArchiveFileSystem*>(this)->getArchivedDirectoryInfo(filename.str());
 
 	if (!result.valid())
-		return NULL;
+		return nullptr;
 
 	stl::const_range<ArchivedFileLocationMap> range = stl::get_range(result.dirInfo->m_files, result.lastToken, instance);
 
 	if (!range.valid())
-		return NULL;
+		return nullptr;
 	
 	return range.get()->second;
 }

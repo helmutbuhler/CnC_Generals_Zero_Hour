@@ -26,14 +26,14 @@
 // Generals version number class
 // Author: Matthew D. Campbell, November 2001
 
-#include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
+#include "PreRTS.h"	// This must go first in EVERY cpp file in the GameEngine
 
 #include "GameClient/GameText.h"
 #include "Common/version.h"
 
 #include "gitinfo.h"
 
-Version *TheVersion = NULL;	///< The Version singleton
+Version *TheVersion = nullptr;	///< The Version singleton
 
 Version::Version()
 {
@@ -45,9 +45,11 @@ Version::Version()
 	m_buildLocation = AsciiString::TheEmptyString;
 	m_asciiGitCommitCount = buildAsciiGitCommitCount();
 	m_asciiGitTagOrHash = buildAsciiGitTagOrHash();
+	m_asciiGitShortHash = buildAsciiGitShortHash();
 	m_asciiGitCommitTime = buildAsciiGitCommitTime();
 	m_unicodeGitCommitCount = buildUnicodeGitCommitCount();
 	m_unicodeGitTagOrHash = buildUnicodeGitTagOrHash();
+	m_unicodeGitShortHash = buildUnicodeGitShortHash();
 	m_unicodeGitCommitTime = buildUnicodeGitCommitTime();
 #if defined(RTS_DEBUG)
 	m_showFullVersion = TRUE;
@@ -235,6 +237,16 @@ UnicodeString Version::getUnicodeGitTagOrHash() const
 	return m_unicodeGitTagOrHash;
 }
 
+AsciiString Version::getAsciiGitShortHash() const
+{
+	return m_asciiGitShortHash;
+}
+
+UnicodeString Version::getUnicodeGitShortHash() const
+{
+	return m_unicodeGitShortHash;
+}
+
 AsciiString Version::getAsciiGitCommitTime() const
 {
 	return m_asciiGitCommitTime;
@@ -309,7 +321,7 @@ UnicodeString Version::getUnicodeBuildUserOrGitCommitAuthorName() const
 UnicodeString Version::getUnicodeProductTitle() const
 {
 	// @todo Make configurable
-	return UnicodeString(L"Community Patch");
+	return L"Community Patch";
 }
 
 UnicodeString Version::getUnicodeProductVersion() const
@@ -401,6 +413,22 @@ UnicodeString Version::buildUnicodeGitTagOrHash()
 {
 	UnicodeString str;
 	str.translate(buildAsciiGitTagOrHash());
+	return str;
+}
+
+AsciiString Version::buildAsciiGitShortHash()
+{
+	AsciiString str;
+	str.format("%s%s",
+		GitUncommittedChanges ? "~" : "",
+		GitShortSHA1);
+	return str;
+}
+
+UnicodeString Version::buildUnicodeGitShortHash()
+{
+	UnicodeString str;
+	str.translate(buildAsciiGitShortHash());
 	return str;
 }
 

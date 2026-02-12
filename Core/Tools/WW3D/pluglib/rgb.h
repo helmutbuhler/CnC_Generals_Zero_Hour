@@ -22,7 +22,7 @@
  *                                                                                             *
  *                 Project Name : Command & Conquer                                            *
  *                                                                                             *
- *                     $Archive:: /G/wwlib/RGB.H                                              $*
+ *                     $Archive:: /G/wwlib/RGB.h                                              $*
  *                                                                                             *
  *                      $Author:: Eric_c                                                      $*
  *                                                                                             *
@@ -42,7 +42,7 @@ class HSVClass;
 
 /*
 **	Each color entry is represented by this class. It holds the values for the color
-**	guns. The gun values are recorded in device dependant format, but the interface
+**	guns. The gun values are recorded in device dependent format, but the interface
 **	uses gun values from 0 to 255.
 */
 class RGBClass
@@ -78,7 +78,7 @@ class RGBClass
 		friend class PaletteClass;
 
 		/*
-		**	These hold the actual color gun values in machine independant scale. This
+		**	These hold the actual color gun values in machine independent scale. This
 		**	means the values range from 0 to 255.
 		*/
 		unsigned char Red;

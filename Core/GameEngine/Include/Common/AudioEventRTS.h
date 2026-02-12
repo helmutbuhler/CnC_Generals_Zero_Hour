@@ -99,7 +99,7 @@ public:
 	void decreaseLoopCount( void );
 	Bool hasMoreLoops( void ) const;
 
-	void setAudioEventInfo( const AudioEventInfo *eventInfo ) const;
+	void setAudioEventInfo( const AudioEventInfo *eventInfo ) const; // is mutable
 	const AudioEventInfo *getAudioEventInfo( void ) const;
 
 	void setPlayingHandle( AudioHandle handle );	// for ID of this audio piece.
@@ -141,18 +141,18 @@ public:
 	Int getPlayerIndex( void ) const;
 	void setPlayerIndex( Int playerNdx );
 
-	Int getPlayingAudioIndex( void ) { return m_playingAudioIndex; };
-	void setPlayingAudioIndex( Int pai )  { m_playingAudioIndex = pai; };
+	Int getPlayingAudioIndex( void ) const { return m_playingAudioIndex; }
+	void setPlayingAudioIndex( Int pai ) const { m_playingAudioIndex = pai; } // is mutable
 
-	Bool getUninterruptable( ) const { return m_uninterruptable; }
-	void setUninterruptable( Bool uninterruptable ) { m_uninterruptable = uninterruptable; }
+	Bool getUninterruptible( ) const { return m_uninterruptible; }
+	void setUninterruptible( Bool uninterruptible ) { m_uninterruptible = uninterruptible; }
 
 
 	// This will retrieve the appropriate position based on type.
 	const Coord3D *getCurrentPosition( void );
 
 	// This will return the directory leading up to the appropriate type, including the trailing '\\'
-	// If localized is true, we'll append a language specifc directory to the end of the path.
+	// If localized is true, we'll append a language specific directory to the end of the path.
 	AsciiString generateFilenamePrefix( AudioType audioTypeToPlay, Bool localized );
 	AsciiString generateFilenameExtension( AudioType audioTypeToPlay );
 protected:
@@ -170,8 +170,8 @@ protected:
 	AsciiString m_attackName;				///< This is the filename that should be used during the attack.
 	AsciiString m_decayName;				///< This is the filename that should be used during the decay.
 
-	AudioPriority m_priority;				///< This should be the priority as given by the event info, or the overrided priority.
-	Real m_volume;									///< This is the override for the volume. It will either be the normal
+	AudioPriority m_priority;				///< This should be the priority as given by the event info, or the overridden priority.
+	Real m_volume;									///< This is the override for the volume. It will either be the normal volume or an overridden value.
 	TimeOfDay m_timeOfDay;					///< This should be the current Time Of Day.
 
 	Coord3D m_positionOfAudio;			///< Position of the sound if no further positional updates are necessary
@@ -184,14 +184,14 @@ protected:
 
 	Bool m_shouldFade;							///< This should fade in or out (if it is starting or stopping)
 	Bool m_isLogicalAudio;					///< Should probably only be true for scripted sounds
-	Bool m_uninterruptable;
+	Bool m_uninterruptible;
 
 	// Playing attributes
 	Real m_pitchShift;							///< Pitch shift that should occur on this piece of audio
 	Real m_volumeShift;							///< Volume shift that should occur on this piece of audio
 	Real m_delay;										///< Amount to delay before playing this sound
 	Int m_loopCount;								///< The current loop count value. Only valid if this is a looping type event or the override has been set.
-	Int m_playingAudioIndex;				///< The sound index we are currently playing. In the case of non-random, we increment this to move to the next sound
+	mutable Int m_playingAudioIndex;	///< The sound index we are currently playing. In the case of non-random, we increment this to move to the next sound
 	Int m_allCount;									///< If this sound is an ALL type, then this is how many sounds we have played so far.
 
 	Int m_playerIndex;							///< The index of the player who owns this sound. Used for sounds that should have an owner, but don't have an object, etc.

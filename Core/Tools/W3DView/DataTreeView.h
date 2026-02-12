@@ -21,9 +21,9 @@
 // DataTreeView.h : header file
 //
 
-#include "AfxCView.H"
+#include "AfxCView.h"
 #include "AssetTypes.h"
-#include "Vector.H"
+#include "Vector.h"
 
 // Forward declarations
 class RenderObjClass;
@@ -104,7 +104,7 @@ protected:
 		//
 		//	Display methods
 		//
-		void					Display_Asset (HTREEITEM htree_item = NULL);
+		void					Display_Asset (HTREEITEM htree_item = nullptr);
 		void					Select_Next (void);
 		void					Select_Prev (void);
 		void					Reload_Lightmap_Models (void);

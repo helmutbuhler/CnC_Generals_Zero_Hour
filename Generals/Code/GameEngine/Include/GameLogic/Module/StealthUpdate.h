@@ -57,7 +57,7 @@ static const char *const TheStealthLevelNames[] =
 	"FIRING_PRIMARY",
 	"FIRING_SECONDARY",
 	"FIRING_TERTIARY",
-	NULL
+	nullptr
 };
 #endif
 
@@ -85,11 +85,8 @@ public:
 
 	StealthUpdateModuleData()
 	{
-		//Added By Sadullah Nader
-		//Initialization(s) inserted
-		m_disguiseFX = NULL;
-		m_disguiseRevealFX = NULL;
-		//
+		m_disguiseFX = nullptr;
+		m_disguiseRevealFX = nullptr;
 		m_stealthDelay		= UINT_MAX;
 		m_stealthLevel		= 0;
 		m_stealthSpeed		= 0.0f;
@@ -128,7 +125,7 @@ public:
 	virtual DisabledMaskType getDisabledTypesToProcess() const { return MAKE_DISABLED_MASK( DISABLED_HELD ); }
 
 	// ??? ugh
-	Bool isDisguised() const { return m_disguiseAsTemplate != NULL; }
+	Bool isDisguised() const { return m_disguiseAsTemplate != nullptr; }
 	Int getDisguisedPlayerIndex() const { return m_disguiseAsPlayerIndex; }
 	const ThingTemplate *getDisguisedTemplate() { return m_disguiseAsTemplate; }
 	void markAsDetected( UnsignedInt numFrames = 0 );

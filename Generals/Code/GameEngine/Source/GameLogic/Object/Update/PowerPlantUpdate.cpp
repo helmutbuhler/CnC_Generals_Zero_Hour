@@ -28,7 +28,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // USER INCLUDES //////////////////////////////////////////////////////////////////////////////////
-#include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
+#include "PreRTS.h"	// This must go first in EVERY cpp file in the GameEngine
 
 #include "Common/ModelState.h"
 #include "Common/Xfer.h"
@@ -107,7 +107,7 @@ void PowerPlantUpdate::extendRods( Bool extend )
 //-------------------------------------------------------------------------------------------------
 UpdateSleepTime PowerPlantUpdate::update( void )
 {
-	// remove the extending condition and set the extened condition
+	// remove the extending condition and set the extended condition
 	Drawable *draw = getObject()->getDrawable();
 	if( draw )
 		draw->clearAndSetModelConditionState( MODELCONDITION_POWER_PLANT_UPGRADING,

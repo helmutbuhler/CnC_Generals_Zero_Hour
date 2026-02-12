@@ -100,7 +100,7 @@ public:
 	void setHiliteTextColor( Color c );
 	void setHiliteTextBorderColor( Color c );
 
-	/** apply the image and color info stored in the state identifer tables
+	/** apply the image and color info stored in the state identifier tables
 	used for "property editing" to all appropriate windows currently
 	loaded in the editor */
 	void applyPropertyTablesToWindow( GameWindow *root );
@@ -124,7 +124,7 @@ protected:
 // INLINING ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 inline char *LayoutScheme::getSchemeFilename( void ) { return m_schemeFilename; }
-inline void LayoutScheme::setSchemeFilename( char *filename ) { strcpy( m_schemeFilename, filename ); }
+inline void LayoutScheme::setSchemeFilename( char *filename ) { strlcpy(m_schemeFilename, filename, ARRAY_SIZE(m_schemeFilename)); }
 inline Color LayoutScheme::getEnabledTextColor( void ) { return m_enabledText.color; }
 inline Color LayoutScheme::getEnabledTextBorderColor( void ) { return m_enabledText.borderColor; }
 inline Color LayoutScheme::getDisabledTextColor( void ) { return m_disabledText.color; }

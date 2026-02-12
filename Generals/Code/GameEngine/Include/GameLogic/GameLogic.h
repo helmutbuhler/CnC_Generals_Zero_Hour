@@ -35,7 +35,6 @@
 #include "Common/STLTypedefs.h"
 #include "Common/ObjectStatusTypes.h"
 #include "GameNetwork/NetworkDefs.h"
-#include "Common/STLTypedefs.h"
 #include "GameLogic/Module/UpdateModule.h"	// needed for DIRECT_UPDATEMODULE_ACCESS
 
 /*
@@ -104,7 +103,7 @@ public:
 	GameLogic( void );
 	virtual ~GameLogic();
 
-	// subsytem methods
+	// subsystem methods
 	virtual void init( void );															///< Initialize or re-initialize the instance
 	virtual void reset( void );															///< Reset the logic system
 	virtual void update( void );														///< update the world
@@ -293,9 +292,6 @@ private:
 	std::map<Int, UnsignedInt> m_cachedCRCs;								///< CRCs we've seen this frame
 	Bool m_shouldValidateCRCs;															///< Should we validate CRCs this frame?
 	//-----------------------------------------------------------------------------------------------
-
-	//Added By Sadullah Nader
-	//Used to for load scene
 	Bool m_loadingScene;
 
 	Bool m_isInUpdate;
@@ -333,7 +329,6 @@ private:
 
 	ObjectID m_nextObjID;																		///< For allocating object id's
 
-	void setDefaults( Bool saveGame );											///< Set default values of class object
 	void processDestroyList( void );												///< Destroy all pending objects on the destroy list
 
 	void destroyAllObjectsImmediate();											///< destroy, and process destroy list immediately
@@ -409,11 +404,11 @@ inline Bool GameLogic::isLoadingGame(){ return m_loadingScene;}
 inline Object* GameLogic::findObjectByID( ObjectID id )
 {
 	if( id == INVALID_ID )
-		return NULL;
+		return nullptr;
 
 	ObjectPtrHash::iterator it = m_objHash.find(id);
 	if (it == m_objHash.end())
-		return NULL;
+		return nullptr;
 
 	return (*it).second;
 }

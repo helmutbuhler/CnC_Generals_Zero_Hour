@@ -134,7 +134,7 @@ public:
 	///< this gets called from
 	virtual void clientVisibleContainedFlashAsSelected() {};
 
-	virtual const Player* getApparentControllingPlayer(const Player* observingPlayer) const { return NULL; }
+	virtual const Player* getApparentControllingPlayer(const Player* observingPlayer) const { return nullptr; }
 	virtual void recalcApparentControllingPlayer() { }
 
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
@@ -161,9 +161,10 @@ public:
 	virtual void iterateContained( ContainIterateFunc func, void *userData, Bool reverse );
 	virtual UnsignedInt getContainCount() const { return m_containListSize; }
 	virtual const ContainedItemsList* getContainedItemsList() const { return &m_containList; }
-	virtual const Object *friend_getRider() const{return NULL;} ///< Damn.  The draw order dependency bug for riders means that our draw module needs to cheat to get around it.
+	virtual const Object *friend_getRider() const{return nullptr;} ///< Damn.  The draw order dependency bug for riders means that our draw module needs to cheat to get around it.
 	virtual Real getContainedItemsMass() const;
 	virtual UnsignedInt getStealthUnitsContained() const { return m_stealthUnitsContained; }
+	virtual UnsignedInt getHeroUnitsContained() const { return m_heroUnitsContained; }
 
 	virtual PlayerMaskType getPlayerWhoEntered(void) const { return m_playerEnteredMask; }
 
@@ -238,6 +239,8 @@ private:
 
 	ObjectEnterExitMap	m_objectEnterExitInfo;
 	UnsignedInt					m_stealthUnitsContained;				///< number of stealth units that can't be seen by enemy players.
+	UnsignedInt					m_heroUnitsContained;						///< cached hero count
+	XferVersion					m_xferVersion;									///< version of loaded save file for loadPostProcess
 	Int									m_whichExitPath; ///< Cycles from 1 to n and is used only in modules whose data has numberOfExitPaths > 1.
 	UnsignedInt					m_doorCloseCountdown;						///< When should I shut my door.
 

@@ -44,7 +44,7 @@
 #endif
 
 #ifndef VECTOR_H
-#include "Vector.H"
+#include "Vector.h"
 #endif
 
 
@@ -151,9 +151,9 @@ UniqueArrayClass<T>::UniqueArrayClass(int initial_size,int growth_rate,HashCalcu
 template <class T>
 UniqueArrayClass<T>::~UniqueArrayClass(void)
 {
-	if (HashTable != NULL) {
+	if (HashTable != nullptr) {
 		delete[] HashTable;
-		HashTable = NULL;
+		HashTable = nullptr;
 	}
 }
 

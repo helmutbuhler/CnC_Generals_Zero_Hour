@@ -41,7 +41,6 @@
 
 #include "always.h"
 #include "wwdebug.h"
-#include "refcount.h"
 #include "dx8fvf.h"
 
 const unsigned dynamic_fvf_type=D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX2|D3DFVF_DIFFUSE;
@@ -84,13 +83,13 @@ protected:
 	virtual ~VertexBufferClass();
 public:
 
-	inline const FVFInfoClass& FVF_Info() const { return *fvf_info; }
-	inline unsigned short Get_Vertex_Count() const { return VertexCount; }
-	inline unsigned Type() const { return type; }
+	const FVFInfoClass& FVF_Info() const { return *fvf_info; }
+	unsigned short Get_Vertex_Count() const { return VertexCount; }
+	unsigned Type() const { return type; }
 
 	void Add_Engine_Ref() const;
 	void Release_Engine_Ref() const;
-	inline unsigned Engine_Refs() const { return engine_refs; }
+	unsigned Engine_Refs() const { return engine_refs; }
 
 	class WriteLockClass : public VertexBufferLockClass
 	{

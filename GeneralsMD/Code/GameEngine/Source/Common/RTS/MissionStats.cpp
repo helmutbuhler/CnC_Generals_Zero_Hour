@@ -42,7 +42,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
+#include "PreRTS.h"	// This must go first in EVERY cpp file in the GameEngine
 
 #include "Common/MissionStats.h"
 #include "Common/Player.h"
@@ -96,7 +96,7 @@ void MissionStats::xfer( Xfer *xfer )
 	// units lost
 	xfer->xferInt( &m_unitsLost );
 
-	// buidings killed
+	// buildings killed
 	xfer->xferUser( m_buildingsKilled, sizeof( Int ) * MAX_PLAYER_COUNT );
 
 	// buildings lost

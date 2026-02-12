@@ -48,7 +48,7 @@
 //----------------------------------------------------------------------------
 
 #include "Lib/BaseType.h"
-#include <stdio.h>
+#include <Utility/stdio_adapter.h>
 
 
 //----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ class DebugDisplayInterface
 
 	protected:
 
-		virtual void drawText( Int x, Int y, Char *text ) = 0;			///< Render null ternimated string at current cursor position
+		virtual void drawText( Int x, Int y, Char *text ) = 0;			///< Render null terminated string at current cursor position
 };
 
 

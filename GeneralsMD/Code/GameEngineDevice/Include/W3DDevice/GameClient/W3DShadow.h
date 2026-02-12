@@ -42,7 +42,7 @@ public:
 
 	// shadow list management
 	void Reset( void );
-	Shadow* addShadow( RenderObjClass *robj,Shadow::ShadowTypeInfo *shadowInfo=NULL, Drawable *draw=NULL);	///< adds shadow caster to rendering system.
+	Shadow* addShadow( RenderObjClass *robj,Shadow::ShadowTypeInfo *shadowInfo=nullptr, Drawable *draw=nullptr);	///< adds shadow caster to rendering system.
 	void removeShadow(Shadow *shadow);	///< removed shadow from rendering system and frees its resources.
 	void removeAllShadows(void); ///< Remove all shadows.
 	void setShadowColor(UnsignedInt color) { m_shadowColor=color;}	///<sets the shadow color and alpha, value in ARGB format.
@@ -52,8 +52,8 @@ public:
 	void invalidateCachedLightPositions(void);	///<forces shadow volumes to update regardless of last lightposition
 	Vector3 &getLightPosWorld(Int lightIndex);	///<returns the position of specified light source.
 	Bool	isShadowScene(void)	{return m_isShadowScene;}
-	inline void setStencilShadowMask(int mask) {m_stencilShadowMask=mask;}	///<mask used to mask out stencil bits used for storing occlusion/playerColor
-	inline Int getStencilShadowMask(void)	{return m_stencilShadowMask;}
+	void setStencilShadowMask(int mask) {m_stencilShadowMask=mask;}	///<mask used to mask out stencil bits used for storing occlusion/playerColor
+	Int getStencilShadowMask(void)	{return m_stencilShadowMask;}
 
 	// rendering
 	void RenderShadows( void );

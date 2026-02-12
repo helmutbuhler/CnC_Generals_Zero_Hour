@@ -22,7 +22,7 @@
 //
 
 #include "resource.h"
-#include "Vector.H"
+#include "Vector.h"
 
 // Forward declarations
 class HModelClass;
@@ -37,7 +37,7 @@ class BoneMgrDialogClass : public CDialog
 {
 // Construction
 public:
-	BoneMgrDialogClass (RenderObjClass *prender_obj, CWnd* pParent = NULL);
+	BoneMgrDialogClass (RenderObjClass *prender_obj, CWnd* pParent = nullptr);
 
 // Dialog Data
 	//{{AFX_DATA(BoneMgrDialogClass)

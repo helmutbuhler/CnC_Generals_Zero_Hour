@@ -28,7 +28,7 @@
 #include "GameNetwork/NetworkInterface.h"
 
 
-FramePacer* TheFramePacer = NULL;
+FramePacer* TheFramePacer = nullptr;
 
 FramePacer::FramePacer()
 {
@@ -83,12 +83,12 @@ Bool FramePacer::isActualFramesPerSecondLimitEnabled() const
 {
 	Bool allowFpsLimit = true;
 
-	if (TheTacticalView != NULL)
+	if (TheTacticalView != nullptr)
 	{
 		allowFpsLimit &= TheTacticalView->getTimeMultiplier()<=1 && !TheScriptEngine->isTimeFast();
 	}
 
-	if (TheGameLogic != NULL)
+	if (TheGameLogic != nullptr)
 	{
 #if defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
 		allowFpsLimit &= !(!TheGameLogic->isGamePaused() && TheGlobalData->m_TiVOFastMode);
@@ -116,6 +116,13 @@ Real FramePacer::getUpdateTime()  const
 Real FramePacer::getUpdateFps()  const
 {
 	return 1.0f / m_updateTime;
+}
+
+Real FramePacer::getBaseOverUpdateFpsRatio(Real minUpdateFps)
+{
+	// Update fps is floored to default 5 fps, 200 ms.
+	// Useful to prevent insane ratios on frame spikes/stalls.
+	return (Real)BaseFps / std::max(getUpdateFps(), minUpdateFps);
 }
 
 void FramePacer::setTimeFrozen(Bool frozen)
@@ -170,7 +177,7 @@ Int FramePacer::getActualLogicTimeScaleFps(LogicTimeQueryFlags flags) const
 		return 0;
 	}
 
-	if (TheNetwork != NULL)
+	if (TheNetwork != nullptr)
 	{
 		return TheNetwork->getFrameRate();
 	}

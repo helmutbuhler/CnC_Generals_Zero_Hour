@@ -46,7 +46,6 @@ public:
 	UnitCrateCollideModuleData()
 	{
 		m_unitCount = 0;
-		m_unitType = "";
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p)
@@ -55,8 +54,8 @@ public:
 
 		static const FieldParse dataFieldParse[] =
 		{
-			{ "UnitCount",	INI::parseUnsignedInt,	NULL, offsetof( UnitCrateCollideModuleData, m_unitCount ) },
-			{ "UnitName",		INI::parseAsciiString,	NULL, offsetof( UnitCrateCollideModuleData, m_unitType ) },
+			{ "UnitCount",	INI::parseUnsignedInt,	nullptr, offsetof( UnitCrateCollideModuleData, m_unitCount ) },
+			{ "UnitName",		INI::parseAsciiString,	nullptr, offsetof( UnitCrateCollideModuleData, m_unitType ) },
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);

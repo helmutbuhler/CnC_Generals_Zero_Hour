@@ -127,9 +127,9 @@ enum GameWindowMessage CPP_11(: Int)
 	GWM_MOUSE_ENTERING,					GWM_MOUSE_LEAVING,
 	GWM_WHEEL_UP,								GWM_WHEEL_DOWN,
 	GWM_CHAR,										GWM_SCRIPT_CREATE,
-	// note that GWM_MOUSE_POS is only actually propogated to windows if the static
+	// note that GWM_MOUSE_POS is only actually propagated to windows if the static
 	// sendMousePosMessages is set to true in the window manager file.  See the
-	// comment on the static declaration for addtional info
+	// comment on the static declaration for additional info
 	GWM_INPUT_FOCUS,						GWM_MOUSE_POS,
 	GWM_IME_CHAR,								GWM_IME_STRING
 
@@ -157,7 +157,7 @@ enum
 	WIN_STATUS_NONE								= 0x00000000,		// No status bits set at all
 	WIN_STATUS_ACTIVE							= 0x00000001,		// At the top of the window list
 	WIN_STATUS_TOGGLE							= 0x00000002,		// If set, click to toggle
-	WIN_STATUS_DRAGABLE						= 0x00000004,		// Window can be dragged
+	WIN_STATUS_DRAGGABLE						= 0x00000004,		// Window can be dragged
 	WIN_STATUS_ENABLED						= 0x00000008,		// Window can receive input
 	WIN_STATUS_HIDDEN 						= 0x00000010,		// Window is hidden, no input
 	WIN_STATUS_ABOVE    					= 0x00000020,		// Window is always above others
@@ -222,7 +222,7 @@ struct GameWindowEditData
 
 // GameWindow -----------------------------------------------------------------
 /** Class definition for a game window.  These are the basic elements of the
-	* whole windowing sytem, all windows are GameWindows, as are all GUI controls
+	* whole windowing system, all windows are GameWindows, as are all GUI controls
 	* etc. */
 //-----------------------------------------------------------------------------
 class GameWindow : public MemoryPoolObject
@@ -326,7 +326,7 @@ public:
 	virtual void *winGetUserData( void );  ///< get the window user data
 	void winSetUserData( void *userData );  ///< set the user data
 
-	// heirarchy methods
+	// hierarchy methods
 	Int winSetParent( GameWindow *parent );  ///< set parent
 	GameWindow *winGetParent( void );  ///< get parent
 	Bool winIsChild( GameWindow *child );  ///< verifies parent
@@ -359,11 +359,11 @@ public:
 	Bool winPointInWindow( Int x, Int y );  /**is point inside this window?
 																					also return TRUE if point is in
 																					a child */
-	/** given a piont, return the child window which contains the mouse pointer,
-	if the point is not in a chilc, the function returns the 'window' paramater
+	/** given a point, return the child window which contains the mouse pointer,
+	if the point is not in a child, the function returns the 'window' parameter
 	back to the caller */
 	GameWindow *winPointInChild( Int x, Int y, Bool ignoreEnableCheck = FALSE, Bool playDisabledSound = FALSE );
-	/** finds the child which contains the mouse pointer - reguardless of
+	/** finds the child which contains the mouse pointer - regardless of
 	the enabled status of the child */
 	GameWindow *winPointInAnyChild( Int x, Int y, Bool ignoreHidden, Bool ignoreEnableCheck = FALSE );
 
@@ -439,7 +439,7 @@ class GameWindowDummy : public GameWindow
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE(GameWindowDummy, "GameWindowDummy")
 public:
 	virtual void winDrawBorder() {}
-	virtual void* winGetUserData(void) { return NULL; }
+	virtual void* winGetUserData(void) { return nullptr; }
 };
 
 // ModalWindow ----------------------------------------------------------------

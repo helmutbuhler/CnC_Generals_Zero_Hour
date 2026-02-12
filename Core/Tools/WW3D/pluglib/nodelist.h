@@ -23,7 +23,7 @@
  *                                                                                             *
  *                 Project Name : Commando / G                                                 *
  *                                                                                             *
- *                    File Name : NODELIST.H                                                   *
+ *                    File Name : NODELIST.h                                                   *
  *                                                                                             *
  *                   Programmer : Greg Hjelstrom                                               *
  *                                                                                             *
@@ -60,10 +60,10 @@ class INodeListClass : public ITreeEnumProc
 {
 public:
 
-	INodeListClass(TimeValue time,INodeFilterClass * nodefilter = NULL);
-	INodeListClass(IScene * scene,TimeValue time,INodeFilterClass * nodefilter = NULL);
-	INodeListClass(INode * root,TimeValue time,INodeFilterClass * nodefilter = NULL);
-	INodeListClass(INodeListClass & copyfrom,TimeValue time,INodeFilterClass * inodefilter = NULL);
+	INodeListClass(TimeValue time,INodeFilterClass * nodefilter = nullptr);
+	INodeListClass(IScene * scene,TimeValue time,INodeFilterClass * nodefilter = nullptr);
+	INodeListClass(INode * root,TimeValue time,INodeFilterClass * nodefilter = nullptr);
+	INodeListClass(INodeListClass & copyfrom,TimeValue time,INodeFilterClass * inodefilter = nullptr);
 	~INodeListClass();
 
 	void			Set_Filter(INodeFilterClass * inodefilter) { INodeFilter = inodefilter; }

@@ -28,7 +28,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
-#include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
+#include "PreRTS.h"	// This must go first in EVERY cpp file in the GameEngine
 
 #include "Common/Xfer.h"
 #include "GameLogic/GameLogic.h"
@@ -41,15 +41,10 @@
 //-------------------------------------------------------------------------------------------------
 ProjectileStreamUpdate::ProjectileStreamUpdate( Thing *thing, const ModuleData* moduleData ) : UpdateModule( thing, moduleData )
 {
-	ObjectID m_projectileIDs[MAX_PROJECTILE_STREAM];
-	for( Int index = 0; index < MAX_PROJECTILE_STREAM; index++ )
-	{
-		m_projectileIDs[index] = INVALID_ID;
-	}
-
-	m_owningObject = INVALID_ID;
+	std::fill(m_projectileIDs, m_projectileIDs + ARRAY_SIZE(m_projectileIDs), INVALID_ID);
 	m_nextFreeIndex = 0;
 	m_firstValidIndex = 0;
+	m_owningObject = INVALID_ID;
 
 	m_targetObject = INVALID_ID;
 	m_targetPosition.zero();
@@ -100,7 +95,7 @@ void ProjectileStreamUpdate::addProjectile( ObjectID sourceID, ObjectID newID, O
 		// Clear position so we know we are an object shot
 		m_targetPosition.zero();
 	}
-	else if( victimPos != NULL )
+	else if( victimPos != nullptr )
 	{
 		if( ! (m_targetPosition == (*victimPos)) )
 		{
@@ -128,7 +123,7 @@ void ProjectileStreamUpdate::addProjectile( ObjectID sourceID, ObjectID newID, O
 
 void ProjectileStreamUpdate::cullFrontOfList()
 {
-	while( (m_firstValidIndex != m_nextFreeIndex)  &&  (TheGameLogic->findObjectByID( m_projectileIDs[m_firstValidIndex] ) == NULL) )
+	while( (m_firstValidIndex != m_nextFreeIndex)  &&  (TheGameLogic->findObjectByID( m_projectileIDs[m_firstValidIndex] ) == nullptr) )
 	{
 		// Chew off the front if they are gone.  Don't chew on the middle, as bad ones there are just a break in the chain
 		m_firstValidIndex = (m_firstValidIndex + 1) % MAX_PROJECTILE_STREAM;
@@ -140,7 +135,7 @@ Bool ProjectileStreamUpdate::considerDying()
 	if( m_firstValidIndex == m_nextFreeIndex  &&  m_owningObject != INVALID_ID )
 	{
 		//If I have no projectiles to watch, and my master is dead, then yes, I want to die
-		if( TheGameLogic->findObjectByID(m_owningObject) == NULL )
+		if( TheGameLogic->findObjectByID(m_owningObject) == nullptr )
 			return TRUE;
 	}
 

@@ -39,10 +39,9 @@
 
 #include "always.h"
 #include "quat.h"
-#include "refcount.h"
 #include "w3d_file.h"
-#include "SLIST.H"
-#include "Vector.H"
+#include "SLIST.h"
+#include "Vector.h"
 #include "hanim.h"
 
 struct NodeCompressedMotionStruct;

@@ -27,7 +27,7 @@
 // Desc:	 An update that checks for a status bit to stealth the owning object
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
+#include "PreRTS.h"	// This must go first in EVERY cpp file in the GameEngine
 
 #define DEFINE_STEALTHLEVEL_NAMES
 #define DEFINE_OBJECT_STATUS_NAMES
@@ -68,23 +68,23 @@ void StealthUpdateModuleData::buildFieldParse(MultiIniFieldParse& p)
 
 	static const FieldParse dataFieldParse[] =
 	{
-		{ "StealthDelay",									INI::parseDurationUnsignedInt,	NULL, offsetof( StealthUpdateModuleData, m_stealthDelay ) },
-		{ "MoveThresholdSpeed",						INI::parseVelocityReal,					NULL, offsetof( StealthUpdateModuleData, m_stealthSpeed ) },
+		{ "StealthDelay",									INI::parseDurationUnsignedInt,	nullptr, offsetof( StealthUpdateModuleData, m_stealthDelay ) },
+		{ "MoveThresholdSpeed",						INI::parseVelocityReal,					nullptr, offsetof( StealthUpdateModuleData, m_stealthSpeed ) },
 		{ "StealthForbiddenConditions",		INI::parseBitString32,					TheStealthLevelNames, offsetof( StealthUpdateModuleData, m_stealthLevel) },
-		{ "HintDetectableConditions",	  	ObjectStatusMaskType::parseFromINI,	NULL, offsetof( StealthUpdateModuleData, m_hintDetectableStates) },
-		{ "FriendlyOpacityMin",						INI::parsePercentToReal,				NULL, offsetof( StealthUpdateModuleData, m_friendlyOpacityMin ) },
-		{ "FriendlyOpacityMax",						INI::parsePercentToReal,				NULL, offsetof( StealthUpdateModuleData, m_friendlyOpacityMax ) },
-		{ "PulseFrequency",								INI::parseDurationUnsignedInt,	NULL, offsetof( StealthUpdateModuleData, m_pulseFrames ) },
-		{ "DisguisesAsTeam",							INI::parseBool,									NULL, offsetof( StealthUpdateModuleData, m_teamDisguised ) },
-		{ "RevealDistanceFromTarget",			INI::parseReal,									NULL, offsetof( StealthUpdateModuleData, m_revealDistanceFromTarget ) },
-		{ "OrderIdleEnemiesToAttackMeUponReveal", INI::parseBool,					NULL, offsetof( StealthUpdateModuleData, m_orderIdleEnemiesToAttackMeUponReveal ) },
-		{ "DisguiseFX",										INI::parseFXList,								NULL, offsetof( StealthUpdateModuleData, m_disguiseFX ) },
-		{ "DisguiseRevealFX",							INI::parseFXList,								NULL, offsetof( StealthUpdateModuleData, m_disguiseRevealFX ) },
-		{ "DisguiseTransitionTime",				INI::parseDurationUnsignedInt,  NULL, offsetof( StealthUpdateModuleData, m_disguiseTransitionFrames ) },
-		{ "DisguiseRevealTransitionTime",	INI::parseDurationUnsignedInt,  NULL, offsetof( StealthUpdateModuleData, m_disguiseRevealTransitionFrames ) },
-		{ "InnateStealth",								INI::parseBool,									NULL, offsetof( StealthUpdateModuleData, m_innateStealth ) },
+		{ "HintDetectableConditions",	  	ObjectStatusMaskType::parseFromINI,	nullptr, offsetof( StealthUpdateModuleData, m_hintDetectableStates) },
+		{ "FriendlyOpacityMin",						INI::parsePercentToReal,				nullptr, offsetof( StealthUpdateModuleData, m_friendlyOpacityMin ) },
+		{ "FriendlyOpacityMax",						INI::parsePercentToReal,				nullptr, offsetof( StealthUpdateModuleData, m_friendlyOpacityMax ) },
+		{ "PulseFrequency",								INI::parseDurationUnsignedInt,	nullptr, offsetof( StealthUpdateModuleData, m_pulseFrames ) },
+		{ "DisguisesAsTeam",							INI::parseBool,									nullptr, offsetof( StealthUpdateModuleData, m_teamDisguised ) },
+		{ "RevealDistanceFromTarget",			INI::parseReal,									nullptr, offsetof( StealthUpdateModuleData, m_revealDistanceFromTarget ) },
+		{ "OrderIdleEnemiesToAttackMeUponReveal", INI::parseBool,					nullptr, offsetof( StealthUpdateModuleData, m_orderIdleEnemiesToAttackMeUponReveal ) },
+		{ "DisguiseFX",										INI::parseFXList,								nullptr, offsetof( StealthUpdateModuleData, m_disguiseFX ) },
+		{ "DisguiseRevealFX",							INI::parseFXList,								nullptr, offsetof( StealthUpdateModuleData, m_disguiseRevealFX ) },
+		{ "DisguiseTransitionTime",				INI::parseDurationUnsignedInt,  nullptr, offsetof( StealthUpdateModuleData, m_disguiseTransitionFrames ) },
+		{ "DisguiseRevealTransitionTime",	INI::parseDurationUnsignedInt,  nullptr, offsetof( StealthUpdateModuleData, m_disguiseRevealTransitionFrames ) },
+		{ "InnateStealth",								INI::parseBool,									nullptr, offsetof( StealthUpdateModuleData, m_innateStealth ) },
 
-		{ 0, 0, 0, 0 }
+		{ nullptr, nullptr, nullptr, 0 }
 	};
   p.add(dataFieldParse);
 }
@@ -99,15 +99,12 @@ StealthUpdate::StealthUpdate( Thing *thing, const ModuleData* moduleData ) : Upd
 	//Must be enabled manually if using disguise system (bomb truck uses)
 	m_enabled = !data->m_teamDisguised;
 
-	//Added By Sadullah Nader
-	//Initialization(s) inserted
 	m_detectionExpiresFrame = 0;
-	//
 	m_pulsePhaseRate		= 0.2f;
 	m_pulsePhase				= GameClientRandomValueReal(0, PI);
 
 	m_disguiseAsPlayerIndex			= -1;
-	m_disguiseAsTemplate			  = NULL;
+	m_disguiseAsTemplate			  = nullptr;
 	m_transitioningToDisguise		= false;
 	m_disguised									= false;
 	m_disguiseTransitionFrames	= 0;
@@ -195,7 +192,7 @@ Bool StealthUpdate::allowedToStealth() const
 	}
 
 	const PhysicsBehavior *physics = self->getPhysics();
-	if ((flags & STEALTH_NOT_WHILE_MOVING) && physics != NULL &&
+	if ((flags & STEALTH_NOT_WHILE_MOVING) && physics != nullptr &&
 					physics->getVelocityMagnitude() > getStealthUpdateModuleData()->m_stealthSpeed)
 		return false;
 
@@ -603,7 +600,7 @@ void StealthUpdate::markAsDetected(UnsignedInt numFrames)
 	//If we are disguised, remove the disguise permanently!
 	if( isDisguised() )
 	{
-		disguiseAsObject( NULL );
+		disguiseAsObject( nullptr );
 	}
 
 	UnsignedInt now = TheGameLogic->getFrame();
@@ -670,7 +667,7 @@ void StealthUpdate::disguiseAsObject( const Object *target )
 	}
 	else if( m_disguised )
 	{
-		m_disguiseAsTemplate				= NULL;
+		m_disguiseAsTemplate				= nullptr;
 		m_disguiseAsPlayerIndex			= 0;
 		m_disguiseTransitionFrames	= data->m_disguiseRevealTransitionFrames;
 		m_transitioningToDisguise		= false; //Means we are losing the disguise over time.
@@ -744,6 +741,7 @@ void StealthUpdate::changeVisualDisguise()
 		FXList::doFXPos( data->m_disguiseFX, self->getPosition() );
 
 		m_disguised = true;
+		self->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_DISGUISED ) );
 	}
 	else if( m_disguiseAsPlayerIndex != -1 )
 	{
@@ -809,6 +807,7 @@ void StealthUpdate::changeVisualDisguise()
 
 		FXList::doFXPos( data->m_disguiseRevealFX, self->getPosition() );
 		m_disguised = false;
+		self->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_DISGUISED ) );
 	}
 
 	//Reset the radar (determines color on add)
@@ -871,12 +870,12 @@ void StealthUpdate::xfer( Xfer *xfer )
 	if( xfer->getXferMode() == XFER_LOAD )
 	{
 
-		m_disguiseAsTemplate = NULL;
+		m_disguiseAsTemplate = nullptr;
 		if( name.isEmpty() == FALSE )
 		{
 
 			m_disguiseAsTemplate = TheThingFactory->findTemplate( name );
-			if( m_disguiseAsTemplate == NULL )
+			if( m_disguiseAsTemplate == nullptr )
 			{
 
 				DEBUG_CRASH(( "StealthUpdate::xfer - Unknown template '%s'", name.str() ));

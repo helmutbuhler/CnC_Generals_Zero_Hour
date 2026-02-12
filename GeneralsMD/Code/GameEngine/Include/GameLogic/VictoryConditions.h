@@ -44,7 +44,7 @@ enum VictoryType CPP_11(: Int)
 
 /**
   * VictoryConditionsInterface class - maintains information about the game setup and
-	* the contents of its slot list hroughout the game.
+	* the contents of its slot list throughout the game.
 	*/
 class VictoryConditionsInterface : public SubsystemInterface
 {
@@ -55,8 +55,8 @@ public:
 	virtual void reset( void ) = 0;
 	virtual void update( void ) = 0;
 
-	inline void setVictoryConditions( Int victoryConditions ) { m_victoryConditions = victoryConditions; }
-	inline Int getVictoryConditions( void ) { return m_victoryConditions; }
+	void setVictoryConditions( Int victoryConditions ) { m_victoryConditions = victoryConditions; }
+	Int getVictoryConditions( void ) { return m_victoryConditions; }
 
 	virtual Bool hasAchievedVictory(Player *player) = 0;					///< has a specific player and his allies won?
 	virtual Bool hasBeenDefeated(Player *player) = 0;							///< has a specific player and his allies lost?

@@ -49,11 +49,11 @@
  *   SimpleSceneClass::~SimpleSceneClass -- destructor                                         *
  *   SimpleSceneClass::Add_Render_Object -- add a render object to the scene                   *
  *   SimpleSceneClass::Remove_Render_Object -- remove a render object from this scene          *
- *   SimpleSceneClass::Visiblity_Check -- set the visiblity status of the render objects       *
+ *   SimpleSceneClass::Visibility_Check -- set the visibility status of the render objects     *
  *   SimpleSceneClass::Render -- internal scene rendering function                             *
  *   SimpleSceneClass::Render -- Render this scene                                             *
  *   SimpleSceneClass::Create_Iterator -- create an iterator for this scene                    *
- *   SimpleSceneClass::Destroy_Iterator -- destroy an iterater of this scene                   *
+ *   SimpleSceneClass::Destroy_Iterator -- destroy an iterator of this scene                   *
  *   SceneClass::Save -- saves scene settings into a chunk                                     *
  *   SceneClass::Load -- loads scene settings from a chunk                                     *
  *   SimpleSceneClass::Compute_Point_Visibility -- returns visibility of a point               *
@@ -361,7 +361,7 @@ SimpleSceneClass::~SimpleSceneClass(void)
 void SimpleSceneClass::Remove_All_Render_Objects(void)
 {
 	RenderObjClass * obj;
-	while ( ( obj = RenderList.Remove_Head() ) != NULL ) {
+	while ( ( obj = RenderList.Remove_Head() ) != nullptr ) {
 		SceneClass::Remove_Render_Object(obj);
 		obj->Release_Ref();							// remove head gets a ref
 	}
@@ -440,7 +440,7 @@ void SimpleSceneClass::Unregister(RenderObjClass * obj,RegType for_what)
 
 
 /***********************************************************************************************
- * SimpleSceneClass::Visiblity_Check -- set the visiblity status of the render objects         *
+ * SimpleSceneClass::Visibility_Check -- set the visibility status of the render objects       *
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *
@@ -554,13 +554,13 @@ void SimpleSceneClass::Customized_Render(RenderInfoClass & rinfo)
 
 	// apply only the first four lights in the scene
 	// derived classes should use light environment
-	WWASSERT(rinfo.light_environment==NULL);
+	WWASSERT(rinfo.light_environment==nullptr);
 	int count=0;
 	// Turn off lights in case we have none
-	DX8Wrapper::Set_Light(0,NULL);
-	DX8Wrapper::Set_Light(1,NULL);
-	DX8Wrapper::Set_Light(2,NULL);
-	DX8Wrapper::Set_Light(3,NULL);
+	DX8Wrapper::Set_Light(0,nullptr);
+	DX8Wrapper::Set_Light(1,nullptr);
+	DX8Wrapper::Set_Light(2,nullptr);
+	DX8Wrapper::Set_Light(3,nullptr);
 
 // (gth) WWShade only works with light environments.  We need to upgrade LightEnvironment to
 // support real point lights, etc.  It will likely just evolve into "the n most important" lights
@@ -657,7 +657,7 @@ SceneIterator * SimpleSceneClass::Create_Iterator(bool onlyvisible)
 
 
 /***********************************************************************************************
- * SimpleSceneClass::Destroy_Iterator -- destroy an iterater of this scene                     *
+ * SimpleSceneClass::Destroy_Iterator -- destroy an iterator of this scene                     *
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *

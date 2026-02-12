@@ -47,15 +47,15 @@ public:
 	FireWeaponWhenDeadBehaviorModuleData()
 	{
 		m_initiallyActive = false;
-		m_deathWeapon = NULL;
+		m_deathWeapon = nullptr;
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p)
 	{
 		static const FieldParse dataFieldParse[] =
 		{
-			{ "StartsActive",	INI::parseBool, NULL, offsetof( FireWeaponWhenDeadBehaviorModuleData, m_initiallyActive ) },
-			{ "DeathWeapon", INI::parseWeaponTemplate,	NULL, offsetof( FireWeaponWhenDeadBehaviorModuleData, m_deathWeapon ) },
+			{ "StartsActive",	INI::parseBool, nullptr, offsetof( FireWeaponWhenDeadBehaviorModuleData, m_initiallyActive ) },
+			{ "DeathWeapon", INI::parseWeaponTemplate,	nullptr, offsetof( FireWeaponWhenDeadBehaviorModuleData, m_deathWeapon ) },
 			{ 0, 0, 0, 0 }
 		};
 
@@ -113,7 +113,7 @@ protected:
 		return getFireWeaponWhenDeadBehaviorModuleData()->m_upgradeMuxData.m_requiresAllTriggers;
 	}
 
-	inline Bool isUpgradeActive() const { return isAlreadyUpgraded(); }
+	Bool isUpgradeActive() const { return isAlreadyUpgraded(); }
 
 	virtual Bool isSubObjectsUpgrade() { return false; }
 

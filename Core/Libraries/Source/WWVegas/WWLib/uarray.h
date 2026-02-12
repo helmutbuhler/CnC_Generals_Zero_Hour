@@ -39,14 +39,8 @@
 
 #pragma once
 
-#ifndef HASHCALC_H
 #include "hashcalc.h"
-#endif
-
-#ifndef VECTOR_H
-#include "Vector.H"
-#endif
-
+#include "Vector.h"
 
 /*
 ** UniqueArrayClass
@@ -152,7 +146,7 @@ template <class T>
 UniqueArrayClass<T>::~UniqueArrayClass(void)
 {
 	delete[] HashTable;
-	HashTable = NULL;
+	HashTable = nullptr;
 }
 
 

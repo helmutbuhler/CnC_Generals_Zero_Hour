@@ -105,7 +105,7 @@ enum
 	local player affiliation, etc. (The entire list of checks is contained in shouldPlayLocally()).
 
 	In addition, the world and unit audio are never allowed to exceed their footprint, as specified
-	in the audio settings INI file. In order to accomodate this, the audio uses an audio cache. The
+	in the audio settings INI file. In order to accommodate this, the audio uses an audio cache. The
 	audio cache will attempt to load a sample, assuming there is enough room. If there is not enough
 	room, then it goes through and finds any samples that are lower priority, and kills them until
 	enough room is present for the sample. If it cannot free enough room, nothing happens to the
@@ -131,10 +131,21 @@ enum
 class AudioManager : public SubsystemInterface
 {
 	public:
+		typedef UnsignedInt MuteAudioReasonInt;
+
+		enum MuteAudioReason CPP_11(: UnsignedInt)
+		{
+			MuteAudioReason_WindowFocus,
+
+			MuteAudioReason_Count
+		};
+
+		static const char *const MuteAudioReasonNames[];
+
 		AudioManager();
 		virtual ~AudioManager();
 #if defined(RTS_DEBUG)
-		virtual void audioDebugDisplay(DebugDisplayInterface *dd, void *userData, FILE *fp = NULL ) = 0;
+		virtual void audioDebugDisplay(DebugDisplayInterface *dd, void *userData, FILE *fp = nullptr ) = 0;
 #endif
 
 		// From SubsystemInterface
@@ -149,9 +160,8 @@ class AudioManager : public SubsystemInterface
 		virtual void resumeAudio( AudioAffect which ) = 0;
 		virtual void pauseAmbient( Bool shouldPause ) = 0;
 
-		// for focus issues
-		virtual void loseFocus( void );
-		virtual void regainFocus( void );
+		void muteAudio( MuteAudioReason reason );
+		void unmuteAudio( MuteAudioReason reason );
 
 		// control for AudioEventsRTS
 		virtual AudioHandle addAudioEvent( const AudioEventRTS *eventToAdd );	///< Add an audio event (event must be declared in an INI file)
@@ -190,7 +200,7 @@ class AudioManager : public SubsystemInterface
 		virtual void closeDevice( void ) = 0;
 		virtual void *getDevice( void ) = 0;
 
-		// Debice Dependent notification functions
+		// Device Dependent notification functions
 		virtual void notifyOfAudioCompletion( UnsignedInt audioCompleted, UnsignedInt flags ) = 0;
 
 		// Device Dependent enumerate providers functions. It is okay for there to be only 1 provider (Miles provides a maximum of 64.
@@ -361,6 +371,7 @@ class AudioManager : public SubsystemInterface
 			NUM_VOLUME_TYPES
 		};
 		Real *m_savedValues;
+		MuteAudioReasonInt m_muteReasonBits;
 
 		// Group of 8
 		Bool m_speechOn						: 1;
@@ -395,7 +406,7 @@ class AudioManagerDummy : public AudioManager
 	virtual AsciiString getMusicTrackName() const { return ""; }
 	virtual void openDevice() {}
 	virtual void closeDevice() {}
-	virtual void* getDevice() { return NULL; }
+	virtual void* getDevice() { return nullptr; }
 	virtual void notifyOfAudioCompletion(UnsignedInt audioCompleted, UnsignedInt flags) {}
 	virtual UnsignedInt getProviderCount(void) const { return 0; };
 	virtual AsciiString getProviderName(UnsignedInt providerNum) const { return ""; }
@@ -416,7 +427,7 @@ class AudioManagerDummy : public AudioManager
 	virtual void removePlayingAudio(AsciiString eventName) {}
 	virtual void removeAllDisabledAudio() {}
 	virtual Bool has3DSensitiveStreamsPlaying(void) const { return false; }
-	virtual void* getHandleForBink(void) { return NULL; }
+	virtual void* getHandleForBink(void) { return nullptr; }
 	virtual void releaseHandleForBink(void) {}
 	virtual void friend_forcePlayAudioEventRTS(const AudioEventRTS* eventToPlay) {}
 	virtual void setPreferredProvider(AsciiString providerNdx) {}

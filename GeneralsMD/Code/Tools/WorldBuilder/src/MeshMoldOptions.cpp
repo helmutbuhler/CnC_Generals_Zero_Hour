@@ -31,12 +31,12 @@
 Real MeshMoldOptions::m_currentHeight=0;
 Real MeshMoldOptions::m_currentScale=1.0f;
 Int MeshMoldOptions::m_currentAngle=0;
-MeshMoldOptions * MeshMoldOptions::m_staticThis=NULL;
+MeshMoldOptions * MeshMoldOptions::m_staticThis=nullptr;
 Bool MeshMoldOptions::m_doingPreview=false;
 Bool MeshMoldOptions::m_raiseOnly=false;
 Bool MeshMoldOptions::m_lowerOnly=false;
 
-MeshMoldOptions::MeshMoldOptions(CWnd* pParent /*=NULL*/)
+MeshMoldOptions::MeshMoldOptions(CWnd* pParent /*=nullptr*/)
 {
 	//{{AFX_DATA_INIT(MeshMoldOptions)
 		// NOTE: the ClassWizard will add member initialization here
@@ -80,33 +80,21 @@ BOOL MeshMoldOptions::OnInitDialog()
 	m_moldTreeView.ShowWindow(SW_SHOW);
 
 	{
-		char				dirBuf[_MAX_PATH];
-		char				findBuf[_MAX_PATH];
 		char				fileBuf[_MAX_PATH];
 		Int					i;
 
-		strcpy(dirBuf, ".\\data\\Editor\\Molds");
-		int len = strlen(dirBuf);
-
-		if (len > 0 && dirBuf[len - 1] != '\\') {
-			dirBuf[len++] = '\\';
-			dirBuf[len] = 0;
-		}
-		strcpy(findBuf, dirBuf);
-		strlcat(findBuf, "*.w3d", ARRAY_SIZE(findBuf));
-
 		FilenameList filenameList;
-		TheFileSystem->getFileListInDirectory(AsciiString(dirBuf), AsciiString("*.w3d"), filenameList, FALSE);
+		TheFileSystem->getFileListInDirectory(".\\data\\Editor\\Molds\\", "*.w3d", filenameList, FALSE);
 
 		if (filenameList.size() > 0) {
-			HTREEITEM child = NULL;
+			HTREEITEM child = nullptr;
 			FilenameList::iterator it = filenameList.begin();
 			do {
 				AsciiString filename = *it;
 
-				len = filename.getLength();
+				int len = filename.getLength();
 				if (len<5) continue;
-				strcpy(fileBuf, filename.str());
+				strlcpy(fileBuf, filename.str(), ARRAY_SIZE(fileBuf));
 				for (i=strlen(fileBuf)-1; i>0; i--) {
 					if (fileBuf[i] == '.') {
 						// strip off .w3d file extension.
