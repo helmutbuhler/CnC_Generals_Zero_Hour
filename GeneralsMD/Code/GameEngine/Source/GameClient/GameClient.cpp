@@ -801,6 +801,8 @@ void GameClient::updateHeadless()
 	// TheSuperHackers Check if the user has requested to abort movie
 Bool GameClient::isMovieAbortRequested( void )
 {
+	DEBUG_LOG(("GameClient::isMovieAbortRequested"));
+
 	// User can skip video by pressing ESC
 	if (TheKeyboard)
 	{
@@ -809,6 +811,7 @@ Bool GameClient::isMovieAbortRequested( void )
 		if (io && BitIsSet(io->state, KEY_STATE_DOWN))
 		{
 			io->setUsed();
+			DEBUG_LOG(("GameClient::isMovieAbortRequested true 1"));
 			return TRUE;
 		}
 	}
@@ -819,6 +822,7 @@ Bool GameClient::isMovieAbortRequested( void )
 	
 	if (TheGameEngine->getQuitting() || (TheGameLogic && TheGameLogic->m_quitToDesktopAfterMatch))
 	{
+		DEBUG_LOG(("GameClient::isMovieAbortRequested true 2"));
 		return TRUE;
 	}
 

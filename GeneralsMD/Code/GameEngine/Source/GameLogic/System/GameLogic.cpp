@@ -1068,6 +1068,7 @@ void GameLogic::updateLoadProgress( Int progress )
 
 	if (TheGameEngine->getQuitting() || m_quitToDesktopAfterMatch)
 	{
+		DEBUG_LOG(("throw QuitGameException()"));
 		throw QuitGameException();
 	}
 }
@@ -2383,6 +2384,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	}
 	catch (QuitGameException&)
 	{
+		DEBUG_LOG(("caught QuitGameException"));
 		// TheSuperHackers: The application is cleanly aborting the loading process.
 	}
 }
@@ -4213,6 +4215,7 @@ void GameLogic::quit(Bool toDesktop)
 			if (isInMultiplayerGame())
 			{
 				m_quitToDesktopAfterMatch = TRUE;
+				DEBUG_LOG(("m_quitToDesktopAfterMatch = TRUE"));
 				exitGame();
 			}
 			else
