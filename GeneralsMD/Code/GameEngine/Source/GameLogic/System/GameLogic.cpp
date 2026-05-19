@@ -4233,7 +4233,7 @@ void GameLogic::quit(Bool toDesktop)
 	{
 		if (!isInMultiplayerGame())
 		{
-			TheGameEngine->setQuitting(TRUE);
+			TheGameEngine->setQuitting(TRUE, "10");
 		}
 	}
 

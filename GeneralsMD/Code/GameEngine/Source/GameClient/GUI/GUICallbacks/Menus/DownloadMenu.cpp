@@ -104,7 +104,7 @@ static void errorCallback( void )
 
 static void successQuitCallback( void )
 {
-	TheGameEngine->setQuitting( TRUE );
+	TheGameEngine->setQuitting( TRUE, "1" );
 	closeDownloadWindow();
 
 	// Clean up game data.  No crashy-crash for you!

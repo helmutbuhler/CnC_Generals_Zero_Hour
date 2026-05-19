@@ -242,7 +242,7 @@ static void quitCallback( void )
 	buttonPushed = TRUE;
 	TheScriptEngine->signalUIInteract(TheShellHookNames[SHELL_SCRIPT_HOOK_MAIN_MENU_EXIT_SELECTED]);
 	TheShell->pop();
-	TheGameEngine->setQuitting( TRUE );
+	TheGameEngine->setQuitting( TRUE, "4" );
 
 
 

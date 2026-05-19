@@ -66,7 +66,7 @@ int ReplaySimulation::simulateReplaysInThisProcess(const std::vector<AsciiString
 				numErrors++;
 			if (!s_isRunning)
 				break;
-			TheGameEngine->setQuitting(FALSE);
+			TheGameEngine->setQuitting(FALSE, "2");
 		}
 		s_isRunning = false;
 		s_replayIndex = 0;

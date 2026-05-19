@@ -549,14 +549,14 @@ WindowMsgHandledType ScoreScreenSystem( GameWindow *window, UnsignedInt msg,
 				if ( ReplaySimulation::getReplayCount() > 0 )
 				{
 					ReplaySimulation::stop();
-					TheGameEngine->setQuitting(TRUE);
+					TheGameEngine->setQuitting(TRUE, "5");
 				}
 			}
 			else if ( controlID == buttonContinueID )
 			{
 				if( ReplaySimulation::getReplayCount() > 0 )
 				{
-					TheGameEngine->setQuitting(TRUE);
+					TheGameEngine->setQuitting(TRUE, "6");
 				}
 				else
 				{

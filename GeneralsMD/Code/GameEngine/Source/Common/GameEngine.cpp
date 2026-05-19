@@ -254,6 +254,13 @@ GameEngine::GameEngine( void )
 	_Module.Init(nullptr, ApplicationHInstance, nullptr);
 }
 
+void GameEngine::setQuitting( Bool quitting, const char* str )
+{
+	DEBUG_LOG(("GameEngine::setQuitting %d %s", (int)quitting, str));
+
+	m_quitting = quitting;
+}
+
 //-------------------------------------------------------------------------------------------------
 GameEngine::~GameEngine()
 {
@@ -522,7 +529,7 @@ void GameEngine::init()
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 		initSubsystem(TheAudio,"TheAudio", TheGlobalData->m_headless ? NEW AudioManagerDummy : createAudioManager(), nullptr);
 		if (!TheAudio->isMusicAlreadyLoaded())
-			setQuitting(TRUE);
+			setQuitting(TRUE, "7");
 
 	#ifdef DUMP_PERF_STATS///////////////////////////////////////////////////////////////////////////
 	GetPrecisionTimer(&endTime64);//////////////////////////////////////////////////////////////////
@@ -957,7 +964,7 @@ void GameEngine::execute( void )
 							}
 							TheGameLogic->clearGameData();
 						}
-						TheGameEngine->setQuitting(TRUE);
+						TheGameEngine->setQuitting(TRUE, "8");
 					}
 				}
 			}

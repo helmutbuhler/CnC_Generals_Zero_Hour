@@ -282,7 +282,7 @@ void GameLogic::clearGameData( Bool showScoreScreen )
 
 	if (TheGlobalData->m_initialFile.isEmpty() == FALSE || m_quitToDesktopAfterMatch)
 	{
-		TheGameEngine->setQuitting(TRUE);
+		TheGameEngine->setQuitting(TRUE, "9");
 		m_quitToDesktopAfterMatch = FALSE;
 	}
 

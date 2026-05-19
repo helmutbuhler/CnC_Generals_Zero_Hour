@@ -199,7 +199,7 @@ static void restartMissionMenu()
 	Int fps = TheFramePacer->getFramesPerSecondLimit();
 
 	TheGameLogic->clearGameData(FALSE);
-	TheGameEngine->setQuitting(FALSE);
+	TheGameEngine->setQuitting(FALSE, "3");
 
 	if (replayFile.isNotEmpty())
 	{

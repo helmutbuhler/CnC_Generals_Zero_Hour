@@ -67,7 +67,7 @@ public:
 	static Bool isTimeFrozen(); ///< Returns true if a script has frozen time.
 	static Bool isGameHalted(); ///< Returns true if the game is paused or the network is stalling.
 
-	virtual void setQuitting( Bool quitting );				///< set quitting status
+	virtual void setQuitting( Bool quitting, const char* str );				///< set quitting status
 	virtual Bool getQuitting(void);						///< is app getting ready to quit.
 
 	virtual Bool isMultiplayerSession( void );
@@ -103,7 +103,6 @@ protected:
 	Bool m_isActive; ///< app has OS focus.
 };
 
-inline void GameEngine::setQuitting( Bool quitting ) { m_quitting = quitting; }
 inline Bool GameEngine::getQuitting(void) { return m_quitting; }
 
 // the game engine singleton
