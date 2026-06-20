@@ -56,10 +56,17 @@ Int REPLAY_CRC_INTERVAL = 100;
 const char *replayExtention = ".rep";
 const char *lastReplayFileName = "00000000";	// a name the user is unlikely to ever type, but won't cause panic & confusion
 
+// TheSuperHackers @tweak helmutbuhler 25/04/2025
+// The replay header contains two time elements startTime and endTime of type time_t.
+// On VC6 this was 32-bit, but on newer compilers it's 64-bit. In order to remain compatible
+// we need to load and save them as 32-bit and use this type for that.
+// Note that this will overflow on January 18, 2038.
+typedef int replay_time_t;
+
 static time_t startTime;
 static const UnsignedInt startTimeOffset = 6;
-static const UnsignedInt endTimeOffset = startTimeOffset + sizeof(time_t);
-static const UnsignedInt framesOffset = endTimeOffset + sizeof(time_t);
+static const UnsignedInt endTimeOffset = startTimeOffset + sizeof(replay_time_t);
+static const UnsignedInt framesOffset = endTimeOffset + sizeof(replay_time_t);
 static const UnsignedInt desyncOffset = framesOffset + sizeof(UnsignedInt);
 static const UnsignedInt quitEarlyOffset = desyncOffset + sizeof(Bool);
 static const UnsignedInt disconOffset = quitEarlyOffset + sizeof(Bool);
@@ -75,7 +82,8 @@ void RecorderClass::logGameStart(AsciiString options)
 	if (!fseek(m_file, startTimeOffset, SEEK_SET))
 	{
 		// save off start time
-		fwrite(&startTime, sizeof(time_t), 1, m_file);
+		replay_time_t tmp = (replay_time_t)startTime;
+		fwrite(&tmp, sizeof(replay_time_t), 1, m_file);
 	}
 	// move back to end of stream
 #ifdef DEBUG_CRASHING
@@ -229,7 +237,8 @@ void RecorderClass::logGameEnd( void )
 	if (!fseek(m_file, endTimeOffset, SEEK_SET))
 	{
 		// save off end time
-		fwrite(&t, sizeof(time_t), 1, m_file);
+		replay_time_t tmp = (replay_time_t)t;
+		fwrite(&tmp, sizeof(replay_time_t), 1, m_file);
 	}
 	// move to appropriate offset
 	if (!fseek(m_file, framesOffset, SEEK_SET))
@@ -406,6 +415,7 @@ void RecorderClass::init() {
 	m_gameInfo.setSeed(GetGameLogicRandomSeed());
 	m_wasDesync = FALSE;
 	m_doingAnalysis = FALSE;
+	m_playbackFrameDuration = 0;
 }
 
 /**
@@ -428,7 +438,7 @@ void RecorderClass::reset() {
 void RecorderClass::update() {
 	if (m_mode == RECORDERMODETYPE_RECORD || m_mode == RECORDERMODETYPE_NONE) {
 		updateRecord();
-	} else if (m_mode == RECORDERMODETYPE_PLAYBACK) {
+	} else if (isPlaybackMode()) {
 		updatePlayback();
 	}
 }
@@ -557,9 +567,9 @@ void RecorderClass::startRecording(GameDifficulty diff, Int originalGameMode, In
 	//
 	// **** if this changes, change the LAN code above ****
 	//
-	time_t t = 0;
-	fwrite(&t, sizeof(time_t), 1, m_file);	// reserve space for start time
-	fwrite(&t, sizeof(time_t), 1, m_file);	// reserve space for end time
+	replay_time_t t = 0;
+	fwrite(&t, sizeof(replay_time_t), 1, m_file);	// reserve space for start time
+	fwrite(&t, sizeof(replay_time_t), 1, m_file);	// reserve space for end time
 
 	UnsignedInt frames = 0;
 	fwrite(&frames, sizeof(UnsignedInt), 1, m_file);	// reserve space for duration in frames
@@ -836,8 +846,11 @@ Bool RecorderClass::readReplayHeader(ReplayHeader& header)
 	}
 
 	// read in some stats
-	fread(&header.startTime, sizeof(time_t), 1, m_file);
-	fread(&header.endTime, sizeof(time_t), 1, m_file);
+	replay_time_t tmp;
+	fread(&tmp, sizeof(replay_time_t), 1, m_file);
+	header.startTime = tmp;
+	fread(&tmp, sizeof(replay_time_t), 1, m_file);
+	header.endTime = tmp;
 
 	fread(&header.frameDuration, sizeof(UnsignedInt), 1, m_file);
 
@@ -902,22 +915,36 @@ Bool RecorderClass::readReplayHeader(ReplayHeader& header)
 	return TRUE;
 }
 
-#if defined _DEBUG || defined _INTERNAL
+Bool RecorderClass::simulateReplay(AsciiString filename)
+{
+	Bool success = playbackFile(filename);
+	if (success)
+		m_mode = RECORDERMODETYPE_SIMULATION_PLAYBACK;
+	return success;
+}
+
+#if 1
 Bool RecorderClass::analyzeReplay( AsciiString filename )
 {
 	m_doingAnalysis = TRUE;
 	return playbackFile(filename);
 }
 
-Bool RecorderClass::isAnalysisInProgress( void )
+
+void RecorderClass::stopAnalysis()
 {
-	return m_mode == RECORDERMODETYPE_PLAYBACK && m_nextFrame != -1;
+	m_doingAnalysis = FALSE;
 }
 #endif
 
+Bool RecorderClass::isPlaybackInProgress( void )
+{
+	return isPlaybackMode() && m_nextFrame != -1;
+}
+
 AsciiString RecorderClass::getCurrentReplayFilename( void )
 {
-	if (m_mode == RECORDERMODETYPE_PLAYBACK)
+	if (isPlaybackMode())
 	{
 		return m_currentReplayFilename;
 	}
@@ -999,6 +1026,11 @@ UnsignedInt CRCInfo::readCRC(void)
 	return val;
 }
 
+Bool RecorderClass::sawCRCMismatch()
+{
+	return m_crcInfo->sawCRCMismatch();
+}
+
 void RecorderClass::handleCRCMessage(UnsignedInt newCRC, Int playerIndex, Bool fromPlayback)
 {
 	if (fromPlayback)
@@ -1018,8 +1050,9 @@ void RecorderClass::handleCRCMessage(UnsignedInt newCRC, Int playerIndex, Bool f
 	if (samePlayer || (localPlayerIndex < 0))
 	{
 		UnsignedInt playbackCRC = m_crcInfo->readCRC();
+		Int mismatchFrame = TheGameLogic->getFrame()-m_crcInfo->GetQueueSize()-1;
 		//DEBUG_LOG(("RecorderClass::handleCRCMessage() - Comparing CRCs of InGame:%8.8X Replay:%8.8X Frame:%d from Player %d\n",
-		//	playbackCRC, newCRC, TheGameLogic->getFrame()-m_crcInfo->GetQueueSize()-1, playerIndex));
+		//	playbackCRC, newCRC, mismatchFrame, playerIndex));
 		if (TheGameLogic->getFrame() > 0 && newCRC != playbackCRC && !m_crcInfo->sawCRCMismatch())
 		{
 			m_crcInfo->setSawCRCMismatch();
@@ -1038,7 +1071,11 @@ void RecorderClass::handleCRCMessage(UnsignedInt newCRC, Int playerIndex, Bool f
 			// Note: We subtract the queue size from the frame no. This way we calculate the correct frame
 			// the mismatch first happened in case the NetCRCInterval is set to 1 during the game.
 			DEBUG_CRASH(("Replay has gone out of sync!  All bets are off!\nInGame:%8.8X Replay:%8.8X\nFrame:%d",
-				playbackCRC, newCRC, TheGameLogic->getFrame()-m_crcInfo->GetQueueSize()-1));
+				playbackCRC, newCRC, mismatchFrame));
+
+			// TheSuperHackers @info helmutbuhler 13/04/2025
+			// Print Mismatch to console in case we are in SimulateReplayList
+			printf("CRC Mismatch in Frame %d\n", mismatchFrame);
 		}
 		return;
 	}
@@ -1115,7 +1152,10 @@ Bool RecorderClass::playbackFile(AsciiString filename)
 		debugString = "EXE is different:\n";
 		if (versionStringDiff)
 		{
-			tempStr.format("   Version [%ls] vs [%ls]\n", TheVersion->getUnicodeVersion().str(), header.versionString.str());
+			// AsciiString::format with %ls can make internal _vsnprintf call fail on some strings. We convert using translate here. (TheSuperHackers @fix helmutbuhler 05/05/2025)
+			UnicodeString tempStrWide;
+			tempStrWide.format(L"   Version [%s] vs [%s]\n", TheVersion->getUnicodeVersion().str(), header.versionString.str());
+			tempStr.translate(tempStrWide);
 			debugString.concat(tempStr);
 		}
 		if (versionTimeStringDiff)
@@ -1181,17 +1221,23 @@ Bool RecorderClass::playbackFile(AsciiString filename)
 	// send a message to the logic for a new game
 	if (!m_doingAnalysis)
 	{
-		GameMessage *msg = TheMessageStream->appendMessage( GameMessage::MSG_NEW_GAME );
+		// TheSuperHackers @info helmutbuhler 13/04/2025
+		// We send the New Game message here directly to the command list and bypass the TheMessageStream.
+		// That's ok because Multiplayer is disabled during replay playback and is actually required
+		// during replay simulation because we don't update TheMessageStream during simulation.
+		GameMessage *msg = newInstance(GameMessage)(GameMessage::MSG_NEW_GAME);
 		msg->appendIntegerArgument(GAME_REPLAY);
 		msg->appendIntegerArgument(difficulty);
 		msg->appendIntegerArgument(rankPoints);
 		if( maxFPS != 0 )
 			msg->appendIntegerArgument(maxFPS);
+		TheCommandList->appendMessage( msg );
 		//InitGameLogicRandom( m_gameInfo.getSeed());
 		InitRandom( m_gameInfo.getSeed() );
 	}
 
 	m_currentReplayFilename = filename;
+	m_playbackFrameDuration = header.frameDuration;
 	return TRUE;
 }
 
@@ -1276,16 +1322,6 @@ void RecorderClass::appendNextCommand() {
 	}
 
 	GameMessage *msg = newInstance(GameMessage)(type);
-	if (type == GameMessage::MSG_BEGIN_NETWORK_MESSAGES || type == GameMessage::MSG_CLEAR_GAME_DATA)
-	{
-	}
-	else
-	{
-		if (!m_doingAnalysis)
-		{
-			TheCommandList->appendMessage(msg);
-		}
-	}
 
 #ifdef DEBUG_LOGGING
 	AsciiString commandName = msg->getCommandAsAsciiString();
@@ -1357,13 +1393,11 @@ void RecorderClass::appendNextCommand() {
 		}
 	}
 
-	if (type == GameMessage::MSG_CLEAR_GAME_DATA || type == GameMessage::MSG_BEGIN_NETWORK_MESSAGES)
+	if (type != GameMessage::MSG_BEGIN_NETWORK_MESSAGES && type != GameMessage::MSG_CLEAR_GAME_DATA && !m_doingAnalysis)
 	{
-		msg->deleteInstance();
-		msg = NULL;
+		TheCommandList->appendMessage(msg);
 	}
-
-	if (m_doingAnalysis)
+	else
 	{
 		msg->deleteInstance();
 		msg = NULL;
@@ -1623,7 +1657,7 @@ void RecorderClass::initControls()
 Bool RecorderClass::isMultiplayer( void )
 {
 
-	if (m_mode == RECORDERMODETYPE_PLAYBACK)
+	if (isPlaybackMode())
 	{
 		GameSlot *slot;
 		for (int i=0; i<MAX_SLOTS; ++i)

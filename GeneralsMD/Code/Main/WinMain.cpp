@@ -744,8 +744,7 @@ static Bool initializeAppWindows( HINSTANCE hInstance, Int nCmdShow, Bool runWin
 	ShowWindow( hWnd, nCmdShow );
 	UpdateWindow( hWnd );
 
-	// save our application instance and window handle for future use
-	ApplicationHInstance = hInstance;
+	// save our application window handle for future use
 	ApplicationHWnd = hWnd;
 	gInitializing = false;
 	if (!runWindowed) {
@@ -874,13 +873,15 @@ static CriticalSection critSec1, critSec2, critSec3, critSec4, critSec5;
 Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                       LPSTR lpCmdLine, Int nCmdShow )
 {
+	Int exitcode = 1;
 	checkProtection();
 
 #ifdef _PROFILE
   Profile::StartRange("init");
 #endif
 
-	try {
+	//try
+	{
 
 		_set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
 		//
@@ -919,13 +920,21 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		char * argv[20];
 		argv[0] = NULL;
 
+		Bool headless = false;
+
 		char *token;
 		token = nextParam(lpCmdLine, "\" ");
 		while (argc < 20 && token != NULL) {
 			argv[argc++] = strtrim(token);
+			
 			//added a preparse step for this flag because it affects window creation style
-			if (stricmp(token,"-win")==0)
-				ApplicationIsWindowed=true;
+			if (stricmp(token, "-win") == 0)
+				ApplicationIsWindowed = true;
+
+			// preparse for headless as well. We need to know about this before we create the window.
+			if (stricmp(token, "-headless") == 0)
+				headless = true;
+			
 			token = nextParam(NULL, "\" ");	   
 		}
 
@@ -943,7 +952,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				DEBUG_LOG(("0x%x - %s, %s, line %d address 0x%x\n", pc, name, file, line, addr));
 			}
 			DEBUG_LOG(("\n--- END OF DX STACK DUMP\n"));
-			return 0;
+			return exitcode;
 		}
 
 		#ifdef _DEBUG
@@ -984,10 +993,12 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		gLoadScreenBitmap = (HBITMAP)LoadImage(hInstance, "Install_Final.bmp", IMAGE_BITMAP, 0, 0, LR_SHARED|LR_LOADFROMFILE);
 #endif
 
-
 		// register windows class and create application window
-		if( initializeAppWindows( hInstance, nCmdShow, ApplicationIsWindowed) == false )
-			return 0;
+		if(!headless && initializeAppWindows(hInstance, nCmdShow, ApplicationIsWindowed) == false)
+			return exitcode;
+		
+		// save our application instance for future use
+		ApplicationHInstance = hInstance;
 
 		if (gLoadScreenBitmap!=NULL) {
 			::DeleteObject(gLoadScreenBitmap);
@@ -1017,7 +1028,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			TheVersion = NULL;
 			shutdownMemoryManager();
 			DEBUG_SHUTDOWN();
-			return 0;
+			return exitcode;
 		}
 #endif
 
@@ -1026,7 +1037,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//our app is already running.
 		//WARNING: DO NOT use this number for any other application except Generals.
 		GeneralsMutex = CreateMutex(NULL, FALSE, GENERALS_GUID);
-		if (GetLastError() == ERROR_ALREADY_EXISTS)
+		if (GetLastError() == ERROR_ALREADY_EXISTS && 0)
 		{
 			HWND ccwindow = FindWindow(GENERALS_GUID, NULL);
 			if (ccwindow)
@@ -1045,7 +1056,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			TheVersion = NULL;
 			shutdownMemoryManager();
 			DEBUG_SHUTDOWN();
-			return 0;
+			return exitcode;
 		}
 		DEBUG_LOG(("Create GeneralsMutex okay.\n"));
 
@@ -1057,14 +1068,14 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			TheVersion = NULL;
 			shutdownMemoryManager();
 			DEBUG_SHUTDOWN();
-			return 0;
+			return exitcode;
 		}
 #endif
 
 		DEBUG_LOG(("CRC message is %d\n", GameMessage::MSG_LOGIC_CRC));
 
 		// run the game main loop
-		GameMain(argc, argv);
+		exitcode = GameMain(argc, argv);
 
 #ifdef DO_COPY_PROTECTION
 		// Clean up copy protection
@@ -1088,16 +1099,16 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// BGC - shut down COM
 	//	OleUninitialize();
 	}	
-	catch (...) 
+	/*catch (...) 
 	{ 
 	
-	}
+	}*/
 
 	TheUnicodeStringCriticalSection = NULL;
 	TheDmaCriticalSection = NULL;
 	TheMemoryPoolCriticalSection = NULL;
 
-	return 0;
+	return exitcode;
 
 }  // end WinMain
 

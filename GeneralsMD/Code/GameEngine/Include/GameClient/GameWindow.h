@@ -322,7 +322,7 @@ public:
 	// window instance data
 	Int winSetInstanceData( WinInstanceData *data );  ///< copy over instance data
 	WinInstanceData *winGetInstanceData( void );  ///< get instance data
-	void *winGetUserData( void );  ///< get the window user data
+	virtual void *winGetUserData( void );  ///< get the window user data
 	void winSetUserData( void *userData );  ///< set the user data
 
 	// heirarchy methods

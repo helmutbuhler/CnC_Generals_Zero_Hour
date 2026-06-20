@@ -517,11 +517,11 @@ void ThingTemplate::parseModuleName(INI* ini, void *instance, void* store, const
 
 	// get the tag string (it is now required)
 	AsciiString moduleTagStr;
-	try
+	//try
 	{
 		moduleTagStr = ini->getNextToken();
 	}
-	catch( ... )
+	/*catch( ... )
 	{
 
 		DEBUG_CRASH(( "[LINE: %d - FILE: '%s'] Module tag not found for module '%s' on thing template '%s'.  Module tags are required and must be unique for all modules within an object definition\n",
@@ -529,7 +529,7 @@ void ThingTemplate::parseModuleName(INI* ini, void *instance, void* store, const
 									tokenStr.str(), self->getName().str() ));
 		throw;
 				
-	}
+	}*/
 
 	Int interfaceMask;
 

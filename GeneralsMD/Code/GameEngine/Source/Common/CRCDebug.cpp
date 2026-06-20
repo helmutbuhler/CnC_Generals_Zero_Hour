@@ -116,6 +116,7 @@ void outputCRCDebugLines( void )
 	if (fp) fclose(fp);
 }
 
+
 void outputCRCDumpLines( void )
 {
 	/*

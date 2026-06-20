@@ -371,6 +371,13 @@ void GameEngine::init( int argc, char *argv[] )
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
 
+		// TheSuperHackers @bugfix helmutbuhler 04/14/2025
+		// Pump messages during startup to avoid "(Not responding)" in the window title
+		// on slower computers and in debug build.
+		// This also ensures that the window is correctly positioned, because Windows
+		// apparently ignores the SetWindowPos call when the window is not responding.
+		serviceWindowsOS();
+
 
 	#if defined(_DEBUG) || defined(_INTERNAL)
 		// If we're in Debug or Internal, load the Debug info as well.
@@ -431,7 +438,7 @@ void GameEngine::init( int argc, char *argv[] )
   startTime64 = endTime64;//Reset the clock ////////////////////////////////////////////////////////
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
-		initSubsystem(TheAudio,"TheAudio", createAudioManager(), NULL);
+		initSubsystem(TheAudio,"TheAudio", TheGlobalData->m_headless ? NEW AudioManagerDummy : createAudioManager(), NULL);
 		if (!TheAudio->isMusicAlreadyLoaded())
 			setQuitting(TRUE);
 
@@ -507,7 +514,7 @@ void GameEngine::init( int argc, char *argv[] )
 		initSubsystem(TheCrateSystem,"TheCrateSystem", MSGNEW("GameEngineSubsystem") CrateSystem(), &xferCRC, "Data\\INI\\Default\\Crate.ini", "Data\\INI\\Crate.ini");
 		initSubsystem(ThePlayerList,"ThePlayerList", MSGNEW("GameEngineSubsystem") PlayerList(), NULL);
 		initSubsystem(TheRecorder,"TheRecorder", createRecorder(), NULL);
-		initSubsystem(TheRadar,"TheRadar", createRadar(), NULL);
+		initSubsystem(TheRadar,"TheRadar", TheGlobalData->m_headless ? NEW RadarDummy : createRadar(), NULL);
 		initSubsystem(TheVictoryConditions,"TheVictoryConditions", createVictoryConditions(), NULL);
 
 
@@ -687,10 +694,10 @@ void GameEngine::init( int argc, char *argv[] )
 			RELEASE_CRASH(("Uncaught Exception during initialization."));
 
 	}
-	catch (...)
+	/*catch (...)
 	{
 		RELEASE_CRASH(("Uncaught Exception during initialization."));
-	}
+	}*/
 
 	if(!TheGlobalData->m_playIntro)
 		TheWritableGlobalData->m_afterIntro = TRUE;
@@ -843,7 +850,7 @@ void GameEngine::execute( void )
 					else
 						RELEASE_CRASH(("Uncaught Exception in GameEngine::update"));
 				}
-				catch (...)
+				/*catch (...)
 				{
 					// try to save info off
 					try 
@@ -855,7 +862,7 @@ void GameEngine::execute( void )
 					{
 					}
 					RELEASE_CRASH(("Uncaught Exception in GameEngine::update"));
-				}	// catch
+				}*/	// catch
 			}	// perf
 
 			{

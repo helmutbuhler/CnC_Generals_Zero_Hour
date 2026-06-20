@@ -289,14 +289,14 @@ void __declspec(dllexport) UpdateCurrentParticleSystem( ParticleSystemTemplate *
 
 void __declspec(dllexport) UpdateSystemUseParameters( ParticleSystemTemplate *particleTemplate)
 {
-	try {
+	//try {
 		AFX_MANAGE_STATE(AfxGetStaticModuleState( ));
 		DebugWindowDialog* tmpWnd = theApp.GetDialogWindow(); 
 		
 		if (tmpWnd) {
 			tmpWnd->updateSystemUseParameters(particleTemplate);
 		}
-	} catch(...) { }
+	//} catch(...) { }
 }
 
 Bool __declspec(dllexport) ShouldWriteINI( void )

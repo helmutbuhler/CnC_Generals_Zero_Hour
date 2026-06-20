@@ -17,7 +17,7 @@
                 "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL",
                 "CMAKE_MSVC_DEBUG_INFORMATION_FORMAT": "$<$<CONFIG:Release,Debug,RelWithDebInfo>:ProgramDatabase>",
                 "CMAKE_BUILD_TYPE": "Release",
-                "GENZH_FLAGS": "/W3"
+                "RTS_FLAGS": "/W3"
             },
             "vendor": {
                 "jetbrains.com/clion": {

@@ -534,7 +534,7 @@ WindowMsgHandledType ReplayMenuSystem( GameWindow *window, UnsignedInt msg,
 						do
 						{
 							TheRecorder->update();
-						} while (TheRecorder->isAnalysisInProgress());
+						} while (TheRecorder->isPlaybackInProgress());
 					}
 				}
 			}

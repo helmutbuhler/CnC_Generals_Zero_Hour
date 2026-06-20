@@ -607,6 +607,7 @@ GlobalData::GlobalData()
 	m_dumpAssetUsage = FALSE;
 	m_framesPerSecondLimit = 0;
 	m_chipSetType = 0;
+	m_headless = FALSE;
 	m_windowed = 0;
 	m_xResolution = 800;
 	m_yResolution = 600;
@@ -949,6 +950,9 @@ GlobalData::GlobalData()
 	m_buildMapCache = FALSE;
 	m_initialFile.clear();
 	m_pendingFile.clear();
+	
+	m_simulateReplayList.clear();
+	m_simulateReplayJobs = -1;
 
 	for (i = LEVEL_FIRST; i <= LEVEL_LAST; ++i)
 		m_healthBonus[i] = 1.0f;

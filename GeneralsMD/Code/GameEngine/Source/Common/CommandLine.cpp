@@ -30,6 +30,8 @@
 #include "Common/CRCDebug.h"
 #include "Common/LocalFileSystem.h"
 #include "Common/version.h"
+#include "Common/Recorder.h"
+#include "Common/ReplayListCsv.h"
 #include "GameClient/TerrainVisual.h" // for TERRAIN_LOD_MIN definition
 #include "GameClient/GameText.h"
 
@@ -105,6 +107,15 @@ static void ConvertShortMapPathToLongMapPath(AsciiString &mapName)
 	actualpath.concat(".map");
 
 	mapName = actualpath;
+}
+
+static void ConvertShortReplayPathToLongReplayPath(AsciiString &filename)
+{
+	if (!filename.endsWithNoCase(RecorderClass::getReplayExtention()))
+	{
+		DEBUG_CRASH(("Invalid replay name %s", filename.str()));
+		exit(1);
+	}
 }
 
 //=============================================================================
@@ -389,6 +400,44 @@ Int parseMapName(char *args[], int num)
 	{
 		TheWritableGlobalData->m_mapName.set( args[ 1 ] );
 		ConvertShortMapPathToLongMapPath(TheWritableGlobalData->m_mapName);
+	}
+	return 1;
+}
+
+Int parseSimReplay(char *args[], int num)
+{
+	if (TheWritableGlobalData && num > 1)
+	{
+		AsciiString filename = args[1];
+		ConvertShortReplayPathToLongReplayPath(filename);
+		TheWritableGlobalData->m_simulateReplayList.push_back(filename);
+		return 2;
+	}
+	return 1;
+}
+
+Int parseSimReplayList(char *args[], int num)
+{
+	if (TheWritableGlobalData && num > 1)
+	{
+		AsciiString filename = args[1];
+		ReadReplayListFromCsv(filename, &TheWritableGlobalData->m_simulateReplayList);
+		return 2;
+	}
+	return 1;
+}
+
+Int parseJobs(char *args[], int num)
+{
+	if (TheWritableGlobalData && num > 1)
+	{
+		TheWritableGlobalData->m_simulateReplayJobs = atoi(args[1]);
+		if (TheGlobalData->m_simulateReplayJobs < -1 || TheGlobalData->m_simulateReplayJobs == 0)
+		{
+			DEBUG_CRASH(("Invalid number of jobs %d", TheGlobalData->m_simulateReplayJobs));
+			exit(1);
+		}
+		return 2;
 	}
 	return 1;
 }
@@ -839,6 +888,15 @@ Int parseQuickStart( char *args[], int num )
 	return 1;
 }
 
+Int parseHeadless( char *args[], int num )
+{
+	if (TheWritableGlobalData)
+	{
+		TheWritableGlobalData->m_headless = TRUE;
+	}
+	return 1;
+}
+
 Int parseConstantDebug( char *args[], int num )
 {
 	if (TheWritableGlobalData)
@@ -1181,6 +1239,25 @@ static CommandLineParam params[] =
 	{ "-mod", parseMod },
 	{ "-noshaders", parseNoShaders },
 	{ "-quickstart", parseQuickStart },
+
+	// TheSuperHackers @feature helmutbuhler 04/11/2025
+	// This runs the game without a window, graphics, input and audio. Used for testing.
+	{ "-headless", parseHeadless },
+	
+	// TheSuperHackers @feature helmutbuhler 04/13/2025
+	// Simulate replay without graphics. Pass the filename including .rep afterwards.
+	// You can pass this multiple times to check multiple replays.
+	{ "-simReplay", parseSimReplay },
+
+	// TheSuperHackers @feature helmutbuhler 28/04/2025
+	// Pass in a csv file to simulate multiple replays. The file must be in the replay folder.
+	{ "-simReplayList", parseSimReplayList },
+
+	// TheSuperHackers @feature helmutbuhler 23/05/2025
+	// Simulate each replay in a separate process and use up two N processes at the same time.
+	// (If you have 4 cores, call it with -jobs 4)
+	// If you do not call this, all replays will be simulated in sequence in the same process.
+	{ "-jobs", parseJobs },
 
 #if (defined(_DEBUG) || defined(_INTERNAL))
 	{ "-noaudio", parseNoAudio },

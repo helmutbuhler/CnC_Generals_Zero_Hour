@@ -160,14 +160,14 @@ void SaveMap::populateMapListbox( Bool systemMaps )
 			strcat(fileBuf, "\\");
 			strcat(fileBuf, findData.cFileName);
 			strcat(fileBuf, ".map");
-			try {
+			//try {
 				CFileStatus status;
 				if (CFile::GetStatus(fileBuf, status)) {
 					if (!(status.m_attribute & CFile::directory)) {
 						pList->AddString(findData.cFileName);
 					};
 				}
-			} catch(...) {}
+			//} catch(...) {}
 
 		} while (FindNextFile(hFindFile, &findData));
 
